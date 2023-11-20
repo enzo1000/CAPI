@@ -57,7 +57,7 @@ while game_on:
 			if event.type == MOUSEMOTION:
 				mouse['x'] = event.pos[0]
 				mouse['y'] = event.pos[1]
-				activCards = motionInCartes(mouse, activCards, mouse['x'], mouse['y'])
+				activCards = motionInCartes((event.pos[0], event.pos[1]), activCards)
 
 			if event.type == MOUSEBUTTONDOWN:
 				select = selectCartes(activCards)

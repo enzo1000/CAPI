@@ -33,7 +33,7 @@ def blitage_menu(display):
 
 def motionInCartes(mouse, activCartes, d, y):
 	for i, (x, y) in enumerate(zip(impor.data.xCartes, impor.data.yCartes)):
-		if x < mouse['x'] < x + int(impor.data.dimCartes[0]/2) and y < mouse['y'] < y + impor.data.dimCartes[1]:
+		if x < mouse[0] < x + int(impor.data.dimCartes[0]/2) and y < mouse[1] < y + impor.data.dimCartes[1]:
 			activCartes[i] = 1
 			# print(f"Activ : {impor.image.labelCartes[i]}")
 		else:
