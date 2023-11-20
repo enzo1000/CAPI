@@ -1,4 +1,4 @@
-#Planoker - Planning Poker
+#Plan Poker - Planning Poker
 #Created by Aexeos & Zozo, 15/11/2023
 
 import pygame
@@ -13,7 +13,7 @@ import pickle
 dx, dy = 1600, 900
 pygame.init()
 ds = pygame.display.set_mode((dx, dy))
-pygame.display.set_caption('Planoker')
+pygame.display.set_caption('Plan Poker')
 
 #GAME VARIABLES
 
