@@ -4,7 +4,7 @@
 import pygame
 import numpy as np
 from pygame.locals import *
-from func_cpe import *
+from func_capi import *
 from time import time
 from random import random as rdm
 import pickle
@@ -22,7 +22,7 @@ game_on = True
 mouse = {'x' : 0, 'y' : 0}
 
 #Init Cards default value
-activCartes = np.zeros(12).astype(int)
+activCards = np.zeros(12).astype(int)
 
 open_event = {'menu' : True, 'main' : False}
 
@@ -57,15 +57,15 @@ while game_on:
 			if event.type == MOUSEMOTION:
 				mouse['x'] = event.pos[0]
 				mouse['y'] = event.pos[1]
-				activCartes = motionInCartes(mouse, activCartes)
+				activCards = motionInCartes(mouse, activCards)
 
 			if event.type == MOUSEBUTTONDOWN:
-				select = selectCartes(activCartes)
+				select = selectCartes(activCards)
 
 			if event.type == QUIT:
 				game_on, open_event['main'] = False, False
 
-		blitage_main(ds, activCartes)
+		blitage_main(ds, activCards)
 
 #EXPORT DATA
 #Json placeholder
