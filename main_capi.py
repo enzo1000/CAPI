@@ -14,39 +14,17 @@ dx, dy = 1600, 900
 pygame.init()
 ds = pygame.display.set_mode((dx, dy))
 pygame.display.set_caption('Planoker')
-# pygame.mouse.set_visible(False)
-# pygame.display.set_icon(pygame.image.load("picture/icon/icon256.png"))
 
-#IMPORT JOYSTICK
+#GAME VARIABLES
 
-#IMPORT DATA
-datafile = 'data/data.ini'
-
-try:
-	f = open(datafile, 'rb')
-	data = pickle.Unpickler(f).load()
-except:
-	print('Could\'n open data file')
-	print('Create new data.ini ...')
-	volume = {'chouquette' : 1}
-	data = {'volume' : volume}
-set_volume_data(data)
-
-#Coor. Object
-
-#Variable Game
-
-#Variable Loop
+#LOOP VARIABLES
 game_on = True
-mouse = {'action' : 'UP',
-		'dy' : {'UP':-120, 'DW':-100},
-		'x' : 0, 
-		'y' : 0}
+mouse = {'x' : 0, 'y' : 0}
 
+#Init Cards default value
 activCartes = np.zeros(12).astype(int)
 
-open_event = {'menu' : True,
-			'main' : False}
+open_event = {'menu' : True, 'main' : False}
 
 #GAME EVENT
 while game_on:
@@ -56,12 +34,10 @@ while game_on:
 		for event in pygame.event.get():
 
 			if event.type == MOUSEMOTION:
-
 				mouse['x'] = event.pos[0]
 				mouse['y'] = event.pos[1]
 
 			if event.type == KEYDOWN:
-
 				if event.key == K_p:
 					open_event['menu'], open_event['main'] = False, True
 
@@ -74,21 +50,16 @@ while game_on:
 	#MAIN EVENT
 	while open_event['main']:
 		for event in pygame.event.get():
-
 			if event.type == KEYDOWN:
-
 				if event.key == K_ESCAPE:
-
 					open_event['main'], open_event['menu'] = False, True
 
 			if event.type == MOUSEMOTION:
-
 				mouse['x'] = event.pos[0]
 				mouse['y'] = event.pos[1]
 				activCartes = motionInCartes(mouse, activCartes)
 
 			if event.type == MOUSEBUTTONDOWN:
-				
 				select = selectCartes(activCartes)
 
 			if event.type == QUIT:
@@ -97,5 +68,4 @@ while game_on:
 		blitage_main(ds, activCartes)
 
 #EXPORT DATA
-f = open(datafile, 'wb')
-pickle.Pickler(f).dump(data)
+#Json placeholder

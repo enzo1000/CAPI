@@ -1,0 +1,20 @@
+L'idée de ce fichier est de mettre à l'écrit les fonctionnalités que l'on veut implémenter.
+Idée 1 :
+    On arrive sur le "menu" (page d'accueil du jeu)
+        Sur ce menu, on a accès à différents modes de planning (Moyenne, médianne, unanimité, Majorité absolue et relative)
+        Prenon le choix d'un mode "conventionnel" (déroulement classique d'un planning poker)
+        On rentre le nombre de participant ainsi que leur pseudo
+    
+    On arrive ensuite sur la page du PlanningPoker
+        Le responsable de produit rentre ses taches une à une pour le planning (fichier json en entrée)
+        Une fois qu'il a rentré toute ses taches alors il valide sa selection
+        
+        Les utilisateurs on alors une liste de tache qui s'affichent devant eux
+        Ils peuvent en sélectionner une et alors rentrent en mode de saisi du poid de la tache
+            On fait saisir le poids de la tache autant de fois qu'il y a de nombre de participant (boucle simple avec le pseudo de chacun affiché)
+            S'il y a des poids différents alors on affiche le poids min et max et ils discutent entre eux (précision du nb de personne qui ont choisi les poids min et max)
+            On relance tant que tout les poids ne sont pas les mêmes (?)
+            Une fois que tout les poids sont les mêmes, ont peut repasser à la vu de toute les taches avec les poids associés aux taches déjà traités.
+        Une fois que toute les taches sont traités fin du planning Poker (on rend un fichier json avec tout les poids + tache associés)
+
+Fonctionnalités en plus : Sauvegarde de l'avancement si tout le monde choisi la carte Café

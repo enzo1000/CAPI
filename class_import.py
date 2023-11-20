@@ -4,8 +4,8 @@ import numpy as np
 
 pygame.init()
 
+#IMPORT
 class import_image():
-
 	# CARTES
 	folder = "picture/cartes/pngTempo/"
 	labelCartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'X', 'Cafe']
@@ -20,14 +20,11 @@ class import_image():
 	#MAIN IMPORT
 	back_main = pygame.image.load("picture/main/back.png")
 	
-
 class import_mixer():
-
 	chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
 
 
 class import_font():
-
 	font_Karma24 = pygame.font.Font("font/KarmaFuture.ttf", 24)
 	font_Karma42 = pygame.font.Font("font/KarmaFuture.ttf", 42)
 	font_Karma64 = pygame.font.Font("font/KarmaFuture.ttf", 64)
@@ -42,9 +39,7 @@ class import_font():
 	# MENU
 	title = font_goodc48
 
-
 class import_data():
-
 	#MAIN DATA
 	dimCartes = [200, 300]
 	xCartes = np.linspace(200, 1400, 12).astype(int) - int(dimCartes[0]/2)
@@ -53,7 +48,6 @@ class import_data():
 
 
 class importation():
-
 	image = import_image
 	sound = import_mixer
 	font = import_font
