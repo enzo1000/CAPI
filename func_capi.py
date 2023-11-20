@@ -31,7 +31,8 @@ def blitage_menu(display):
 	pygame.display.flip()
 
 
-def motionInCartes(mouse, activCartes):
+def motionInCartes(mouse, activCartes, x, y):
+	print(x, y)
 	for i, (x, y) in enumerate(zip(impor.data.xCartes, impor.data.yCartes)):
 		if x < mouse['x'] < x + int(impor.data.dimCartes[0]/2) and y < mouse['y'] < y + impor.data.dimCartes[1]:
 			activCartes[i] = 1
