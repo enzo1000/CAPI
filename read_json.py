@@ -36,4 +36,3 @@ def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
     return dicRet
 
 print(findAllJson())
-
