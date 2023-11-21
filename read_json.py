@@ -1,19 +1,39 @@
 import json
 import os
 
-with open('./data_json/task_to_plan.json', 'r') as f:
-    data = json.load(f)
+#Cette fonction a pour but d'analyser le contenu d'un dictionnaire et de vérifier si les taches présente
+# dedans on été faite ou non
+def processDic(dic):
+    tacheNonTraite = 0
+    tacheTraite = 0
+    for e in dic:
+        if dic[e] == 0:
+            tacheNonTraite += 1
+        else:
+            tacheTraite += 1
+    
+    return [tacheNonTraite, tacheTraite, tacheNonTraite + tacheTraite]
 
-#{'Tache 1 concernant le tableau de bord': -1, 'Tache 2 concernant le remplissage des cases': -1, 
-#'Tache 3 concernant le finalisation du tableau': -1, 'Tache 4 conclusion': -1}
-print(data)
-print("-----------")
-print(os.listdir('./data_json/')[0])
+#Cette fonction a pour but d'ouvrir un dossier contenant des json et 
+# de retourner un dictionnaire ayant comme structure {nomFichier : {Tache : valeurAssociée}}
+def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
+    dicRet = {}
+    try:
+        listJson = os.listdir(Folderpath)
+    except:
+        print("Exception : Bad json folder path")
+    else:
+        for i in range(len(listJson)):                          #For each elem in the path
+            with open(Folderpath + listJson[i], 'r') as f:      #Open it as a json
+                try:
+                    data = json.load(f)
+                except:
+                    print("Exception : There is a non-json file in the json folder")
+                else:
+                    #print("\n".join(data))     #Debug purpose (very pround of it)
+                    dicRet[listJson[i].split('.')[0]] = [data, processDic(data)]
 
-#Faire une fct qui prend aucun argument 
+    return dicRet
 
-def findAllTasks(path="./data_json/"):  #Default folder to save json files
-    listJson = os.listdir(path)
-    for i in range(len(listJson)):      #For each elem in the path
-        with open(listJson[i], 'r') as f:      #Open it as a json
-            data = json.load(f)         #print it
+print(findAllJson())
+
