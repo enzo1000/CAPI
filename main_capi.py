@@ -1,71 +1,31 @@
 #Plan Poker - Planning Poker
 #Created by Aexeos & Zozo, 15/11/2023
 
-import pygame
-import numpy as np
-from pygame.locals import *
-from func_capi import *
-from time import time
-from random import random as rdm
-import pickle
+from gameClass import GameClass
+from menuEvent import MenuEvent
+from premainEvent import PremainEvent
+from mainEvent import MainEvent
 
 #INIT DISPLAY
-dx, dy = 1600, 900
-pygame.init()
-ds = pygame.display.set_mode((dx, dy))
-pygame.display.set_caption('Plan Poker')
+#imp = importation()	# SI ON VEUT UTILISER UN SINGLETON ICI
 
-#GAME VARIABLES
+game = GameClass((1600, 900), 'Plan Poker')
+game.menuOn = True
 
-#LOOP VARIABLES
-game_on = True
-mouse = {'x' : 0, 'y' : 0}
+menu    = MenuEvent()
+premain = PremainEvent()
+main    = MainEvent()
 
-#Init Cards default value
-activCards = np.zeros(12).astype(int)
-
-open_event = {'menu' : True, 'main' : False}
 
 #GAME EVENT
-while game_on:
+while game.gameOn:
 
-	#MENU EVENT
-	while open_event['menu']:
-		for event in pygame.event.get():
+	# Menu event
+	if game.menuOn    : menu.event(game)
 
-			if event.type == MOUSEMOTION:
-				mouse['x'] = event.pos[0]
-				mouse['y'] = event.pos[1]
+	# Pre-main event
+	if game.premainOn : premain.event(game)
 
-			if event.type == KEYDOWN:
-				if event.key == K_p:
-					open_event['menu'], open_event['main'] = False, True
+	# Main event
+	if game.mainOn    : main.event(game)
 
-			if event.type == QUIT:
-				game_on, open_event['menu'] = False, False
-
-		blitage_menu(ds)
-
-
-	#MAIN EVENT
-	while open_event['main']:
-		for event in pygame.event.get():
-			if event.type == KEYDOWN:
-				if event.key == K_ESCAPE:
-					open_event['main'], open_event['menu'] = False, True
-
-			if event.type == MOUSEMOTION:
-				mouse['x'] = event.pos[0]
-				mouse['y'] = event.pos[1]
-				activCards = motionInCartes((event.pos[0], event.pos[1]), activCards)
-
-			if event.type == MOUSEBUTTONDOWN:
-				select = selectCartes(activCards)
-
-			if event.type == QUIT:
-				game_on, open_event['main'] = False, False
-
-		blitage_main(ds, activCards)
-
-#EXPORT DATA
-#Json placeholder
