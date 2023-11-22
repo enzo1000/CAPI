@@ -18,3 +18,5 @@ Idée 1 :
         Une fois que toute les taches sont traités fin du planning Poker (on rend un fichier json avec tout les poids + tache associés)
 
 Fonctionnalités en plus : Sauvegarde de l'avancement si tout le monde choisi la carte Café
+
+A lire impérativement : Le pdf du cours + https://fr.wikibooks.org/wiki/Patrons_de_conception/Patrons_de_cr%C3%A9ation
