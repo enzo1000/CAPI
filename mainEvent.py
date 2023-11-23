@@ -18,8 +18,8 @@ class MainEvent(Event):
 		self.activCartes = np.zeros(12).astype(int)
 		self.param = self.extractParam()
 
-		self.backlogName = self.imp.data.listBacklog[self.param['backlog']]
-		self.backlog     = self.imp.data.testBacklog[self.backlogName][0]
+		self.backlogName = game.listBacklog[self.param['backlog']]
+		self.backlog     = game.testBacklog[self.backlogName][0]
 
 		self.listTask = []
 
@@ -52,7 +52,9 @@ class MainEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.mainOn = False, False
 
-			self.blitage(game.ds)
+			#J'ai add ça, atm ça sert à rien : Enzo
+			if len(game.listBacklog) >= 1:
+				self.blitage(game.ds)
 
 	def blitage(self, display):
 		display.blit(self.imp.image.back_main, (0, 0))
@@ -137,13 +139,5 @@ class MainEvent(Event):
 						self.currentTask += 1
 						self.currentPlayer = 0
 						self.playerVote = []
-						
-
-
-
-
-
-
-
 			
 		return select

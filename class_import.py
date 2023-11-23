@@ -84,11 +84,14 @@ class import_data():
 
 	# PRE-MAIN DATA : SET BACKLOG EVENT
 	PMSBback_Box = ((350, 200), (900, 670))
-	testBacklog  = {'BacklogTest0' : [{'Tache 1' : -1, 'Tache 2' :  1, 'Tache 3' :  3}, [2, 1, 3]],
-				    'BacklogTest1' : [{'Tache 7' : -1, 'Tache 8' : -1, 'Tache 9' : -1}, [0, 3, 3]]}
-	listBacklog  = list(testBacklog.keys())
-	PMSBlist_Box = [((500, 250 + 100*i), (490, 90)) for i in range(len(listBacklog))]
-	PMSBscor_Box = [((1000, 250 + 100*i), (100, 90)) for i in range(len(listBacklog))]
+	# Ancien emplacement du backlog. Déplacé dans gameClass.py
+	# PMSBback_Box = ((350, 200), (900, 670))
+	# testBacklog  = {'BacklogTest0' : [{'Tache 1' : -1, 'Tache 2' :  1, 'Tache 3' :  3}, [2, 1, 3]],
+	# 			    'BacklogTest1' : [{'Tache 7' : -1, 'Tache 8' : -1, 'Tache 9' : -1}, [0, 3, 3]]}
+	
+	# listBacklog  = list(testBacklog.keys())
+	# PMSBlist_Box = [((500, 250 + 100*i), (490, 90)) for i in range(len(listBacklog))]
+	# PMSBscor_Box = [((1000, 250 + 100*i), (100, 90)) for i in range(len(listBacklog))]
 
 	# PRE-MAIN DATA : SET MODE EVENT
 	PMSMback_Box = ((350, 200), (900, 670))

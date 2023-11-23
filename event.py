@@ -78,12 +78,12 @@ class Event():
 		return param
 
 
-	def saveParam(self, folder='data'):
+	def saveParam(self, game, folder='data'):
 
 		f = open(f"./{folder}/param.ini", "w")
 		f.write(f"Paramètre :\n")
 		f.write(f"Mode          : {self.param['mode']} [{self.imp.data.listMode[self.param['mode']]}]\n")
-		f.write(f"BackLog       : {self.param['backlog']} [{self.imp.data.listBacklog[self.param['backlog']]}]\n")
+		f.write(f"BackLog       : {self.param['backlog']} [{game.listBacklog[self.param['backlog']]}]\n")
 		f.write(f"Player number : {self.param['nb_name']}\n")
 		[f.write(f"- Player {i+1} : {name}\n") for i, name in enumerate(self.param['list_name'])]
 		f.close()
