@@ -16,7 +16,7 @@ class GameClass():
 		self.premainOn = False
 		self.mainOn    = False
 
-		self.testBacklog = read_json.findAllJson()
+		self.testBacklog = import_json.findAllJson()
 		self.listBacklog  = list(self.testBacklog.keys())
 		self.PMSBlist_Box = [((500, 250 + 100*i), (490, 90)) for i in range(len(self.listBacklog))]
 		self.PMSBscor_Box = [((1000, 250 + 100*i), (100, 90)) for i in range(len(self.listBacklog))]
