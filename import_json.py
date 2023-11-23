@@ -35,4 +35,10 @@ def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
 
     return dicRet
 
-print(findAllJson())
+def writeJson(dic, Folderpath="./data_json/"):
+    with open(Folderpath + list(dic)[0] + ".json", 'w') as f:
+        json.dump(dic, f)
+
+a = findAllJson()
+print(a)
+writeJson(a)

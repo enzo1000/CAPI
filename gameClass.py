@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import read_json
+import import_json
 
 class GameClass():
 
