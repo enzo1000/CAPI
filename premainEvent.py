@@ -22,6 +22,7 @@ class PremainEvent(Event):
 	def event(self, game):
 
 		select = None
+		game.loadBacklog()
 
 		while game.premainOn:
 
@@ -45,8 +46,8 @@ class PremainEvent(Event):
 
 			self.blitage(game, select)
 
-			if self.setMode : self.pre_main_set_mode_event(game)
-			if self.setBacklog : self.pre_main_set_backlog_event(game)
+			if self.setMode : self.setModeEvent(game)
+			if self.setBacklog : self.setBacklogEvent(game)
 
 	def findSelection(self, x, y):
 		if self.inBox(x, y, self.imp.data.PMnpnb_Box) : return 'npnb'
@@ -91,7 +92,7 @@ class PremainEvent(Event):
 		pygame.display.flip()
 
 
-	def pre_main_set_mode_event(self, game):
+	def setModeEvent(self, game):
 
 		select = None
 
@@ -138,7 +139,7 @@ class PremainEvent(Event):
 			self.blitFPS(game.ds)
 			pygame.display.flip()
 
-	def pre_main_set_backlog_event(self, game):
+	def setBacklogEvent(self, game):
 
 		select = None
 
@@ -176,7 +177,7 @@ class PremainEvent(Event):
 				colors = self.imp.data.defaultColors.copy()
 				if i == select : colors[0] = self.imp.data.activColor
 
-				score = f"{game.testBacklog[mode][1][0]}/{game.testBacklog[mode][1][2]}"
+				score = f"{game.testBacklog[mode][1][1]}/{game.testBacklog[mode][1][2]}"
 
 				self.blitTextBox(game.ds, 
 					game.PMSBlist_Box[i],

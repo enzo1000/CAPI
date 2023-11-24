@@ -3,6 +3,7 @@ import numpy as np
 from pygame.locals import *
 
 from event import Event
+import import_json
 
 
 class MainEvent(Event):
@@ -47,20 +48,19 @@ class MainEvent(Event):
 					self.motionInCartes(event.pos)
 
 				if event.type == MOUSEBUTTONDOWN:
-					select = self.selectCartes(game)
+					self.selectCartes(game)
 
 				if event.type == QUIT:
 					game.gameOn, game.mainOn = False, False
 
-			#J'ai add ça, atm ça sert à rien : Enzo
-			if len(game.listBacklog) >= 1:
-				self.blitage(game.ds)
+			self.blitage(game.ds)
+
 
 	def blitage(self, display):
 		display.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(display, self.imp.font.menu_title, "Main", (222, 222, 222), (0, 0), (1600, 100))
-		self.labelisation(display, self.imp.font.task, "Task : " + self.listTask[self.currentTask], (180, 0, 0), (0, 100), (1600, 80))
-		self.labelisation(display, self.imp.font.player, "Player : " + self.param['list_name'][self.currentPlayer], (120, 0, 0), (0, 180), (1600, 80))
+		self.labelisation(display, self.imp.font.task, "Task : " + self.listTask[self.currentTask], (200, 180, 180), (0, 100), (1600, 80))
+		self.labelisation(display, self.imp.font.player, "Player : " + self.param['list_name'][self.currentPlayer], (180, 200, 200), (0, 180), (1600, 80))
 
 		#BLIT CARTES :
 		for i, (x, y, activ, carte) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes, self.activCartes, self.imp.image.cartes)):
@@ -68,6 +68,7 @@ class MainEvent(Event):
 
 		self.blitFPS(display)
 		pygame.display.flip()
+
 
 	def motionInCartes(self, mouse):
 		for i, (x, y) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes)):
@@ -79,6 +80,7 @@ class MainEvent(Event):
 
 	def selectCartes(self, game):
 		select = None
+
 		if sum(self.activCartes) == 1:
 			select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
@@ -89,22 +91,14 @@ class MainEvent(Event):
 
 			if self.currentPlayer == self.param['nb_name']:
 
-				print(f"Fin du tour : {self.loop} | vote : {self.playerVote}")
+				print(f"\nFin du tour : {self.loop} | vote : {self.playerVote}")
 
 				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
 					if len(set(self.playerVote)) == 1:
 						print(f"Tout le monde est d'accord pour la tache {self.listTask[self.currentTask]}")
 						self.backlog[self.listTask[self.currentTask]] = self.playerVote[0]
 
-						if self.currentTask + 1 == self.totalTask:
-							print('C fini !')
-							print(self.backlog)
-							self.currentPlayer = 0
-							game.mainOn, game.menuOn = False, True
-						else:
-							self.currentTask += 1
-							self.currentPlayer = 0
-							self.playerVote = []
+						self.nextTask(game)
 
 					else:
 						print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
@@ -117,27 +111,52 @@ class MainEvent(Event):
 						val = np.mean(self.playerVote)
 						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")
 						self.backlog[self.listTask[self.currentTask]] = val
+						self.nextTask(game)
 
 					if self.param['mode'] == 2: # MODE Mediane
 						val = np.median(self.playerVote)
-						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")
+						print(f"Methode Med : {val} [{self.listTask[self.currentTask]}]")
 						self.backlog[self.listTask[self.currentTask]] = val
+						self.nextTask(game)
 
-					if self.param['mode'] == 3: # MODE Majo Abs.
-						print('WARNING : Mode Majo. Abs. non fait encore')
+					if self.param['mode'] >= 3: # MODE Majo Abs. & Rela
+						voteDiff  = list(set(self.playerVote))                         # valeur de vote distinctes
+						countVote = [self.playerVote.count(vote) for vote in voteDiff] # countage du nombre de vote par valeur
 
-					if self.param['mode'] == 4: # MODE Majo rela.
-						print('WARNING : Mode Majo. Rela. non fait encore')
+						maxVote = max(countVote)            # nombre de vote de(s) valeur(s) les plus voter
+						nbmaxVal = countVote.count(maxVote) # nombre de valeur de vote demander maxVote fois
 
-					if self.currentTask + 1 == self.totalTask:
-						print('C fini !')
-						print(self.backlog)
-						self.currentPlayer = 0
-						game.mainOn, game.menuOn = False, True
-					else:
-						self.loop = 0
-						self.currentTask += 1
-						self.currentPlayer = 0
-						self.playerVote = []
+						print('majo : ', voteDiff, countVote, maxVote, nbmaxVal)
+
+
+						if self.param['mode'] == 3 and maxVote > self.param['nb_name']/2: # MODE Majo Abs.
+							val = voteDiff[countVote.index(maxVote)]
+							print(f"Methode Maj Abs : {val} [{self.listTask[self.currentTask]}]")
+							self.backlog[self.listTask[self.currentTask]] = val
+							self.nextTask(game)
+
+						elif self.param['mode'] == 4 and nbmaxVal == 1:                   # MODE Majo Rela
+							val = voteDiff[countVote.index(maxVote)]
+							print(f"Methode Maj rela : {val} [{self.listTask[self.currentTask]}]")
+							self.backlog[self.listTask[self.currentTask]] = val
+							self.nextTask(game)
+
+						else:
+							print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
+							self.loop += 1
+							self.currentPlayer = 0
+							self.playerVote = []
+
 			
-		return select
+	def nextTask(self, game):
+
+		if self.currentTask + 1 == self.totalTask:
+			print('C fini !')
+			print(self.backlog)
+			self.currentPlayer = 0
+			game.mainOn, game.menuOn = False, True
+			import_json.writeJson(self.backlogName, self.backlog)
+		else:
+			self.currentTask += 1
+			self.currentPlayer = 0
+			self.playerVote = []

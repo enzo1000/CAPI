@@ -7,7 +7,7 @@ def processDic(dic):
     tacheNonTraite = 0
     tacheTraite = 0
     for e in dic:
-        if dic[e] == 0:
+        if dic[e] == -1:
             tacheNonTraite += 1
         else:
             tacheTraite += 1
@@ -35,8 +35,9 @@ def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
 
     return dicRet
 
-def writeJson(dic, Folderpath="./data_json/"):
-    with open(Folderpath + list(dic)[0] + ".json", 'w') as f:
+
+def writeJson(name, dic, Folderpath="./data_json/"):
+    with open(f"{Folderpath}{name}.json", 'w') as f:
         json.dump(dic, f)
 
 # Fct de test de la classe, peut être supprimé
