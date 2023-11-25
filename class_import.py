@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+from pygame.locals import *
 
 pygame.init()
 
@@ -17,15 +18,37 @@ class import_image():
 	for label in labelCartes:
 		cartes.append(pygame.image.load(f"{folder}carte{label}.png"))
 
+	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
+	sprit_480_80  = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
+	sprit_400_80  = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
+	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
+	sprit_300_80  = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
+	sprit_160_80  = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
+
 	# MENU IMPORT
 	back_menu = pygame.image.load("picture/menu/back_menu.png")
+
+	# PRE-MAIN
 
 	# PRE-MAIN IMPORT
 	coche = [pygame.image.load("picture/pre_main/cocheOff.png"), pygame.image.load("picture/pre_main/cocheOn.png")]
 
 	# MAIN IMPORT
-	back_main = pygame.image.load("picture/main/back.png")
-	
+	back_main = pygame.image.load("picture/main/back_lum.png")
+
+class import_color():
+	rouge = (255, 0  , 0  )
+	vert  = (0  , 255, 0  )
+	bleu  = (0  , 0  , 255)
+	blanc = (255, 255, 255)
+	noir  = (0  , 0  , 0  )
+
+	# MENU :
+	menu = noir
+
+	# PRE-MAIN:
+	premain = noir
+
 class import_mixer():
 	chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
 
@@ -58,45 +81,120 @@ class import_font():
 	player = font_arial32
 
 class import_data():
+	image = import_image
+	font = import_font
+	color = import_color
+
+	keyValNUM = {K_0:'0',   K_1:'1',   K_2:'2',   K_3:'3',   K_4:'4',   K_5:'5',   K_6:'6',   K_7:'7',   K_8:'8',   K_9:'9', 
+			   K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9'}
+
+	keyValALP = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
+				 K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
+				 K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z', 
+				 K_SPACE:' ', K_MINUS:'-', K_UNDERSCORE:'_'}
+
 	# DISPLAY DATA
 	displayWindowsSize = (1600, 900)
 
 	# MENU DATA
+	menu_begin = {'images' : image.sprit_600_100,
+		'imgBox' : ((496, 300), (486, 298)),
+		'text'   : 'Commencer !',
+		'color'  : color.noir,
+		'font'   : font.font_roboto32,
+		'box'    : ((500, 300), (600, 100))}
+
+	menu_langue = {'images' : image.sprit_600_100,
+		'imgBox' : ((496, 450), (486, 448)),
+		'text'   : 'Langue !',
+		'color'  : color.noir,
+		'font'   : font.font_roboto32,
+		'box'    : ((500, 450), (600, 100))}
+
+	menu_quit = {'images' : image.sprit_600_100,
+		'imgBox' : ((496, 600), (486, 598)),
+		'text'   : 'Quit... !',
+		'color'  : color.noir,
+		'font'   : font.font_roboto32,
+		'box'    : ((500, 600), (600, 100))}
+
 	defaultColors = [(64, 64, 64), (0, 0, 0)]
 	activColor = (128, 128, 128)
-	Mbg_Box = ((500, 300), (600, 100))
-	Mlg_Box = ((500, 450), (600, 100))
-	Mqt_Box = ((500, 600), (600, 100))
 
 	# PRE-MAIN DATA
-	PMnp_Box   = ((350, 300), (400, 80))
-	PMnpnb_Box = ((770, 300), (160, 80))
-	PMnpsn_Box = ((950, 300), (300, 80))
+	player = {'images' : image.sprit_400_80,
+		'imgBox'   : ((346, 300), (336, 298)),
+		'text'  : 'Nombre de joueur :',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((350, 300), (400, 80))}
+	nbPlayer = {'images' : image.sprit_160_80,
+		'imgBox' : ((766, 300), (756, 298)),
+		'text'   : '0x413$Ae',
+		'color'  : color.noir,
+		'font'   : font.font_roboto32,
+		'box'    : ((770, 300), (160, 80))}
+	setName = {'images' : image.sprit_300_80,
+		'imgBox' : ((946, 300), (936, 298)),
+		'text'   : 'Liste Noms',
+		'color'  : color.noir,
+		'font'   : font.font_roboto32,
+		'box'    : ((950, 300), (300, 80))}
 
-	PMbl_Box   = ((350, 450), (400, 80))
-	PMblsn_Box = ((770, 450), (480, 80))
+	backlog = {'images' : image.sprit_400_80,
+		'imgBox': ((346, 450), (336, 448)),
+		'text'  : 'Choix Backlog :',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((350, 450), (400, 80))}
+	setBacklog = {'images' : image.sprit_480_80,
+		'imgBox': ((766, 450), (756, 448)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((770, 450), (480, 80))}
 
-	PMmd_Box   = ((350, 600), (400, 80))
-	PMmdch_Box = ((770, 600), (480, 80))
+	mode = {'images' : image.sprit_400_80,
+		'imgBox': ((346, 600), (336, 598)),
+		'text'  : 'Choix Mode :',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((350, 600), (400, 80))}
+	setMode = {'images' : image.sprit_480_80,
+		'imgBox': ((766, 600), (756, 598)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((770, 600), (480, 80))}
+	lezgo = {'images' : image.sprit_160_80,
+		'imgBox': ((716, 750), (706, 748)),
+		'text'  : 'Lezgo',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((720, 750), (160, 80))}
 
-	PMlg_Box = ((700, 750), (200, 80))
+	# PRE-MAIN DATA : SET NB PLAYER
+	minPlayer = 2
+	maxPlayer = 10
 
+	# PRE_MAIN DATA : SET PLAYER NAME
+	listName = {'images' : (*image.sprit_300_80, *image.sprit_300_80_NaN),
+		'imgBox': [((442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2)), (442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2))) for i in range(10)],
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : [((446+408*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
 
 	# PRE-MAIN DATA : SET BACKLOG EVENT
-	PMSBback_Box = ((350, 200), (900, 670))
-	# Ancien emplacement du backlog. Déplacé dans gameClass.py
-	# PMSBback_Box = ((350, 200), (900, 670))
-	# testBacklog  = {'BacklogTest0' : [{'Tache 1' : -1, 'Tache 2' :  1, 'Tache 3' :  3}, [2, 1, 3]],
-	# 			    'BacklogTest1' : [{'Tache 7' : -1, 'Tache 8' : -1, 'Tache 9' : -1}, [0, 3, 3]]}
-	
-	# listBacklog  = list(testBacklog.keys())
-	# PMSBlist_Box = [((500, 250 + 100*i), (490, 90)) for i in range(len(listBacklog))]
-	# PMSBscor_Box = [((1000, 250 + 100*i), (100, 90)) for i in range(len(listBacklog))]
+	# ****
 
 	# PRE-MAIN DATA : SET MODE EVENT
-	PMSMback_Box = ((350, 200), (900, 670))
-	listMode     = ['Unanimité', 'Moyenne', 'Mediane', 'Majorité Abso.', 'Majorité rela.']
-	PMSMlist_Box = [((550, 250 + 100*i), (500, 90)) for i in range(len(listMode))]
+	listMode = {'images' : image.sprit_480_80,
+		'imgBox': [((556, 250+100*i), (546, 248+100*i)) for i in range(5)],
+		'text'  : ['Unanimité', 'Moyenne', 'Mediane', 'Majorité Abso.', 'Majorité rela.'],
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : [((560, 250+100*i), (480, 80)) for i in range(5)]}
 
 	#MAIN DATA
 	dimCartes = [200, 300]
@@ -116,6 +214,7 @@ class import_data():
 #@singleton
 class importation():
 	image = import_image
+	color = import_color
 	sound = import_mixer
 	font = import_font
 	data = import_data

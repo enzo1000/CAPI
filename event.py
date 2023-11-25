@@ -40,6 +40,18 @@ class Event():
 		if position == 'left'   : rect = surface.get_rect(midleft = (int(X[0])          , int(X[1] + dX[1]/2)))
 		display.blit(surface, rect)
 
+	def blitBox(self, display, data, select, text=None):
+
+		if text is None : text = data['text']
+
+		display.blit(data['images'][select], data['imgBox'][select])
+		self.labelisation(display, 
+			data['font'],
+			text, 
+			data['color'],
+			data['box'][0], data['box'][1])
+
+
 
 	def blitTextBox(self, display, Box, colors, text, font):
 
@@ -68,12 +80,12 @@ class Event():
 				param['nb_name'] = int(f[2].split(':')[1])
 				param['list_name'] = []
 
-				for i in range(param['nb_name']):
+				for i in range(10):
 					param['list_name'].append(f[3+i].split(':')[1])
 			except:
-				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : ['Player1', 'Player2']}
+				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)]}
 		else:
-			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : ['Player1', 'Player2']}
+			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)]}
 
 		return param
 
@@ -82,7 +94,7 @@ class Event():
 
 		f = open(f"./{folder}/param.ini", "w")
 		f.write(f"Paramètre :\n")
-		f.write(f"Mode          : {self.param['mode']} [{self.imp.data.listMode[self.param['mode']]}]\n")
+		f.write(f"Mode          : {self.param['mode']} [{self.imp.data.listMode['text'][self.param['mode']]}]\n")
 		f.write(f"BackLog       : {self.param['backlog']} [{game.listBacklog[self.param['backlog']]}]\n")
 		f.write(f"Player number : {self.param['nb_name']}\n")
 		[f.write(f"- Player {i+1} : {name}\n") for i, name in enumerate(self.param['list_name'])]

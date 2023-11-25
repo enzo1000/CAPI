@@ -17,26 +17,27 @@ class PremainEvent(Event):
 		self.setName = False
 		self.setBacklog = False
 		self.setMode = False
+		self.setNbPlayer = False
 		self.param = self.extractParam()
+		self.resetSelect()
 
 	def event(self, game):
 
-		select = None
-		game.loadBacklog()
+		game.loadBacklog(self)
 
 		while game.premainOn:
 
 			for event in pygame.event.get():
 
 				if event.type == MOUSEMOTION:
-					select = self.findSelection(event.pos[0], event.pos[1])
+					self.findSelection(event.pos[0], event.pos[1])
 
 				if event.type == MOUSEBUTTONDOWN:
-					if select == 'npnb' : print('SET NB PLAYER')
-					if select == 'npsn' : self.setName = True    ; select = None
-					if select == 'blsn' : self.setBacklog = True ; select = None
-					if select == 'mdch' : self.setMode = True    ; select = None
-					if select == 'lg'   : game.premainOn, game.mainOn = False, True ; self.saveParam(game)
+					if self.select['nbPlayer']   : self.setNbPlayer = True
+					if self.select['setName']    : self.setName = True
+					if self.select['setBacklog'] : self.setBacklog = True
+					if self.select['setMode']    : self.setMode = True
+					if self.select['lezgo']      : game.premainOn, game.mainOn = False, True ; self.saveParam(game)
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : game.premainOn, game.menuOn = False, True
@@ -44,52 +45,121 @@ class PremainEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.premainOn = False, False
 
-			self.blitage(game, select)
+			self.blitage(game)
 
-			if self.setMode : self.setModeEvent(game)
-			if self.setBacklog : self.setBacklogEvent(game)
+			if self.setNbPlayer : self.setNbPlayerEvent(game)
+			if self.setName     : self.setNameEvent(game)
+			if self.setMode     : self.setModeEvent(game)
+			if self.setBacklog  : self.setBacklogEvent(game)
 
 	def findSelection(self, x, y):
-		if self.inBox(x, y, self.imp.data.PMnpnb_Box) : return 'npnb'
-		if self.inBox(x, y, self.imp.data.PMnpsn_Box) : return 'npsn'
-		if self.inBox(x, y, self.imp.data.PMblsn_Box) : return 'blsn'
-		if self.inBox(x, y, self.imp.data.PMmdch_Box) : return 'mdch'
-		if self.inBox(x, y, self.imp.data.PMlg_Box) : return 'lg'
+		if   self.inBox(x, y, self.imp.data.nbPlayer['box'])   : self.select['nbPlayer'] = 1 
+		elif self.inBox(x, y, self.imp.data.setName['box'])    : self.select['setName'] = 1
+		elif self.inBox(x, y, self.imp.data.setBacklog['box']) : self.select['setBacklog'] = 1
+		elif self.inBox(x, y, self.imp.data.setMode['box'])    : self.select['setMode'] = 1
+		elif self.inBox(x, y, self.imp.data.lezgo['box'])      : self.select['lezgo'] = 1
+		else : self.resetSelect()
 
+	def resetSelect(self):
+		self.select = {
+			'player' : 0,
+			'nbPlayer' : 0,
+			'setName' : 0,
+			'backlog' : 0,
+			'setBacklog' : 0,
+			'mode' : 0,
+			'setMode' : 0,
+			'lezgo' : 0}
 
-	def blitage(self, game, select):
-		npColors   = self.imp.data.defaultColors.copy()
-		npnbColors = self.imp.data.defaultColors.copy()
-		npsnColors = self.imp.data.defaultColors.copy()
-		blColors   = self.imp.data.defaultColors.copy()
-		blsnColors = self.imp.data.defaultColors.copy()
-		mdColors   = self.imp.data.defaultColors.copy()
-		mdchColors = self.imp.data.defaultColors.copy()
-		lgColors   = self.imp.data.defaultColors.copy()
-
-		if select == 'npnb' : npnbColors[0] = self.imp.data.activColor
-		if select == 'npsn' : npsnColors[0] = self.imp.data.activColor
-		if select == 'blsn' : blsnColors[0] = self.imp.data.activColor
-		if select == 'mdch' : mdchColors[0] = self.imp.data.activColor
-		if select == 'lg'   : lgColors[0]   = self.imp.data.activColor
+	def blitage(self, game):
 
 		game.ds.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(game.ds, self.imp.font.menu_title, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
 
-		self.blitTextBox(game.ds, self.imp.data.PMnp_Box,   npColors,   'Nombre Player :', self.imp.font.menu_choice)
-		self.blitTextBox(game.ds, self.imp.data.PMnpnb_Box, npnbColors, str(self.param['nb_name']), self.imp.font.menu_choice)
-		self.blitTextBox(game.ds, self.imp.data.PMnpsn_Box, npsnColors, 'Set name', self.imp.font.menu_choice)
+		self.blitBox(game.ds, self.imp.data.player,   self.select['player'])
+		self.blitBox(game.ds, self.imp.data.nbPlayer, self.select['nbPlayer'], text=str(self.param['nb_name']))
+		self.blitBox(game.ds, self.imp.data.setName,  self.select['setName'])
 
-		self.blitTextBox(game.ds, self.imp.data.PMbl_Box,   blColors,   'Choix BackLog :', self.imp.font.menu_choice)
-		self.blitTextBox(game.ds, self.imp.data.PMblsn_Box, blsnColors, game.listBacklog[self.param['backlog']], self.imp.font.menu_choice)
+		self.blitBox(game.ds, self.imp.data.backlog,    self.select['backlog'])
+		self.blitBox(game.ds, self.imp.data.setBacklog, self.select['setBacklog'], text=game.listBacklog[self.param['backlog']])
 
-		self.blitTextBox(game.ds, self.imp.data.PMmd_Box,   mdColors,   'Choix Mode :', self.imp.font.menu_choice)
-		self.blitTextBox(game.ds, self.imp.data.PMmdch_Box, mdchColors, self.imp.data.listMode[self.param['mode']], self.imp.font.menu_choice)
+		self.blitBox(game.ds, self.imp.data.mode,    self.select['mode'])
+		self.blitBox(game.ds, self.imp.data.setMode, self.select['setMode'], text=self.imp.data.listMode['text'][self.param['mode']])
 
-		self.blitTextBox(game.ds, self.imp.data.PMlg_Box,   lgColors,   'Lezgo !', self.imp.font.menu_choice)
+		self.blitBox(game.ds, self.imp.data.lezgo, self.select['lezgo'])
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()
+
+	def setNbPlayerEvent(self, game):
+
+		self.param['nb_name'] = str(self.param['nb_name'])
+
+		while self.setNbPlayer:
+
+			for event in pygame.event.get():
+
+				if event.type == KEYDOWN:
+
+					if event.key == K_ESCAPE : self.setNbPlayer = False
+
+					elif event.key in self.imp.data.keyValNUM.keys():
+						if self.param['nb_name'] == '0' : self.param['nb_name'] = ''
+						self.param['nb_name'] = str(self.param['nb_name']) + self.imp.data.keyValNUM[event.key]
+
+					elif event.key == K_BACKSPACE:
+						self.param['nb_name'] = str(self.param['nb_name'])[:-1]
+						if len(self.param['nb_name']) == 0 : self.param['nb_name'] = '0'
+
+					elif event.key == K_RETURN:
+						self.param['nb_name'] = min(int(self.param['nb_name']), self.imp.data.maxPlayer)
+						self.param['nb_name'] = max(int(self.param['nb_name']), self.imp.data.minPlayer)
+						self.setNbPlayer = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, setNbPlayer = False, False, False
+
+			self.blitage(game)
+
+
+	def setNameEvent(self, game):
+
+		select = None
+
+		niq = [0]*self.param['nb_name'] + [2]*(10-self.param['nb_name'])
+
+		while self.setName:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					select = None
+					for i, box in enumerate(self.imp.data.listName['box']):
+						if self.inBox(event.pos[0], event.pos[1], box) : select = i
+
+				if event.type == MOUSEBUTTONDOWN:
+					pass
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE : self.setName = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, self.setName = False, False, False
+
+			game.ds.blit(self.imp.image.back_main, (0, 0))
+			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Nom des joueurs", (222, 222, 222), (0, 0), (1600, 100))
+
+			for i in range(10):
+				activ = (i == select) * 1
+				game.ds.blit(self.imp.data.listName['images'][activ + niq[i]], self.imp.data.listName['imgBox'][i][activ + niq[i]])
+				self.labelisation(game.ds, 
+					self.imp.data.listName['font'],
+					self.param['list_name'][i], 
+					self.imp.data.listName['color'],
+					self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
+
+			self.blitFPS(game.ds)
+			pygame.display.flip()
 
 
 	def setModeEvent(self, game):
@@ -102,7 +172,7 @@ class PremainEvent(Event):
 
 				if event.type == MOUSEMOTION:
 					select = None
-					for i, box in enumerate(self.imp.data.PMSMlist_Box):
+					for i, box in enumerate(self.imp.data.listMode['box']):
 						if self.inBox(event.pos[0], event.pos[1], box) : select = i
 
 				if event.type == MOUSEBUTTONDOWN:
@@ -120,21 +190,14 @@ class PremainEvent(Event):
 			game.ds.blit(self.imp.image.back_main, (0, 0))
 			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Mode", (222, 222, 222), (0, 0), (1600, 100))
 
-			self.blitTextBox(game.ds, 
-				self.imp.data.PMSMback_Box,
-				((64, 0, 0), (128, 128, 128)),
-				'Placeholder SetMode',
-				self.imp.font.placeholder)
-
-			for i, mode in enumerate(self.imp.data.listMode):
-				colors = self.imp.data.defaultColors.copy()
-				if i == select : colors[0] = self.imp.data.activColor
-
-				self.blitTextBox(game.ds, 
-					self.imp.data.PMSMlist_Box[i],
-					colors,
-					mode,
-					self.imp.font.menu_choice)
+			for i, mode in enumerate(self.imp.data.listMode['text']):
+				activ = (i == select) * 1
+				game.ds.blit(self.imp.data.listMode['images'][activ], self.imp.data.listMode['imgBox'][i][activ])
+				self.labelisation(game.ds, 
+					self.imp.data.listMode['font'],
+					self.imp.data.listMode['text'][i], 
+					self.imp.data.listMode['color'],
+					self.imp.data.listMode['box'][i][0], self.imp.data.listMode['box'][i][1])
 
 			self.blitFPS(game.ds)
 			pygame.display.flip()
@@ -149,7 +212,7 @@ class PremainEvent(Event):
 
 				if event.type == MOUSEMOTION:
 					select = None
-					for i, box in enumerate(game.PMSBlist_Box):
+					for i, box in enumerate(game.listBack['box']):
 						if self.inBox(event.pos[0], event.pos[1], box) : select = i
 
 				if event.type == MOUSEBUTTONDOWN:
@@ -167,29 +230,16 @@ class PremainEvent(Event):
 			game.ds.blit(self.imp.image.back_main, (0, 0))
 			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
 
-			self.blitTextBox(game.ds, 
-				self.imp.data.PMSBback_Box,
-				((64, 0, 0), (128, 128, 128)),
-				'Placeholder SetBacklog',
-				self.imp.font.placeholder)
-
-			for i, mode in enumerate(game.listBacklog):
-				colors = self.imp.data.defaultColors.copy()
-				if i == select : colors[0] = self.imp.data.activColor
-
-				score = f"{game.testBacklog[mode][1][1]}/{game.testBacklog[mode][1][2]}"
-
-				self.blitTextBox(game.ds, 
-					game.PMSBlist_Box[i],
-					colors,
-					mode,
-					self.imp.font.menu_choice)
-
-				self.blitTextBox(game.ds, 
-					game.PMSBscor_Box[i],
-					colors,
-					score,
-					self.imp.font.menu_choice)
+			for i, backlog in enumerate(game.listBacklog):
+				activ = (i == select) * 1
+				score = f"{game.testBacklog[backlog][1][1]}/{game.testBacklog[backlog][1][2]}"
+				textBL = f"  [{score}] {backlog}"
+				game.ds.blit(game.listBack['images'][activ], game.listBack['imgBox'][i][activ])
+				self.labelisation(game.ds, 
+					game.listBack['font'],
+					textBL, 
+					game.listBack['color'],
+					game.listBack['box'][i][0], game.listBack['box'][i][1], position='left')
 
 			self.blitFPS(game.ds)
 			pygame.display.flip()
