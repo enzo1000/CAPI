@@ -61,6 +61,8 @@ class PremainEvent(Event):
 						if self.param['backlog'] != -1: # Verifie que l'on selectionne bien un backlog (On pourrait peut-etre ajouter un message sur l'écran)
 							game.premainOn, game.mainOn = False, True 
 							self.saveParam(game)
+						else:
+							self.imp.sound.wrong.play()
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : game.premainOn, game.menuOn = False, True

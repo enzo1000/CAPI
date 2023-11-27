@@ -21,6 +21,9 @@ class Event():
 		self.fps         = '---'         # Attribut qui contiendra les FPS ('---' avant le premier calcul)
 		self.imp         = importation() # Attribut qui contient la class importation, qui contient tout le contient audio-visuel
 
+		self.imp.sound.wrong.set_volume(0.1)
+		self.imp.sound.carte.set_volume(0.5)
+
 
 	def blitFPS(self, ds):
 		"""

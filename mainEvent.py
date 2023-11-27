@@ -16,6 +16,7 @@ class MainEvent(Event):
 
 	def __init__(self):
 		Event.__init__(self)
+		self.lastCarte = -1
 
 	def event(self, game):
 		"""
@@ -91,6 +92,9 @@ class MainEvent(Event):
 		for i, (x, y) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes)):
 			if x < mouse[0] < x + int(self.imp.data.dimCartes[0]/2) and y < mouse[1] < y + self.imp.data.dimCartes[1]:
 				self.activCartes[i] = 1
+				if self.lastCarte != i:
+					self.imp.sound.carte.play()
+				self.lastCarte = i
 			else:
 				self.activCartes[i] = 0
 
