@@ -25,6 +25,8 @@ class import_image():
 	sprit_300_80  = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
 	sprit_160_80  = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
 
+	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
+
 	# MENU IMPORT
 	back_menu = pygame.image.load("picture/menu/back_menu.png")
 
@@ -153,6 +155,24 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.font_roboto32,
 		'box'   : ((770, 450), (480, 80))}
+	eraseQuestion = {'images' : image.sprit_800_400,
+		'imgBox': ((396, 200), None),
+		'text'  : 'Le Backlog selectioné est déjà entièrement compléter,',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((400, 200), (800, 400))}
+	eraseOui = {'images' : image.sprit_160_80,
+		'imgBox': ((446, 700), (436, 700)),
+		'text'  : 'Oui !',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((450, 700), (160, 80))}
+	eraseNon = {'images' : image.sprit_160_80,
+		'imgBox': ((986, 700), (976, 700)),
+		'text'  : 'Non ?!',
+		'color' : color.noir,
+		'font'  : font.font_roboto32,
+		'box'   : ((990, 700), (160, 80))}
 
 	mode = {'images' : image.sprit_400_80,
 		'imgBox': ((346, 600), (336, 598)),

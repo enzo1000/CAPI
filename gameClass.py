@@ -19,7 +19,7 @@ class GameClass():
 	def loadBacklog(self, event):
 
 		self.testBacklog = import_json.findAllJson()
-		self.listBacklog  = list(self.testBacklog.keys())
+		self.listBacklog  = list(self.testBacklog.keys()) + ['-----']
 		n = len(list(self.testBacklog.keys()))
 
 		self.listBack = {'images' : event.imp.image.sprit_480_80,

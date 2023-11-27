@@ -4,6 +4,7 @@ import numpy as np
 from pygame.locals import *
 
 from event import Event
+import import_json
 
 
 class PremainEvent(Event):
@@ -24,6 +25,9 @@ class PremainEvent(Event):
 	def event(self, game):
 
 		game.loadBacklog(self)
+		# Si le Backlog sauvegarder dans param est complet, on le dé-selectionne pour eviter l'écrasement non-volontaire
+		if game.testBacklog[game.listBacklog[self.param['backlog']]][1][1] == game.testBacklog[game.listBacklog[self.param['backlog']]][1][2]:
+			self.param['backlog'] = -1
 
 		while game.premainOn:
 
@@ -91,9 +95,12 @@ class PremainEvent(Event):
 		self.blitFPS(game.ds)
 		pygame.display.flip()
 
+
+
 	def setNbPlayerEvent(self, game):
 
 		self.param['nb_name'] = str(self.param['nb_name'])
+		self.resetSelect()
 
 		while self.setNbPlayer:
 
@@ -122,9 +129,13 @@ class PremainEvent(Event):
 			self.blitage(game)
 
 
+
 	def setNameEvent(self, game):
 
 		select = None
+		self.resetSelect()
+		playerOnWrite = None
+		lshift = False
 
 		niq = [0]*self.param['nb_name'] + [2]*(10-self.param['nb_name'])
 
@@ -133,15 +144,47 @@ class PremainEvent(Event):
 			for event in pygame.event.get():
 
 				if event.type == MOUSEMOTION:
-					select = None
-					for i, box in enumerate(self.imp.data.listName['box']):
-						if self.inBox(event.pos[0], event.pos[1], box) : select = i
+					if playerOnWrite is None:
+						select = None
+						for i, box in enumerate(self.imp.data.listName['box']):
+							if self.inBox(event.pos[0], event.pos[1], box) : select = i
 
 				if event.type == MOUSEBUTTONDOWN:
-					pass
+					if select is not None and playerOnWrite is None:
+						playerOnWrite = select
+						playerOnPreName = self.param['list_name'][select]
 
 				if event.type == KEYDOWN:
-					if event.key == K_ESCAPE : self.setName = False
+					if event.key == K_ESCAPE and playerOnWrite is None: self.setName = False
+
+					elif playerOnWrite is not None:
+
+						if event.key == K_ESCAPE:
+							self.param['list_name'][playerOnWrite] = playerOnPreName
+							playerOnWrite = None
+
+						elif event.key in self.imp.data.keyValALP.keys():
+							if not lshift:
+								self.param['list_name'][playerOnWrite] += self.imp.data.keyValALP[event.key]
+							else:
+								self.param['list_name'][playerOnWrite] += self.imp.data.keyValALP[event.key].upper()
+
+						elif event.key == K_LSHIFT:
+							lshift = True
+
+						elif event.key == K_BACKSPACE:
+							if len(self.param['list_name'][playerOnWrite]) != 0:
+								self.param['list_name'][playerOnWrite] = self.param['list_name'][playerOnWrite][:-1]
+
+						elif event.key == K_RETURN:
+							# On pourrait peut-etre mettre ici un controle sur le contenu du nom du joueur ?
+							if len(self.param['list_name'][playerOnWrite]) == 0 :
+								self.param['list_name'][playerOnWrite] = f"Player{playerOnWrite}"
+							playerOnWrite = None
+
+				if event.type == KEYUP:
+					if event.key == K_LSHIFT:
+						lshift = False
 
 				if event.type == QUIT:
 					game.gameOn, game.premainOn, self.setName = False, False, False
@@ -162,9 +205,109 @@ class PremainEvent(Event):
 			pygame.display.flip()
 
 
+
+	def setBacklogEvent(self, game):
+
+		select = None
+		self.resetSelect()
+
+		while self.setBacklog:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					select = None
+					for i, box in enumerate(game.listBack['box']):
+						if self.inBox(event.pos[0], event.pos[1], box) : select = i
+
+				if event.type == MOUSEBUTTONDOWN:
+					if select is not None : 
+						self.setBacklog = False
+						if game.testBacklog[game.listBacklog[select]][1][1] == game.testBacklog[game.listBacklog[select]][1][2]:
+							erase = self.eraseBacklogEvent(game)
+
+							if erase : 
+								backlogName = game.listBacklog[select]
+								backlogErase = game.testBacklog[backlogName][0]
+								for key in backlogErase.keys():
+									backlogErase[key] = -1
+								import_json.writeJson(backlogName, backlogErase)
+								game.loadBacklog(self)
+							else:
+								select = -1
+						self.param['backlog'] = select
+						return None
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE : self.setBacklog = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, self.setBacklog = False, False, False
+
+			game.ds.blit(self.imp.image.back_main, (0, 0))
+			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
+
+			for i, backlog in enumerate(game.listBacklog[:-1]):
+				activ = (i == select) * 1
+				score = f"{game.testBacklog[backlog][1][1]}/{game.testBacklog[backlog][1][2]}"
+				textBL = f"  [{score}] {backlog}"
+				game.ds.blit(game.listBack['images'][activ], game.listBack['imgBox'][i][activ])
+				self.labelisation(game.ds, 
+					game.listBack['font'],
+					textBL, 
+					game.listBack['color'],
+					game.listBack['box'][i][0], game.listBack['box'][i][1], position='left')
+
+			self.blitFPS(game.ds)
+			pygame.display.flip()
+
+	def eraseBacklogEvent(self, game):
+
+		eraseEvent = True
+		selectErase = {'Non':0, 'Oui':0}
+
+		while eraseEvent:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					selectErase = {'Non':0, 'Oui':0}
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseOui['box']) : selectErase['Oui'] = 1
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseNon['box']) : selectErase['Non'] = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					if sum(selectErase.values()) > 0: 
+						eraseEvent = False
+						if selectErase['Oui'] == 1 : return True
+						else : return False
+
+				if event.type == KEYDOWN:
+					pass #PAS DESCAPE ICI :(((
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, self.setBacklog, eraseEvent = False, False, False, False
+
+
+			game.ds.blit(self.imp.image.back_main, (0, 0))
+			self.labelisation(game.ds, self.imp.font.menu_title, "Attention !", (222, 222, 222), (0, 0), (1600, 100))
+
+			self.blitBox(game.ds, self.imp.data.eraseQuestion, 0)
+			self.labelisation(game.ds, self.imp.font.font_roboto32, 'vous vous tout recommencer ?', (0, 0, 0), (400, 240), (800, 400))
+
+			self.blitBox(game.ds, self.imp.data.eraseOui, selectErase['Oui'])
+			self.blitBox(game.ds, self.imp.data.eraseNon, selectErase['Non'])
+
+			self.blitFPS(game.ds)
+			pygame.display.flip()
+
+
+
+
+
 	def setModeEvent(self, game):
 
 		select = None
+		self.resetSelect()
 
 		while self.setMode:
 
@@ -198,48 +341,6 @@ class PremainEvent(Event):
 					self.imp.data.listMode['text'][i], 
 					self.imp.data.listMode['color'],
 					self.imp.data.listMode['box'][i][0], self.imp.data.listMode['box'][i][1])
-
-			self.blitFPS(game.ds)
-			pygame.display.flip()
-
-	def setBacklogEvent(self, game):
-
-		select = None
-
-		while self.setBacklog:
-
-			for event in pygame.event.get():
-
-				if event.type == MOUSEMOTION:
-					select = None
-					for i, box in enumerate(game.listBack['box']):
-						if self.inBox(event.pos[0], event.pos[1], box) : select = i
-
-				if event.type == MOUSEBUTTONDOWN:
-					if select is not None : 
-						self.setBacklog = False
-						self.param['backlog'] = select
-						return None
-
-				if event.type == KEYDOWN:
-					if event.key == K_ESCAPE : self.setBacklog = False
-
-				if event.type == QUIT:
-					game.gameOn, game.premainOn, self.setBacklog = False, False, False
-
-			game.ds.blit(self.imp.image.back_main, (0, 0))
-			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
-
-			for i, backlog in enumerate(game.listBacklog):
-				activ = (i == select) * 1
-				score = f"{game.testBacklog[backlog][1][1]}/{game.testBacklog[backlog][1][2]}"
-				textBL = f"  [{score}] {backlog}"
-				game.ds.blit(game.listBack['images'][activ], game.listBack['imgBox'][i][activ])
-				self.labelisation(game.ds, 
-					game.listBack['font'],
-					textBL, 
-					game.listBack['color'],
-					game.listBack['box'][i][0], game.listBack['box'][i][1], position='left')
 
 			self.blitFPS(game.ds)
 			pygame.display.flip()
