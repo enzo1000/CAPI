@@ -10,77 +10,63 @@ pygame.init()
 # ON PEUT AUSSI IMAGINER UN SINGLETON PATTERN ICI
 
 class import_image():
-	# CARTES
+	# Sprit des cartes
 	folder = "picture/cartes/pngTempo/"
-	labelCartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'X', 'Cafe']
-	cartes = []
+	labelCartes, cartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'X', 'Cafe'], []
+	for label in labelCartes : cartes.append(pygame.image.load(f"{folder}carte{label}.png"))
 
-	for label in labelCartes:
-		cartes.append(pygame.image.load(f"{folder}carte{label}.png"))
-
+	# Sprit des bouton
+	# - Prefixe "nonon" -> Bouton éteint
+	# - Prefixe "activ" -> Bouton allumer
+	# - NaN             -> Bouton spécial pour les pseudos des joueur en trop
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
 	sprit_480_80  = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
 	sprit_400_80  = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
 	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
 	sprit_300_80  = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
 	sprit_160_80  = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
-
 	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 
-	# MENU IMPORT
-	back_menu = pygame.image.load("picture/menu/back_menu.png")
-
-	# PRE-MAIN
-
-	# PRE-MAIN IMPORT
-	coche = [pygame.image.load("picture/pre_main/cocheOff.png"), pygame.image.load("picture/pre_main/cocheOn.png")]
-
-	# MAIN IMPORT
+	# Sprit du fond (en commum partout pour l'instant)
 	back_main = pygame.image.load("picture/main/back_lum.png")
 
+	# Sprit d'encoche non utiliser pour l'instant
+	# coche = [pygame.image.load("picture/pre_main/cocheOff.png"), pygame.image.load("picture/pre_main/cocheOn.png")]
+
+
 class import_color():
+	"""
+	Importation de couleur
+	"""
 	rouge = (255, 0  , 0  )
 	vert  = (0  , 255, 0  )
 	bleu  = (0  , 0  , 255)
 	blanc = (255, 255, 255)
 	noir  = (0  , 0  , 0  )
 
-	# MENU :
-	menu = noir
-
-	# PRE-MAIN:
-	premain = noir
 
 class import_mixer():
-	chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
+	"""
+	Importation de son
+	"""
+	# Miaulement de chouqette (inutiliser pour l'instant)
+	# chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
 
 
 class import_font():
-	font_Karma64 = pygame.font.Font("font/KarmaFuture.ttf", 64)
+	Karma64 = pygame.font.Font("font/KarmaFuture.ttf", 64)
 
-	font_arial32 = pygame.font.Font("font/arial.ttf", 32)
-	font_arial64 = pygame.font.Font("font/arial.ttf", 64)
+	arial32 = pygame.font.Font("font/arial.ttf", 32)
+	arial64 = pygame.font.Font("font/arial.ttf", 64)
 
-	font_goodc32 = pygame.font.Font("font/Good Choice.ttf", 32)
-	font_goodc48 = pygame.font.Font("font/Good Choice.ttf", 48)
-	font_goodc84 = pygame.font.Font("font/Good Choice.ttf", 84)
+	goodc32 = pygame.font.Font("font/Good Choice.ttf", 32)
+	goodc48 = pygame.font.Font("font/Good Choice.ttf", 48)
+	goodc84 = pygame.font.Font("font/Good Choice.ttf", 84)
 
-	font_roboto16 = pygame.font.Font("font/Roboto-Light.ttf", 16)
-	font_roboto32 = pygame.font.Font("font/Roboto-Light.ttf", 32)
-	font_roboto54 = pygame.font.Font("font/Roboto-Light.ttf", 54)
+	roboto16 = pygame.font.Font("font/Roboto-Light.ttf", 16)
+	roboto32 = pygame.font.Font("font/Roboto-Light.ttf", 32)
+	roboto54 = pygame.font.Font("font/Roboto-Light.ttf", 54)
 
-	placeholder = font_Karma64
-
-	# EVENT
-	fps = font_roboto16
-
-	# MENU
-	menu_title  = font_roboto54
-	menu_choice = font_roboto32
-
-	# MAIN
-	task = font_arial32
-	player = font_arial32
 
 class import_data():
 	image = import_image
@@ -96,28 +82,28 @@ class import_data():
 				 K_SPACE:' ', K_MINUS:'-', K_UNDERSCORE:'_'}
 
 	# DISPLAY DATA
-	displayWindowsSize = (1600, 900)
+	# displayWindowsSize = (1600, 900)
 
 	# MENU DATA
 	menu_begin = {'images' : image.sprit_600_100,
 		'imgBox' : ((496, 300), (486, 298)),
 		'text'   : 'Commencer !',
 		'color'  : color.noir,
-		'font'   : font.font_roboto32,
+		'font'   : font.roboto32,
 		'box'    : ((500, 300), (600, 100))}
 
 	menu_langue = {'images' : image.sprit_600_100,
 		'imgBox' : ((496, 450), (486, 448)),
 		'text'   : 'Langue !',
 		'color'  : color.noir,
-		'font'   : font.font_roboto32,
+		'font'   : font.roboto32,
 		'box'    : ((500, 450), (600, 100))}
 
 	menu_quit = {'images' : image.sprit_600_100,
 		'imgBox' : ((496, 600), (486, 598)),
 		'text'   : 'Quit... !',
 		'color'  : color.noir,
-		'font'   : font.font_roboto32,
+		'font'   : font.roboto32,
 		'box'    : ((500, 600), (600, 100))}
 
 	defaultColors = [(64, 64, 64), (0, 0, 0)]
@@ -128,69 +114,69 @@ class import_data():
 		'imgBox'   : ((346, 300), (336, 298)),
 		'text'  : 'Nombre de joueur :',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((350, 300), (400, 80))}
 	nbPlayer = {'images' : image.sprit_160_80,
 		'imgBox' : ((766, 300), (756, 298)),
 		'text'   : '0x413$Ae',
 		'color'  : color.noir,
-		'font'   : font.font_roboto32,
+		'font'   : font.roboto32,
 		'box'    : ((770, 300), (160, 80))}
 	setName = {'images' : image.sprit_300_80,
 		'imgBox' : ((946, 300), (936, 298)),
 		'text'   : 'Liste Noms',
 		'color'  : color.noir,
-		'font'   : font.font_roboto32,
+		'font'   : font.roboto32,
 		'box'    : ((950, 300), (300, 80))}
 
 	backlog = {'images' : image.sprit_400_80,
 		'imgBox': ((346, 450), (336, 448)),
 		'text'  : 'Choix Backlog :',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((350, 450), (400, 80))}
 	setBacklog = {'images' : image.sprit_480_80,
 		'imgBox': ((766, 450), (756, 448)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((770, 450), (480, 80))}
 	eraseQuestion = {'images' : image.sprit_800_400,
 		'imgBox': ((396, 200), None),
 		'text'  : 'Le Backlog selectioné est déjà entièrement compléter,',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((400, 200), (800, 400))}
 	eraseOui = {'images' : image.sprit_160_80,
 		'imgBox': ((446, 700), (436, 700)),
 		'text'  : 'Oui !',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((450, 700), (160, 80))}
 	eraseNon = {'images' : image.sprit_160_80,
 		'imgBox': ((986, 700), (976, 700)),
 		'text'  : 'Non ?!',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((990, 700), (160, 80))}
 
 	mode = {'images' : image.sprit_400_80,
 		'imgBox': ((346, 600), (336, 598)),
 		'text'  : 'Choix Mode :',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((350, 600), (400, 80))}
 	setMode = {'images' : image.sprit_480_80,
 		'imgBox': ((766, 600), (756, 598)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((770, 600), (480, 80))}
 	lezgo = {'images' : image.sprit_160_80,
 		'imgBox': ((716, 750), (706, 748)),
 		'text'  : 'Lezgo',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
 
 	# PRE-MAIN DATA : SET NB PLAYER
@@ -202,7 +188,7 @@ class import_data():
 		'imgBox': [((442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2)), (442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2))) for i in range(10)],
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : [((446+408*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
 
 	# PRE-MAIN DATA : SET BACKLOG EVENT
@@ -213,7 +199,7 @@ class import_data():
 		'imgBox': [((556, 250+100*i), (546, 248+100*i)) for i in range(5)],
 		'text'  : ['Unanimité', 'Moyenne', 'Mediane', 'Majorité Abso.', 'Majorité rela.'],
 		'color' : color.noir,
-		'font'  : font.font_roboto32,
+		'font'  : font.roboto32,
 		'box'   : [((560, 250+100*i), (480, 80)) for i in range(5)]}
 
 	#MAIN DATA
@@ -221,6 +207,7 @@ class import_data():
 	xCartes = np.linspace(200, 1400, 12).astype(int) - int(dimCartes[0]/2)
 	yCartes = np.linspace(650, 650, 12).astype(int)  - int(dimCartes[1]/2)
 	dxActiv, dyActiv = [0, -200]
+
 
 #SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)
 # def singleton(class_):
@@ -230,6 +217,7 @@ class import_data():
 #             instances[class_] = class_(*args, **kwargs)
 #         return instances[class_]
 #     return getinstance
+
 
 #@singleton
 class importation():

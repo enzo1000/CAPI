@@ -76,7 +76,7 @@ class MenuEvent(Event):
 		display.blit(self.imp.image.back_main, (0, 0))
 
 		# Blit le text 'Menu'
-		self.labelisation(display, self.imp.font.menu_title, "Menu", (222, 222, 222), (0, 0), (1600, 100))
+		self.labelisation(display, self.imp.font.roboto54, "Menu", (222, 222, 222), (0, 0), (1600, 100))
 
 		# Blit la zone 'Commencer'
 		self.blitBox(display, self.imp.data.menu_begin, self.select['begin'])

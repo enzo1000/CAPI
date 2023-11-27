@@ -82,7 +82,7 @@ class PremainEvent(Event):
 	def blitage(self, game):
 
 		game.ds.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(game.ds, self.imp.font.menu_title, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
 
 		self.blitBox(game.ds, self.imp.data.player,   self.select['player'])
 		self.blitBox(game.ds, self.imp.data.nbPlayer, self.select['nbPlayer'], text=str(self.param['nb_name']))
@@ -194,7 +194,7 @@ class PremainEvent(Event):
 					game.gameOn, game.premainOn, self.setName = False, False, False
 
 			game.ds.blit(self.imp.image.back_main, (0, 0))
-			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Nom des joueurs", (222, 222, 222), (0, 0), (1600, 100))
+			self.labelisation(game.ds, self.imp.font.roboto54, "Choix Nom des joueurs", (222, 222, 222), (0, 0), (1600, 100))
 
 			for i in range(10):
 				activ = (i == select) * 1
@@ -249,7 +249,7 @@ class PremainEvent(Event):
 					game.gameOn, game.premainOn, self.setBacklog = False, False, False
 
 			game.ds.blit(self.imp.image.back_main, (0, 0))
-			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
+			self.labelisation(game.ds, self.imp.font.roboto54, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
 
 			for i, backlog in enumerate(game.listBacklog[:-1]):
 				activ = (i == select) * 1
@@ -293,10 +293,10 @@ class PremainEvent(Event):
 
 
 			game.ds.blit(self.imp.image.back_main, (0, 0))
-			self.labelisation(game.ds, self.imp.font.menu_title, "Attention !", (222, 222, 222), (0, 0), (1600, 100))
+			self.labelisation(game.ds, self.imp.font.roboto54, "Attention !", (222, 222, 222), (0, 0), (1600, 100))
 
 			self.blitBox(game.ds, self.imp.data.eraseQuestion, 0)
-			self.labelisation(game.ds, self.imp.font.font_roboto32, 'vous vous tout recommencer ?', (0, 0, 0), (400, 240), (800, 400))
+			self.labelisation(game.ds, self.imp.font.roboto32, 'vous vous tout recommencer ?', (0, 0, 0), (400, 240), (800, 400))
 
 			self.blitBox(game.ds, self.imp.data.eraseOui, selectErase['Oui'])
 			self.blitBox(game.ds, self.imp.data.eraseNon, selectErase['Non'])
@@ -335,7 +335,7 @@ class PremainEvent(Event):
 					game.gameOn, game.premainOn, self.setMode = False, False, False
 
 			game.ds.blit(self.imp.image.back_main, (0, 0))
-			self.labelisation(game.ds, self.imp.font.menu_title, "Choix Mode", (222, 222, 222), (0, 0), (1600, 100))
+			self.labelisation(game.ds, self.imp.font.roboto54, "Choix Mode", (222, 222, 222), (0, 0), (1600, 100))
 
 			for i, mode in enumerate(self.imp.data.listMode['text']):
 				activ = (i == select) * 1

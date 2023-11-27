@@ -26,5 +26,5 @@ class GameClass():
 			'imgBox': [((556, 250+100*i), (546, 248+100*i)) for i in range(n)],
 			'text'  : list(self.testBacklog.keys()),
 			'color' : event.imp.color.noir,
-			'font'  : event.imp.font.font_roboto32,
+			'font'  : event.imp.font.roboto32,
 			'box'   : [((560, 250 + 100*i), (480, 80)) for i in range(n)]}

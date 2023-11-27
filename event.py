@@ -31,7 +31,7 @@ class Event():
 			self.timeRefresh = time.time()
 			self.fps = str(int(20 / np.sum(self.spf)))
 
-		self.labelisation(ds, self.imp.font.fps, f"{self.fps:3} FPS", (222, 222, 222), (1600-64, 900-24), (64, 24))
+		self.labelisation(ds, self.imp.font.roboto16, f"{self.fps:3} FPS", (222, 222, 222), (1600-64, 900-24), (64, 24))
 
 	
 	def labelisation(self, display, font, text, color, X, dX, position='center'):
