@@ -26,8 +26,9 @@ class PremainEvent(Event):
 
 		game.loadBacklog(self)
 		# Si le Backlog sauvegarder dans param est complet, on le dé-selectionne pour eviter l'écrasement non-volontaire
-		if game.testBacklog[game.listBacklog[self.param['backlog']]][1][1] == game.testBacklog[game.listBacklog[self.param['backlog']]][1][2]:
-			self.param['backlog'] = -1
+		if self.param['backlog'] != -1:
+			if game.testBacklog[game.listBacklog[self.param['backlog']]][1][1] == game.testBacklog[game.listBacklog[self.param['backlog']]][1][2]:
+				self.param['backlog'] = -1
 
 		while game.premainOn:
 
@@ -41,7 +42,10 @@ class PremainEvent(Event):
 					if self.select['setName']    : self.setName = True
 					if self.select['setBacklog'] : self.setBacklog = True
 					if self.select['setMode']    : self.setMode = True
-					if self.select['lezgo']      : game.premainOn, game.mainOn = False, True ; self.saveParam(game)
+					if self.select['lezgo']:
+						if self.param['backlog'] != -1: # Verifie que l'on selectionne bien un backlog (On pourrait peut-etre ajouter un message sur l'écran)
+							game.premainOn, game.mainOn = False, True 
+							self.saveParam(game)
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : game.premainOn, game.menuOn = False, True
