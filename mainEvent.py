@@ -8,30 +8,39 @@ import import_json
 
 class MainEvent(Event):
 	"""
-
+	Classe MainEvent hérité de Event
+	Cette classe permet de gérer l'evenement principale de cette appli : jouons au planning poker
+		-> Le jeu ce joue tache par tache, avec a chaque fois joueur par joueur
+		-> On enregistrera le backlog a la fin (ou si on fait cafe !)
 	"""
 
 	def __init__(self):
 		Event.__init__(self)
 
 	def event(self, game):
+		"""
+		Methode qui lance le planning poker
+		"""
 
+		# On initialise les cartes
 		self.activCartes = np.zeros(12).astype(int)
+		# On extrait les paramètres
 		self.param = self.extractParam()
 
+		# On extrait le backlog choisi pour le planning poker
 		self.backlogName = game.listBacklog[self.param['backlog']]
 		self.backlog     = game.testBacklog[self.backlogName][0]
 
+		# On place dans listTask les taches qui ne sont pas encore fait
 		self.listTask = []
-
 		for task, value in self.backlog.items():
 			if value == -1:
 				self.listTask.append(task)
 
+		# Pour le debug
 		print(self.backlogName, ' : ', self.backlog, ' | ', self.listTask)
 
 		self.totalTask = len(self.listTask)
-
 		self.playerVote = []
 		self.loop = 0
 		self.currentTask = 0
@@ -45,9 +54,11 @@ class MainEvent(Event):
 						game.mainOn, game.menuOn = False, True
 
 				if event.type == MOUSEMOTION:
+					# Observation de la carte sous la souris
 					self.motionInCartes(event.pos)
 
 				if event.type == MOUSEBUTTONDOWN:
+					# Prise en compte de la selection de la carte par le joueur
 					self.selectCartes(game)
 
 				if event.type == QUIT:
@@ -57,12 +68,15 @@ class MainEvent(Event):
 
 
 	def blitage(self, display):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
 		display.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(display, self.imp.font.roboto54, "Main", (222, 222, 222), (0, 0), (1600, 100))
 		self.labelisation(display, self.imp.font.arial32, "Task : " + self.listTask[self.currentTask], (200, 180, 180), (0, 100), (1600, 80))
 		self.labelisation(display, self.imp.font.arial32, "Player : " + self.param['list_name'][self.currentPlayer], (180, 200, 200), (0, 180), (1600, 80))
 
-		#BLIT CARTES :
+		# Affiche les cartes
 		for i, (x, y, activ, carte) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes, self.activCartes, self.imp.image.cartes)):
 			display.blit(carte, (x + activ*self.imp.data.dxActiv, y + activ*self.imp.data.dyActiv))
 
@@ -71,6 +85,9 @@ class MainEvent(Event):
 
 
 	def motionInCartes(self, mouse):
+		"""
+		Methode qui regarde la cartes qui est sous la souris
+		"""
 		for i, (x, y) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes)):
 			if x < mouse[0] < x + int(self.imp.data.dimCartes[0]/2) and y < mouse[1] < y + self.imp.data.dimCartes[1]:
 				self.activCartes[i] = 1
@@ -79,6 +96,9 @@ class MainEvent(Event):
 
 
 	def selectCartes(self, game):
+		"""
+		Methode qui selectionne la carte du joueur en cours
+		"""
 		select = None
 
 		if sum(self.activCartes) == 1:
@@ -149,6 +169,9 @@ class MainEvent(Event):
 
 			
 	def nextTask(self, game):
+		"""
+		Methode utiliser par selecCartes pour changer de tache quand une est finis
+		"""
 
 		if self.currentTask + 1 == self.totalTask:
 			print('C fini !')

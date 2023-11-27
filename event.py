@@ -10,19 +10,22 @@ from class_import import importation
 
 class Event():
 	"""
-		
+	Classe Event qui servira de classe mère pour les différents event
 	"""
 
 	def __init__(self):
-		self.time0       = time.time()
-		self.timeRefresh = time.time()
-		self.refreshFPS  = 0.5
-		self.spf         = np.ones(20)
-		self.fps         = '---'
-		self.imp         = importation()
+		self.time0       = time.time()   # Date d'initialisation de l'event
+		self.timeRefresh = time.time()   # Attribut qui permettra le calcul des FPS
+		self.refreshFPS  = 0.5           # Durée de rafraichissement de l'affichage des FPS
+		self.spf         = np.ones(20)   # Liste contenant les 20 dernier SPF (Second Per Frame : 1/FPS)
+		self.fps         = '---'         # Attribut qui contiendra les FPS ('---' avant le premier calcul)
+		self.imp         = importation() # Attribut qui contient la class importation, qui contient tout le contient audio-visuel
 
 
 	def blitFPS(self, ds):
+		"""
+		Methode qui permet de calculer et d'afficher les FPS
+		"""
 
 		self.spf[:-1], self.spf[-1] = self.spf[1:], time.time() - self.time0
 		self.time0 = time.time()
@@ -35,12 +38,21 @@ class Event():
 
 	
 	def labelisation(self, display, font, text, color, X, dX, position='center'):
+		"""
+		Methode qui permet dafficher une texte avec les caractérisque demander en argument
+			-> position 'center' : Le texte s'affiche au centre de la box donner
+			-> position 'left'   : Le texte s'affiche vers la gauche de la box donner
+		"""
 		surface = font.render(text, True, color)
 		if position == 'center' : rect = surface.get_rect(center  = (int(X[0] + dX[0]/2), int(X[1] + dX[1]/2)))
 		if position == 'left'   : rect = surface.get_rect(midleft = (int(X[0])          , int(X[1] + dX[1]/2)))
 		display.blit(surface, rect)
 
 	def blitBox(self, display, data, select, text=None):
+		"""
+		Methode permettant d'afficher un le visuel entier de data qui est donner dans les import
+			-> si le texte est variable, il peut etre donner dans text, sinon, on prend celui indiquer dans l'import
+		"""
 
 		if text is None : text = data['text']
 
@@ -54,7 +66,10 @@ class Event():
 
 
 	def blitTextBox(self, display, Box, colors, text, font):
-
+		"""
+		Methode permettant d'afficher un texte avec un rectangle de couleur derriere
+			-> Ne doit etre utiliser en placaholder, car souvent le rendu est moyen
+		"""
 		surface_dessin = pygame.Surface(Box[1])
 		surface_dessin.fill(colors[0])
 		display.blit(surface_dessin, Box[0])
@@ -62,6 +77,10 @@ class Event():
 
 
 	def inBox(self, x, y, Box):
+		"""
+		Methode permettant de revoyer True si les coordonnéer (x, y) sont dans la box
+			-> Utiliser surtout pour connaitre l'emplacement de la souris 
+		"""
 
 		if 0 < x - Box[0][0] < Box[1][0] and 0 < y - Box[0][1] < Box[1][1]:
 			return True
@@ -70,6 +89,10 @@ class Event():
 
 
 	def extractParam(self, folder='data'):
+		"""
+		Methode permmetant d'extraire les donner paramètre
+			-> Si le file est corrompu ou n'existe pas, il est recréer par défault
+		"""
 
 		if True in ['param.ini' in file for file in os.listdir(f"./{folder}/")]:
 			try:
@@ -91,6 +114,9 @@ class Event():
 
 
 	def saveParam(self, game, folder='data'):
+		"""
+		Methode permettant de save les paramètre en cours
+		"""
 
 		f = open(f"./{folder}/param.ini", "w")
 		f.write(f"Paramètre :\n")

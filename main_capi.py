@@ -9,15 +9,17 @@ from mainEvent import MainEvent
 #INIT DISPLAY
 #imp = importation()	# SI ON VEUT UTILISER UN SINGLETON ICI
 
-game = GameClass((1600, 900), 'Plan Poker')
-game.menuOn = True
 
+# On créer l'instance GameClass qui va gérer plusieurs paramètre de notre appli (notament la gestion de la fenètre)
+game = GameClass((1600, 900), 'Plan Poker', beginBy='menu')
+
+# On créer une instance de chaque Event de notre appli
 menu    = MenuEvent()
 premain = PremainEvent()
 main    = MainEvent()
 
 
-#GAME EVENT
+# Lancement de l'appli !
 while game.gameOn:
 
 	# Menu event

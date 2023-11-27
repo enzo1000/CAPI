@@ -18,14 +18,15 @@ class MenuEvent(Event):
 		- game [GameClass] : Objet de class GameClass, qui contient les caractéristique physique de l'appli (le display ...)
 
 	Attribut :
-		+ *** Tout les attributs de la class mère Event
+		+ *** Tout les attributs décrites dans la class mère Event
 		- select [dict] : dict contenant le choix pointer par la souris
 	
 	Methode : 
-		- event(game)         : méthode qui va permettre de lancer le menu
-		- findSelection(x, y) : methode qui permet d'observer si la souris sélectionne un choix
-		- resetSelect()       : méthode qui re-initialise le dict select
-		- blitage(display)    : méthode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		+ *** Toutes les methodes décrites dans la classe mère Event
+		- event(game)         : Methode qui lance le menu de l'application
+		- findSelection(x, y) : Methode qui permet d'observer si la souris sélectionne un choix
+		- resetSelect()       : Methode qui re-initialise le dict select
+		- blitage(display)    : Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
 	"""
 
 	def __init__(self):
@@ -33,6 +34,9 @@ class MenuEvent(Event):
 		self.resetSelect()
 
 	def event(self, game):
+		"""
+		Methode qui lance le menu de l'application
+		"""
 
 		self.resetSelect()
 
@@ -40,17 +44,21 @@ class MenuEvent(Event):
 
 			for event in pygame.event.get():
 
+				# Detecte le déplacement de la souris
 				if event.type == MOUSEMOTION: 
 					self.findSelection(event.pos[0], event.pos[1])
 
+				# Detecte le clique de la souris
 				if event.type == MOUSEBUTTONDOWN:
 					if self.select['begin']  : game.menuOn, game.premainOn = False, True
 					if self.select['langue'] : print('Langue Event Not Make')
 					if self.select['quit']   : game.gameOn, game.menuOn = False, False
 
+				# Detecte l'appuie sur une touche du clavier
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : game.gameOn, game.menuOn = False, False
 
+				# Detecte le clique sur la croix qui ferme l'appli
 				if event.type == QUIT:
 					game.gameOn, game.menuOn = False, False
 
@@ -58,12 +66,18 @@ class MenuEvent(Event):
 
 
 	def findSelection(self, x, y):
+		"""
+		Methode qui permet d'observer si la souris sélectionne un choix
+		"""
 		if   self.inBox(x, y, self.imp.data.menu_begin['box']) : self.select['begin']  = 1
 		elif self.inBox(x, y, self.imp.data.menu_langue['box']) : self.select['langue'] = 1
 		elif self.inBox(x, y, self.imp.data.menu_quit['box']) : self.select['quit']   = 1 
 		else : self.resetSelect()
 
 	def resetSelect(self):
+		"""
+		Methode qui re-initialise le dict select
+		"""
 		self.select = {
 			'begin'  : 0,
 			'langue' : 0,
@@ -71,6 +85,9 @@ class MenuEvent(Event):
 
 
 	def blitage(self, display):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
 
 		# Blit le background
 		display.blit(self.imp.image.back_main, (0, 0))

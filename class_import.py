@@ -118,7 +118,7 @@ class import_data():
 		'box'   : ((350, 300), (400, 80))}
 	nbPlayer = {'images' : image.sprit_160_80,
 		'imgBox' : ((766, 300), (756, 298)),
-		'text'   : '0x413$Ae',
+		'text'   : '0x413$Ae', # 0x413$Ae est mon code palceholder car ici le texte est variable, donc donner ulterirement : si il s'affiche c'est que l'on a oublier un truc
 		'color'  : color.noir,
 		'font'   : font.roboto32,
 		'box'    : ((770, 300), (160, 80))}
