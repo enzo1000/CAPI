@@ -19,12 +19,16 @@ class import_image():
 	# - Prefixe "nonon" -> Bouton éteint
 	# - Prefixe "activ" -> Bouton allumer
 	# - NaN             -> Bouton spécial pour les pseudos des joueur en trop
+	# - R               -> Bouton en rouge (128) au lieu de gris
+	# - G               -> Bouton en vert (128) au lieu de gris
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
 	sprit_480_80  = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
 	sprit_400_80  = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
-	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
 	sprit_300_80  = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
+	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
 	sprit_160_80  = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
+	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"),  pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
+	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"),  pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
 	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 
 	# Sprit du fond (en commum partout pour l'instant)
@@ -172,8 +176,8 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((770, 600), (480, 80))}
-	lezgo = {'images' : image.sprit_160_80,
-		'imgBox': ((716, 750), (706, 748)),
+	lezgo = {'images' : (*image.sprit_160_80, *image.sprit_160_80_R),
+		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
 		'text'  : 'Lezgo',
 		'color' : color.noir,
 		'font'  : font.roboto32,
@@ -182,6 +186,12 @@ class import_data():
 	# PRE-MAIN DATA : SET NB PLAYER
 	minPlayer = 2
 	maxPlayer = 10
+	confirmNb = {'images' : image.sprit_160_80_G,
+		'imgBox': ((896, 750), (886, 748)),
+		'text'  : 'Valider',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((900, 750), (160, 80))}
 
 	# PRE_MAIN DATA : SET PLAYER NAME
 	listName = {'images' : (*image.sprit_300_80, *image.sprit_300_80_NaN),
@@ -190,6 +200,12 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : [((446+408*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
+	confirmName = {'images' : image.sprit_160_80_G,
+		'imgBox': ((716, 750), (706, 748)),
+		'text'  : 'Valider',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((720, 750), (160, 80))}
 
 	# PRE-MAIN DATA : SET BACKLOG EVENT
 	# ****

@@ -104,6 +104,7 @@ class PremainEvent(Event):
 		"""
 		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
 		"""
+		niqLezgo = 2 * (self.param['backlog'] == -1) # Met le bouton en rouge si il n'y a pas de backlog saisi
 
 		game.ds.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(game.ds, self.imp.font.roboto54, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
@@ -118,7 +119,7 @@ class PremainEvent(Event):
 		self.blitBox(game.ds, self.imp.data.mode,    self.select['mode'])
 		self.blitBox(game.ds, self.imp.data.setMode, self.select['setMode'], text=self.imp.data.listMode['text'][self.param['mode']])
 
-		self.blitBox(game.ds, self.imp.data.lezgo, self.select['lezgo'])
+		self.blitBox(game.ds, self.imp.data.lezgo, self.select['lezgo'] + niqLezgo)
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()
@@ -282,6 +283,7 @@ class SetNameEvent(Event):
 		"""
 		premainEvent.resetSelect()
 		self.select = None
+		self.confirm = 0
 		self.playerOnWrite = None
 		self.lshift = False
 		self.niq = [0]*premainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-premainEvent.param['nb_name'])
@@ -295,11 +297,21 @@ class SetNameEvent(Event):
 						self.select = None
 						for i, box in enumerate(self.imp.data.listName['box']):
 							if self.inBox(event.pos[0], event.pos[1], box) : self.select = i
+					else:
+						# Observation de la souris lorsqu'elle passe sur Valider
+						self.confirm = 0
+						if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmName['box']) : self.confirm = 1
 
 				if event.type == MOUSEBUTTONDOWN:
 					if self.select is not None and self.playerOnWrite is None:
 						self.playerOnWrite = self.select
 						self.playerOnPreName = premainEvent.param['list_name'][self.select]
+					# Met à jour le pseudo si on appuie clique sur Valider
+					elif self.playerOnWrite is not None and self.confirm == 1:
+						if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
+							premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
+						self.playerOnWrite = None
+
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE and self.playerOnWrite is None: 
@@ -329,9 +341,9 @@ class SetNameEvent(Event):
 							if len(premainEvent.param['list_name'][self.playerOnWrite]) != 0: # Mais pas si c'est deja vide !
 								premainEvent.param['list_name'][self.playerOnWrite] = premainEvent.param['list_name'][self.playerOnWrite][:-1]
 
-						# Met à jour le pseudo si on appuie sur RETURN (la touche entrer du clavier)    -> Il faut aussi le cas d'appuie sur l'entrer un numpad !!!
+						# Met à jour le pseudo si on appuie sur RETURN / KP_ENTER (la touche entrer du clavier / du numpad)
 						# On pourrait peut-etre mettre ici un controle sur le contenu du nom du joueur ?
-						elif event.key == K_RETURN:
+						elif event.key == K_RETURN or event.key == K_KP_ENTER:
 							if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
 								premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
 							self.playerOnWrite = None
@@ -363,6 +375,9 @@ class SetNameEvent(Event):
 				self.imp.data.listName['color'],
 				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
 
+		if self.playerOnWrite:
+			self.blitBox(game.ds, self.imp.data.confirmName, self.confirm)
+
 		self.blitFPS(game.ds)
 		pygame.display.flip()
 
@@ -387,10 +402,24 @@ class SetNbPlayerEvent(Event):
 		"""
 		premainEvent.param['nb_name'] = str(premainEvent.param['nb_name'])
 		premainEvent.resetSelect()
+		self.select = 0
 
 		while premainEvent.setNbPlayer:
 
 			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.select = 0
+					# Observation de la souris lorsqu'elle passe sur Valider
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmNb['box']) : self.select = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					# Met à jour le pseudo si on appuie clique sur Valider
+					if self.select == 1:
+						premainEvent.param['nb_name'] = min(int(premainEvent.param['nb_name']), self.imp.data.maxPlayer)
+						premainEvent.param['nb_name'] = max(int(premainEvent.param['nb_name']), self.imp.data.minPlayer)
+						premainEvent.setNbPlayer = False
+
 
 				if event.type == KEYDOWN:
 
@@ -406,7 +435,7 @@ class SetNbPlayerEvent(Event):
 						premainEvent.param['nb_name'] = str(premainEvent.param['nb_name'])[:-1]
 						if len(premainEvent.param['nb_name']) == 0 : premainEvent.param['nb_name'] = '0'
 
-					elif event.key == K_RETURN:
+					elif event.key == K_RETURN or event.key == K_KP_ENTER:
 						premainEvent.param['nb_name'] = min(int(premainEvent.param['nb_name']), self.imp.data.maxPlayer)
 						premainEvent.param['nb_name'] = max(int(premainEvent.param['nb_name']), self.imp.data.minPlayer)
 						premainEvent.setNbPlayer = False
@@ -414,7 +443,30 @@ class SetNbPlayerEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.premainOn, setNbPlayer = False, False, False
 
-			premainEvent.blitage(game)
+			self.blitage(game, premainEvent)
+
+	def blitage(self, game, premainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
+
+		self.blitBox(game.ds, self.imp.data.player,   premainEvent.select['player'])
+		self.blitBox(game.ds, self.imp.data.nbPlayer, 1, text=str(premainEvent.param['nb_name']))
+		self.blitBox(game.ds, self.imp.data.setName,  premainEvent.select['setName'])
+
+		self.blitBox(game.ds, self.imp.data.backlog,    premainEvent.select['backlog'])
+		self.blitBox(game.ds, self.imp.data.setBacklog, premainEvent.select['setBacklog'], text=game.listBacklog[premainEvent.param['backlog']])
+
+		self.blitBox(game.ds, self.imp.data.mode,    premainEvent.select['mode'])
+		self.blitBox(game.ds, self.imp.data.setMode, premainEvent.select['setMode'], text=self.imp.data.listMode['text'][premainEvent.param['mode']])
+
+		self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
+		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
 
 
 
