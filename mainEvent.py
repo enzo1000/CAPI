@@ -48,7 +48,6 @@ class MainEvent(Event):
 		self.currentPlayer = 0
 
 		while game.mainOn:
-
 			for event in pygame.event.get():
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE:
@@ -120,7 +119,6 @@ class MainEvent(Event):
 			self.currentPlayer += 1
 
 			if self.currentPlayer == self.param['nb_name']:
-
 				print(f"\nFin du tour : {self.loop} | vote : {self.playerVote}")
 
 				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
@@ -136,7 +134,7 @@ class MainEvent(Event):
 						self.currentPlayer = 0
 						self.playerVote = []
 
-				else:
+				else:	#TODO Pourquoi pas un elif ?
 					if self.param['mode'] == 1: # MODE Moyenne
 						val = np.mean(self.playerVote)
 						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")

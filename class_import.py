@@ -209,6 +209,12 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
+	retour = {'images' : image.sprit_160_80,
+		'imgBox': ((716, 750), (706, 748)),
+		'text'  : 'Retour',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((720, 750), (160, 80))}
 
 	# PRE-MAIN DATA : SET BACKLOG EVENT
 	# ****
