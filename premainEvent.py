@@ -81,7 +81,7 @@ class PremainEvent(Event):
 		"""
 		Methode qui permet d'observer si la souris sélectionne un choix
 		"""
-		if   self.inBox(x, y, self.imp.data.nbPlayer['box'])   : self.select['nbPlayer'] = 1 
+		if   self.inBox(x, y, self.imp.data.nbPlayer['box'])   : self.select['nbPlayer'] = 1
 		elif self.inBox(x, y, self.imp.data.setName['box'])    : self.select['setName'] = 1
 		elif self.inBox(x, y, self.imp.data.setBacklog['box']) : self.select['setBacklog'] = 1
 		elif self.inBox(x, y, self.imp.data.setMode['box'])    : self.select['setMode'] = 1
@@ -298,7 +298,9 @@ class SetNameEvent(Event):
 					if self.playerOnWrite is None:
 						self.select = None
 						for i, box in enumerate(self.imp.data.listName['box']):
-							if self.inBox(event.pos[0], event.pos[1], box) : self.select = i
+							if self.inBox(event.pos[0], event.pos[1], box) : self.select = i						#Survol un des noms de participant
+						if self.inBox(event.pos[0], event.pos[1], self.imp.data.retour['box']) : self.confirm = 1	#Survol Retour
+
 					else:
 						# Observation de la souris lorsqu'elle passe sur Valider
 						self.confirm = 0
@@ -380,13 +382,14 @@ class SetNameEvent(Event):
 		if self.playerOnWrite:
 			self.blitBox(game.ds, self.imp.data.confirmName, self.confirm)
 
+		self.blitBox(game.ds, self.imp.data.retour, self.confirm)
+
 		self.blitFPS(game.ds)
 		pygame.display.flip()
 
 
 
-
-
+		
 
 class SetNbPlayerEvent(Event):
 	"""

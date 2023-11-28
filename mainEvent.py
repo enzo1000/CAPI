@@ -48,7 +48,6 @@ class MainEvent(Event):
 		self.currentPlayer = 0
 
 		while game.mainOn:
-
 			for event in pygame.event.get():
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE:
@@ -114,12 +113,17 @@ class MainEvent(Event):
 			select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
 			print(f"TOUR {self.loop} : Player {self.param['list_name'][self.currentPlayer]} vote {select} pour la task {self.listTask[self.currentTask]}")
-
-			self.playerVote.append(int(select))
+			try:
+				self.playerVote.append(int(select))
+			except ValueError:
+				if select == 'cafe':
+					print('cafe')
+				elif select == 'intero':
+					print('intero')
+				
 			self.currentPlayer += 1
 
 			if self.currentPlayer == self.param['nb_name']:
-
 				print(f"\nFin du tour : {self.loop} | vote : {self.playerVote}")
 
 				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
@@ -135,7 +139,7 @@ class MainEvent(Event):
 						self.currentPlayer = 0
 						self.playerVote = []
 
-				else:
+				else:	#TODO Pourquoi pas un elif ?
 					if self.param['mode'] == 1: # MODE Moyenne
 						val = np.mean(self.playerVote)
 						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")

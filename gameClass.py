@@ -4,7 +4,7 @@ import import_json
 
 class GameClass():
 	"""
-	Class GameClass : Elle permet de gérer plusieurs paramètre de l'appli, notament la gestion de la fenètre
+	Class GameClass : Permet de gérer plusieurs paramètre de l'appli, notament la gestion de la fenètre
 	"""
 
 	def __init__(self, displayXY, displayCaption, beginBy='menu'):
