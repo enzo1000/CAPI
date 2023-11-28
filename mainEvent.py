@@ -112,10 +112,10 @@ class MainEvent(Event):
 			try:
 				self.playerVote.append(int(select))
 			except ValueError:
-				if select == 'X':
-					print('X')
-				elif select == 'Cafe':
-					print('Cafe')
+				if select == 'cafe':
+					print('cafe')
+				elif select == 'intero':
+					print('intero')
 				
 			self.currentPlayer += 1
 
