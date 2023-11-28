@@ -81,7 +81,7 @@ class PremainEvent(Event):
 		"""
 		Methode qui permet d'observer si la souris sélectionne un choix
 		"""
-		if   self.inBox(x, y, self.imp.data.nbPlayer['box'])   : self.select['nbPlayer'] = 1 
+		if   self.inBox(x, y, self.imp.data.nbPlayer['box'])   : self.select['nbPlayer'] = 1
 		elif self.inBox(x, y, self.imp.data.setName['box'])    : self.select['setName'] = 1
 		elif self.inBox(x, y, self.imp.data.setBacklog['box']) : self.select['setBacklog'] = 1
 		elif self.inBox(x, y, self.imp.data.setMode['box'])    : self.select['setMode'] = 1

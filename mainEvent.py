@@ -109,8 +109,14 @@ class MainEvent(Event):
 			select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
 			print(f"TOUR {self.loop} : Player {self.param['list_name'][self.currentPlayer]} vote {select} pour la task {self.listTask[self.currentTask]}")
-
-			self.playerVote.append(int(select))
+			try:
+				self.playerVote.append(int(select))
+			except ValueError:
+				if select == 'X':
+					print('X')
+				elif select == 'Cafe':
+					print('Cafe')
+				
 			self.currentPlayer += 1
 
 			if self.currentPlayer == self.param['nb_name']:

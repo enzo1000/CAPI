@@ -11,9 +11,9 @@ pygame.init()
 
 class import_image():
 	# Sprit des cartes
-	folder = "picture/cartes/pngTempo/"
-	labelCartes, cartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'X', 'Cafe'], []
-	for label in labelCartes : cartes.append(pygame.image.load(f"{folder}carte{label}.png"))
+	folder = "picture/cartes/PNG/"
+	labelCartes, cartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'cafe', 'intero'], []
+	for label in labelCartes : cartes.append(pygame.image.load(f"{folder}cartes_{label}.png"))
 
 	# Sprit des bouton
 	# - Prefixe "nonon" -> Bouton éteint
