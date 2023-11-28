@@ -22,13 +22,15 @@ class import_image():
 	# - R               -> Bouton en rouge (128) au lieu de gris
 	# - G               -> Bouton en vert (128) au lieu de gris
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
-	sprit_480_80  = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
-	sprit_400_80  = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
-	sprit_300_80  = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
+	sprit_600_80_Brown = (pygame.image.load(f"picture/bouton/nonon-600-80-Brown.png"), None)
+	sprit_480_80 = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
+	sprit_400_80 = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
+	sprit_300_80 = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
 	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
-	sprit_160_80  = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
+	sprit_160_80 = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
 	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"),  pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
 	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"),  pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
+	sprit_160_80_Brown = (pygame.image.load(f"picture/bouton/nonon-160-80-Brown.png"), None)
 	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 
 	# Sprit du fond (en commum partout pour l'instant)
@@ -226,6 +228,32 @@ class import_data():
 	xCartes = np.linspace(200, 1400, 12).astype(int) - int(dimCartes[0]/2)
 	yCartes = np.linspace(650, 650, 12).astype(int)  - int(dimCartes[1]/2)
 	dxActiv, dyActiv = [0, -200]
+
+	task = {'images' : image.sprit_160_80_Brown,
+		'imgBox': ((36, 200), (None, None)),
+		'text'  : 'Tache :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((40, 200), (160, 80))}
+	currentTask = {'images' : image.sprit_600_80_Brown,
+		'imgBox': ((212, 200), (None, None)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((216, 200), (600, 80))}
+
+	mainPlayer = {'images' : image.sprit_160_80_Brown,
+		'imgBox': ((36, 296), (None, None)),
+		'text'  : 'Joueur :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((40, 296), (160, 80))}
+	currentMainPlayer = {'images' : image.sprit_600_80_Brown,
+		'imgBox': ((212, 296), (None, None)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((216, 296), (600, 80))}
 
 
 #SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)

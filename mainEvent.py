@@ -74,8 +74,13 @@ class MainEvent(Event):
 		"""
 		display.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(display, self.imp.font.roboto54, "Main", (222, 222, 222), (0, 0), (1600, 100))
-		self.labelisation(display, self.imp.font.arial32, "Task : " + self.listTask[self.currentTask], (200, 180, 180), (0, 100), (1600, 80))
-		self.labelisation(display, self.imp.font.arial32, "Player : " + self.param['list_name'][self.currentPlayer], (180, 200, 200), (0, 180), (1600, 80))
+		# self.labelisation(display, self.imp.font.arial32, "Task : " + self.listTask[self.currentTask], (200, 180, 180), (0, 100), (1600, 80))
+		# self.labelisation(display, self.imp.font.arial32, "Player : " + self.param['list_name'][self.currentPlayer], (180, 200, 200), (0, 180), (1600, 80))
+		self.blitBox(display, self.imp.data.task)
+		self.blitBox(display, self.imp.data.currentTask, text=f"  {self.listTask[self.currentTask]}", position='left')
+
+		self.blitBox(display, self.imp.data.mainPlayer)
+		self.blitBox(display, self.imp.data.currentMainPlayer, text=f"  {self.param['list_name'][self.currentPlayer]}", position='left')
 
 		# Affiche les cartes
 		for i, (x, y, activ, carte) in enumerate(zip(self.imp.data.xCartes, self.imp.data.yCartes, self.activCartes, self.imp.image.cartes)):

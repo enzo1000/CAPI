@@ -51,7 +51,7 @@ class Event():
 		if position == 'left'   : rect = surface.get_rect(midleft = (int(X[0])          , int(X[1] + dX[1]/2)))
 		display.blit(surface, rect)
 
-	def blitBox(self, display, data, select, text=None):
+	def blitBox(self, display, data, select=0, text=None, position='center'):
 		"""
 		Methode permettant d'afficher un le visuel entier de data qui est donner dans les import
 			-> si le texte est variable, il peut etre donner dans text, sinon, on prend celui indiquer dans l'import
@@ -64,7 +64,7 @@ class Event():
 			data['font'],
 			text, 
 			data['color'],
-			data['box'][0], data['box'][1])
+			data['box'][0], data['box'][1], position=position)
 
 
 
