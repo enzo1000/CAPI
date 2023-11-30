@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from pygame.locals import *
+from time import time
 
 from event import Event
 import import_json
@@ -17,6 +18,7 @@ class MainEvent(Event):
 	def __init__(self):
 		Event.__init__(self)
 		self.lastCarte = -1
+		self.currentChrono = time()
 
 	def event(self, game):
 		"""
@@ -46,6 +48,7 @@ class MainEvent(Event):
 		self.loop = 0
 		self.currentTask = 0
 		self.currentPlayer = 0
+		self.currentChrono = time()
 
 		while game.mainOn:
 			for event in pygame.event.get():
@@ -73,8 +76,9 @@ class MainEvent(Event):
 		"""
 		display.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(display, self.imp.font.roboto54, "Main", (222, 222, 222), (0, 0), (1600, 100))
-		# self.labelisation(display, self.imp.font.arial32, "Task : " + self.listTask[self.currentTask], (200, 180, 180), (0, 100), (1600, 80))
-		# self.labelisation(display, self.imp.font.arial32, "Player : " + self.param['list_name'][self.currentPlayer], (180, 200, 200), (0, 180), (1600, 80))
+		
+		self.blitBox(display, self.imp.data.currentTime, text=self.strChrono(int(self.param['time'] - time() + self.currentChrono)))
+
 		self.blitBox(display, self.imp.data.task)
 		self.blitBox(display, self.imp.data.currentTask, text=f"  {self.listTask[self.currentTask]}", position='left')
 
@@ -110,6 +114,7 @@ class MainEvent(Event):
 		select = None
 
 		if sum(self.activCartes) == 1:
+			self.currentChrono = time()
 			select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
 			print(f"TOUR {self.loop} : Player {self.param['list_name'][self.currentPlayer]} vote {select} pour la task {self.listTask[self.currentTask]}")

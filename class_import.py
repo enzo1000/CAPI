@@ -66,7 +66,7 @@ class import_mixer():
 
 
 class import_font():
-	Karma64 = pygame.font.Font("font/KarmaFuture.ttf", 64)
+	Karma48 = pygame.font.Font("font/KarmaFuture.ttf", 48)
 
 	arial32 = pygame.font.Font("font/arial.ttf", 32)
 	arial64 = pygame.font.Font("font/arial.ttf", 64)
@@ -78,6 +78,8 @@ class import_font():
 	roboto16 = pygame.font.Font("font/Roboto-Light.ttf", 16)
 	roboto32 = pygame.font.Font("font/Roboto-Light.ttf", 32)
 	roboto54 = pygame.font.Font("font/Roboto-Light.ttf", 54)
+
+	crash64 = pygame.font.Font("font/Crashnumberingserif.ttf", 64)
 
 
 class import_data():
@@ -263,6 +265,13 @@ class import_data():
 	xCartes = np.linspace(200, 1400, 12).astype(int) - int(dimCartes[0]/2)
 	yCartes = np.linspace(650, 650, 12).astype(int)  - int(dimCartes[1]/2)
 	dxActiv, dyActiv = [0, -200]
+
+	currentTime = {'images' : image.sprit_160_80_Brown,
+		'imgBox': ((36, 50), (None, None)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.Karma48,
+		'box'   : ((48, 45), (160, 80))}
 
 	task = {'images' : image.sprit_160_80_Brown,
 		'imgBox': ((36, 200), (None, None)),
