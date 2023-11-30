@@ -67,7 +67,20 @@ class MainEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.mainOn = False, False
 
+
+
+			if (self.param['time'] - time() + self.currentChrono) < 0:
+				self.selectCartes(game)
+
 			self.blitage(game.ds)
+
+
+	def strChrono(self, t):
+		"""
+		Methode permettant de retourner une formatage visuel plus correct du temps
+		"""
+		if self.param['cocheChrono'] : return f"{int(t//60):01}'{int(t%60):02}\""
+		else : return f"-'--\""
 
 
 	def blitage(self, display):
@@ -113,9 +126,9 @@ class MainEvent(Event):
 		"""
 		select = None
 
-		if sum(self.activCartes) == 1:
-			self.currentChrono = time()
-			select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
+		if sum(self.activCartes) == 1 or (self.param['time'] - time() + self.currentChrono) < 0:
+			if (self.param['time'] - time() + self.currentChrono) < 0 : select = 'intero'
+			else : select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
 			print(f"TOUR {self.loop} : Player {self.param['list_name'][self.currentPlayer]} vote {select} pour la task {self.listTask[self.currentTask]}")
 			try:
@@ -184,6 +197,8 @@ class MainEvent(Event):
 							self.loop += 1
 							self.currentPlayer = 0
 							self.playerVote = []
+
+			self.currentChrono = time()
 
 			
 	def nextTask(self, game):
