@@ -16,7 +16,6 @@ class GameClass():
 		pygame.display.set_caption(displayCaption)
 
 		self.gameOn    = True
-
 		self.menuOn    = False
 		self.premainOn = False
 		self.mainOn    = False

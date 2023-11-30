@@ -206,13 +206,13 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : [((446+408*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
 	confirmName = {'images' : image.sprit_160_80_G,
-		'imgBox': ((716, 750), (706, 748)),
+		'imgBox': ((896, 750), (886, 748)),
 		'text'  : 'Valider',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((720, 750), (160, 80))}
-	retour = {'images' : image.sprit_160_80,
-		'imgBox': ((716, 750), (706, 748)),
+		'box'   : ((900, 750), (160, 80))}
+	retour = {'images' : (*image.sprit_160_80, *image.sprit_160_80_R),
+		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
 		'text'  : 'Retour',
 		'color' : color.noir,
 		'font'  : font.roboto32,

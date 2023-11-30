@@ -130,267 +130,6 @@ class PremainEvent(Event):
 
 
 
-
-
-class SetBacklogEvent(Event):
-	"""
-	Class utilisé par PremainEvent pour changer de Backlog
-	"""
-
-	def __init__(self):
-		Event.__init__(self)
-		self.eraseBacklogEvent = EraseBacklogEvent()
-
-
-	def event(self, game, premainEvent):
-		"""
-		Methode qui lance le menu de selection de changement de Backlog
-		"""
-		self.select = None
-		premainEvent.resetSelect()
-
-		while premainEvent.setBacklog:
-
-			for event in pygame.event.get():
-
-				if event.type == MOUSEMOTION:
-					self.select = None
-					for i, box in enumerate(game.listBack['box']):
-						if self.inBox(event.pos[0], event.pos[1], box) : self.select = i
-
-				if event.type == MOUSEBUTTONDOWN:
-					if self.select is not None : 
-						premainEvent.setBacklog = False
-						# On regarde si le backlog est deja complet (nombre fini == nombre total)
-						if game.testBacklog[game.listBacklog[self.select]][1][1] == game.testBacklog[game.listBacklog[self.select]][1][2]:
-							# On lance l'evenement de choix d'effacement ou pas de ce backlog complet
-							self.eraseBacklogEvent.event(game, premainEvent, self)
-						premainEvent.param['backlog'] = self.select
-						return None
-
-				if event.type == KEYDOWN:
-					if event.key == K_ESCAPE : premainEvent.setBacklog = False
-
-				if event.type == QUIT:
-					game.gameOn, game.premainOn, premainEvent.setBacklog = False, False, False
-
-			self.blitage(game)
-
-
-	def blitage(self, game):
-		"""
-		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
-		"""
-		game.ds.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(game.ds, self.imp.font.roboto54, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
-
-		for i, backlog in enumerate(game.listBacklog[:-1]):
-			activ = (i == self.select) * 1
-			score = f"{game.testBacklog[backlog][1][1]}/{game.testBacklog[backlog][1][2]}"
-			textBL = f"  [{score}] {backlog}"
-			game.ds.blit(game.listBack['images'][activ], game.listBack['imgBox'][i][activ])
-			self.labelisation(game.ds, 
-				game.listBack['font'],
-				textBL, 
-				game.listBack['color'],
-				game.listBack['box'][i][0], game.listBack['box'][i][1], position='left')
-
-		self.blitFPS(game.ds)
-		pygame.display.flip()
-
-
-
-
-class EraseBacklogEvent(Event):
-	"""
-	Class utiliser par la SetBacklogEvent pour effacer (ou non) un backlog complet
-	"""
-
-	def __init__(self):
-		Event.__init__(self)
-
-
-	def event(self, game, premainEvent, setBacklogEvent):
-		"""
-		Methode qui lance le menu de choix d'effacement de backlog
-		"""
-		self.eraseEvent = True
-		self.selectErase = {'Non':0, 'Oui':0}
-
-		while self.eraseEvent:
-
-			for event in pygame.event.get():
-
-				if event.type == MOUSEMOTION:
-					selectErase = {'Non':0, 'Oui':0}
-					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseOui['box']) : self.selectErase['Oui'] = 1
-					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseNon['box']) : self.selectErase['Non'] = 1
-
-				if event.type == MOUSEBUTTONDOWN:
-					if sum(self.selectErase.values()) > 0: 
-						self.eraseEvent = False
-						if self.selectErase['Oui'] == 1 :
-							backlogName = game.listBacklog[setBacklogEvent.select]
-							backlogErase = game.testBacklog[backlogName][0]
-							for key in backlogErase.keys():
-								backlogErase[key] = -1
-							import_json.writeJson(backlogName, backlogErase)
-							game.loadBacklog(setBacklogEvent)
-						else : 
-							setBacklogEvent.select = -1
-						return None
-
-				if event.type == KEYDOWN:
-					pass #PAS DESCAPE ICI :(((
-
-				if event.type == QUIT:
-					game.gameOn, game.premainOn, premainEvent.setBacklog, self.eraseEvent = False, False, False, False
-
-			self.blitage(game)
-
-
-	def blitage(self, game):
-		"""
-		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
-		"""
-		game.ds.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(game.ds, self.imp.font.roboto54, "Attention !", (222, 222, 222), (0, 0), (1600, 100))
-
-		self.blitBox(game.ds, self.imp.data.eraseQuestion, 0)
-		self.labelisation(game.ds, self.imp.font.roboto32, 'vous vous tout recommencer ?', (0, 0, 0), (400, 240), (800, 400))
-
-		self.blitBox(game.ds, self.imp.data.eraseOui, self.selectErase['Oui'])
-		self.blitBox(game.ds, self.imp.data.eraseNon, self.selectErase['Non'])
-
-		self.blitFPS(game.ds)
-		pygame.display.flip()
-
-
-
-
-
-
-class SetNameEvent(Event):
-	"""
-	Class utilisé par PremainEvent pour changer le nom des joueurs
-	"""
-
-	def __init__(self):
-		Event.__init__(self)
-
-
-	def event(self, game, premainEvent):
-		"""
-		Methode qui lance le menu de changement de pseudo des joueurs
-		"""
-		premainEvent.resetSelect()
-		self.select = None
-		self.confirm = 0
-		self.playerOnWrite = None
-		self.lshift = False
-		self.niq = [0]*premainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-premainEvent.param['nb_name'])
-
-		while premainEvent.setName:
-
-			for event in pygame.event.get():
-
-				if event.type == MOUSEMOTION:
-					if self.playerOnWrite is None:
-						self.select = None
-						for i, box in enumerate(self.imp.data.listName['box']):
-							if self.inBox(event.pos[0], event.pos[1], box) : self.select = i						#Survol un des noms de participant
-						if self.inBox(event.pos[0], event.pos[1], self.imp.data.retour['box']) : self.confirm = 1	#Survol Retour
-
-					else:
-						# Observation de la souris lorsqu'elle passe sur Valider
-						self.confirm = 0
-						if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmName['box']) : self.confirm = 1
-
-				if event.type == MOUSEBUTTONDOWN:
-					if self.select is not None and self.playerOnWrite is None:
-						self.playerOnWrite = self.select
-						self.playerOnPreName = premainEvent.param['list_name'][self.select]
-					# Met à jour le pseudo si on appuie clique sur Valider
-					elif self.playerOnWrite is not None and self.confirm == 1:
-						if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
-							premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
-						self.playerOnWrite = None
-
-
-				if event.type == KEYDOWN:
-					if event.key == K_ESCAPE and self.playerOnWrite is None: 
-						premainEvent.setName = False
-
-					# Si on est en train de modifier un pseudo :
-					elif self.playerOnWrite is not None:
-
-						# Si on appuie sur Escape, on remet le nom avant tout changement (qui était enregistrer dans playerOnPreName)
-						if event.key == K_ESCAPE:
-							premainEvent.param['list_name'][self.playerOnWrite] = self.playerOnPreName
-							self.playerOnWrite = None
-
-						# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyValALP'
-						elif event.key in self.imp.data.keyValALP.keys():
-							if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
-								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key].upper()
-							else:           # Sinon, mettre la lettre en minuscule (par default)
-								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key]
-
-						# On prend en compte l'appuie sur LSHIFT pour mettre une lettre en majuscule
-						elif event.key == K_LSHIFT:
-							self.lshift = True
-
-						# Efface le dernier caractère si on appuie sur BACKSPACE (c'est la touche effacer)
-						elif event.key == K_BACKSPACE:
-							if len(premainEvent.param['list_name'][self.playerOnWrite]) != 0: # Mais pas si c'est deja vide !
-								premainEvent.param['list_name'][self.playerOnWrite] = premainEvent.param['list_name'][self.playerOnWrite][:-1]
-
-						# Met à jour le pseudo si on appuie sur RETURN / KP_ENTER (la touche entrer du clavier / du numpad)
-						# On pourrait peut-etre mettre ici un controle sur le contenu du nom du joueur ?
-						elif event.key == K_RETURN or event.key == K_KP_ENTER:
-							if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
-								premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
-							self.playerOnWrite = None
-
-				if event.type == KEYUP:
-					# On prend en compte le relachement le LSHIFT
-					if event.key == K_LSHIFT:
-						self.lshift = False
-
-				if event.type == QUIT:
-					game.gameOn, game.premainOn, premainEvent.setName = False, False, False
-
-			self.blitage(game, premainEvent)
-
-
-	def blitage(self, game, premainEvent):
-		"""
-		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
-		"""
-		game.ds.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(game.ds, self.imp.font.roboto54, "Choix Nom des joueurs", (222, 222, 222), (0, 0), (1600, 100))
-
-		for i in range(10):
-			activ = (i == self.select) * 1
-			game.ds.blit(self.imp.data.listName['images'][activ + self.niq[i]], self.imp.data.listName['imgBox'][i][activ + self.niq[i]])
-			self.labelisation(game.ds, 
-				self.imp.data.listName['font'],
-				premainEvent.param['list_name'][i], 
-				self.imp.data.listName['color'],
-				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
-
-		if self.playerOnWrite:
-			self.blitBox(game.ds, self.imp.data.confirmName, self.confirm)
-
-		self.blitBox(game.ds, self.imp.data.retour, self.confirm)
-
-		self.blitFPS(game.ds)
-		pygame.display.flip()
-
-
-
-		
-
 class SetNbPlayerEvent(Event):
 	"""
 	Class utilisé par PremainEvent pour le changement du nombre de joueur
@@ -469,6 +208,273 @@ class SetNbPlayerEvent(Event):
 
 		self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
 		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
+
+
+
+
+
+class SetNameEvent(Event):
+	"""
+	Class utilisé par PremainEvent pour changer le nom des joueurs
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+
+
+	def event(self, game, premainEvent):
+		"""
+		Methode qui lance le menu de changement de pseudo des joueurs
+		"""
+		premainEvent.resetSelect()
+		self.select = None
+		self.confirm = 0 # Ecouteur Valider
+		self.retour  = 0 # Ecouteur Retour
+		self.playerOnWrite = None
+		self.lshift = False
+		self.niq = [0]*premainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-premainEvent.param['nb_name'])
+
+		while premainEvent.setName:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.retour = 0
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.retour['box']) : self.retour = 1	# Survol Retour
+
+					self.select = None
+					if self.playerOnWrite is None:
+						self.select = None
+						for i, box in enumerate(self.imp.data.listName['box']):
+							if self.inBox(event.pos[0], event.pos[1], box) : self.select = i						# Survol un des noms de participant
+					else:
+						# Observation de la souris lorsqu'elle passe sur Valider
+						self.confirm = 0
+						if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmName['box']) : self.confirm = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.select is not None and self.playerOnWrite is None:
+						self.playerOnWrite = self.select
+						self.playerOnPreName = premainEvent.param['list_name'][self.select]
+					# Met à jour le pseudo si on appuie clique sur Valider
+					elif self.playerOnWrite is not None and self.confirm == 1:
+						if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
+							premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
+						self.playerOnWrite = None
+					elif self.retour == 1: # Si on appuie sur Retour
+						if self.playerOnWrite is not None: # Si on appuie alors que l'on est en train de modif un pseudo 
+							self.imp.sound.wrong.play()
+						else:
+							premainEvent.setName = False
+
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE and self.playerOnWrite is None: 
+						premainEvent.setName = False
+
+					# Si on est en train de modifier un pseudo :
+					elif self.playerOnWrite is not None:
+
+						# Si on appuie sur Escape, on remet le nom avant tout changement (qui était enregistrer dans playerOnPreName)
+						if event.key == K_ESCAPE:
+							premainEvent.param['list_name'][self.playerOnWrite] = self.playerOnPreName
+							self.playerOnWrite = None
+
+						# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyValALP'
+						elif event.key in self.imp.data.keyValALP.keys():
+							if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
+								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key].upper()
+							else:           # Sinon, mettre la lettre en minuscule (par default)
+								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key]
+
+						# On prend en compte l'appuie sur LSHIFT pour mettre une lettre en majuscule
+						elif event.key == K_LSHIFT:
+							self.lshift = True
+
+						# Efface le dernier caractère si on appuie sur BACKSPACE (c'est la touche effacer)
+						elif event.key == K_BACKSPACE:
+							if len(premainEvent.param['list_name'][self.playerOnWrite]) != 0: # Mais pas si c'est deja vide !
+								premainEvent.param['list_name'][self.playerOnWrite] = premainEvent.param['list_name'][self.playerOnWrite][:-1]
+
+						# Met à jour le pseudo si on appuie sur RETURN / KP_ENTER (la touche entrer du clavier / du numpad)
+						# On pourrait peut-etre mettre ici un controle sur le contenu du nom du joueur ?
+						elif event.key == K_RETURN or event.key == K_KP_ENTER:
+							if len(premainEvent.param['list_name'][self.playerOnWrite]) == 0 :
+								premainEvent.param['list_name'][self.playerOnWrite] = f"Player{self.playerOnWrite}"
+							self.playerOnWrite = None
+
+				if event.type == KEYUP:
+					# On prend en compte le relachement le LSHIFT
+					if event.key == K_LSHIFT:
+						self.lshift = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, premainEvent.setName = False, False, False
+
+			self.blitage(game, premainEvent)
+
+
+	def blitage(self, game, premainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Choix Nom des joueurs", (222, 222, 222), (0, 0), (1600, 100))
+
+		for i in range(10):
+			activ = (i == self.select) * 1
+			game.ds.blit(self.imp.data.listName['images'][activ + self.niq[i]], self.imp.data.listName['imgBox'][i][activ + self.niq[i]])
+			self.labelisation(game.ds, 
+				self.imp.data.listName['font'],
+				premainEvent.param['list_name'][i], 
+				self.imp.data.listName['color'],
+				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
+
+		if self.playerOnWrite:
+			self.blitBox(game.ds, self.imp.data.confirmName, self.confirm)
+
+		self.blitBox(game.ds, self.imp.data.retour, self.retour + (self.playerOnWrite is not None)*2)
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()		
+
+
+
+
+
+class SetBacklogEvent(Event):
+	"""
+	Class utilisé par PremainEvent pour changer de Backlog
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+		self.eraseBacklogEvent = EraseBacklogEvent()
+
+
+	def event(self, game, premainEvent):
+		"""
+		Methode qui lance le menu de selection de changement de Backlog
+		"""
+		self.select = None
+		premainEvent.resetSelect()
+
+		while premainEvent.setBacklog:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.select = None
+					for i, box in enumerate(game.listBack['box']):
+						if self.inBox(event.pos[0], event.pos[1], box) : self.select = i
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.select is not None : 
+						premainEvent.setBacklog = False
+						# On regarde si le backlog est deja complet (nombre fini == nombre total)
+						if game.testBacklog[game.listBacklog[self.select]][1][1] == game.testBacklog[game.listBacklog[self.select]][1][2]:
+							# On lance l'evenement de choix d'effacement ou pas de ce backlog complet
+							self.eraseBacklogEvent.event(game, premainEvent, self)
+						premainEvent.param['backlog'] = self.select
+						return None
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE : premainEvent.setBacklog = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, premainEvent.setBacklog = False, False, False
+
+			self.blitage(game)
+
+
+	def blitage(self, game):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Choix Backlog", (222, 222, 222), (0, 0), (1600, 100))
+
+		for i, backlog in enumerate(game.listBacklog[:-1]):
+			activ = (i == self.select) * 1
+			score = f"{game.testBacklog[backlog][1][1]}/{game.testBacklog[backlog][1][2]}"
+			textBL = f"  [{score}] {backlog}"
+			game.ds.blit(game.listBack['images'][activ], game.listBack['imgBox'][i][activ])
+			self.labelisation(game.ds, 
+				game.listBack['font'],
+				textBL, 
+				game.listBack['color'],
+				game.listBack['box'][i][0], game.listBack['box'][i][1], position='left')
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
+
+
+
+
+
+class EraseBacklogEvent(Event):
+	"""
+	Class utiliser par la SetBacklogEvent pour effacer (ou non) un backlog complet
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+
+
+	def event(self, game, premainEvent, setBacklogEvent):
+		"""
+		Methode qui lance le menu de choix d'effacement de backlog
+		"""
+		self.eraseEvent = True
+		self.selectErase = {'Non':0, 'Oui':0}
+
+		while self.eraseEvent:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					selectErase = {'Non':0, 'Oui':0}
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseOui['box']) : self.selectErase['Oui'] = 1
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseNon['box']) : self.selectErase['Non'] = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					if sum(self.selectErase.values()) > 0: 
+						self.eraseEvent = False
+						if self.selectErase['Oui'] == 1 :
+							backlogName = game.listBacklog[setBacklogEvent.select]
+							backlogErase = game.testBacklog[backlogName][0]
+							for key in backlogErase.keys():
+								backlogErase[key] = -1
+							import_json.writeJson(backlogName, backlogErase)
+							game.loadBacklog(setBacklogEvent)
+						else : 
+							setBacklogEvent.select = -1
+						return None
+
+				if event.type == KEYDOWN:
+					pass #PAS DESCAPE ICI :(((
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, premainEvent.setBacklog, self.eraseEvent = False, False, False, False
+
+			self.blitage(game)
+
+
+	def blitage(self, game):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Attention !", (222, 222, 222), (0, 0), (1600, 100))
+
+		self.blitBox(game.ds, self.imp.data.eraseQuestion, 0)
+		self.labelisation(game.ds, self.imp.font.roboto32, 'vous vous tout recommencer ?', (0, 0, 0), (400, 240), (800, 400))
+
+		self.blitBox(game.ds, self.imp.data.eraseOui, self.selectErase['Oui'])
+		self.blitBox(game.ds, self.imp.data.eraseNon, self.selectErase['Non'])
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()
