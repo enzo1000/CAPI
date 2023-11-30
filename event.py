@@ -105,13 +105,16 @@ class Event():
 				param['backlog'] = int(f[1].split(':')[1].split('[')[0])
 				param['nb_name'] = int(f[2].split(':')[1])
 				param['list_name'] = []
-
 				for i in range(10):
 					param['list_name'].append(f[3+i].split(':')[1])
+				param['cocheChrono'] = int(f[13].split(':')[1])
+				param['time'] = int(f[14].split(':')[1])
 			except:
-				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)]}
+				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60}
+				print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 		else:
-			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)]}
+			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60}
+			print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 
 		return param
 
@@ -127,4 +130,6 @@ class Event():
 		f.write(f"BackLog       : {self.param['backlog']} [{game.listBacklog[self.param['backlog']]}]\n")
 		f.write(f"Player number : {self.param['nb_name']}\n")
 		[f.write(f"- Player {i+1} : {name}\n") for i, name in enumerate(self.param['list_name'])]
+		f.write(f"Prise en compte du chrono : {self.param['cocheChrono']}\n")
+		f.write(f"Temps chrono : {self.param['time']}\n")
 		f.close()

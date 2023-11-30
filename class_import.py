@@ -21,6 +21,8 @@ class import_image():
 	# - NaN             -> Bouton spécial pour les pseudos des joueur en trop
 	# - R               -> Bouton en rouge (128) au lieu de gris
 	# - G               -> Bouton en vert (128) au lieu de gris
+	# - Suffixe Enc     -> Encoche (0 non-coché, 1 coché) 
+	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
 	sprit_600_80_Brown = (pygame.image.load(f"picture/bouton/nonon-600-80-Brown.png"), None)
 	sprit_480_80 = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
@@ -31,7 +33,8 @@ class import_image():
 	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"),  pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
 	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"),  pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
 	sprit_160_80_Brown = (pygame.image.load(f"picture/bouton/nonon-160-80-Brown.png"), None)
-	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
+	sprit_160_80_Enc0 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C0.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C0.png"))
+	sprit_160_80_Enc1 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C1.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C1.png"))
 
 	# Sprit du fond (en commum partout pour l'instant)
 	back_main = pygame.image.load("picture/main/back_lum.png")
@@ -88,7 +91,7 @@ class import_data():
 	keyValALP = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
 				 K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
 				 K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z', 
-				 K_SPACE:' ', K_MINUS:'-', K_UNDERSCORE:'_'}
+				 K_SPACE:'', K_MINUS:'-', K_UNDERSCORE:'_'} # -> Pas de SPACE
 
 	# DISPLAY DATA
 	# displayWindowsSize = (1600, 900)
@@ -120,67 +123,69 @@ class import_data():
 
 	# PRE-MAIN DATA
 	player = {'images' : image.sprit_400_80,
-		'imgBox'   : ((346, 300), (336, 298)),
+		'imgBox'   : ((346, 150), (336, 148)),
 		'text'  : 'Nombre de joueur :',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((350, 300), (400, 80))}
+		'box'   : ((350, 150), (400, 80))}
 	nbPlayer = {'images' : image.sprit_160_80,
-		'imgBox' : ((766, 300), (756, 298)),
+		'imgBox' : ((766, 150), (756, 148)),
 		'text'   : '0x413$Ae', # 0x413$Ae est mon code palceholder car ici le texte est variable, donc donner ulterirement : si il s'affiche c'est que l'on a oublier un truc
 		'color'  : color.noir,
 		'font'   : font.roboto32,
-		'box'    : ((770, 300), (160, 80))}
+		'box'    : ((770, 150), (160, 80))}
 	setName = {'images' : image.sprit_300_80,
-		'imgBox' : ((946, 300), (936, 298)),
+		'imgBox' : ((946, 150), (936, 148)),
 		'text'   : 'Liste Noms',
 		'color'  : color.noir,
 		'font'   : font.roboto32,
-		'box'    : ((950, 300), (300, 80))}
+		'box'    : ((950, 150), (300, 80))}
 
 	backlog = {'images' : image.sprit_400_80,
-		'imgBox': ((346, 450), (336, 448)),
+		'imgBox': ((346, 300), (336, 298)),
 		'text'  : 'Choix Backlog :',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((350, 450), (400, 80))}
+		'box'   : ((350, 300), (400, 80))}
 	setBacklog = {'images' : image.sprit_480_80,
+		'imgBox': ((766, 300), (756, 298)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((770, 300), (480, 80))}
+
+	mode = {'images' : image.sprit_400_80,
+		'imgBox': ((346, 450), (336, 448)),
+		'text'  : 'Choix Mode :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((350, 450), (400, 80))}
+	setMode = {'images' : image.sprit_480_80,
 		'imgBox': ((766, 450), (756, 448)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((770, 450), (480, 80))}
-	eraseQuestion = {'images' : image.sprit_800_400,
-		'imgBox': ((396, 200), None),
-		'text'  : 'Le Backlog selectioné est déjà entièrement compléter,',
-		'color' : color.noir,
-		'font'  : font.roboto32,
-		'box'   : ((400, 200), (800, 400))}
-	eraseOui = {'images' : image.sprit_160_80,
-		'imgBox': ((446, 700), (436, 700)),
-		'text'  : 'Oui !',
-		'color' : color.noir,
-		'font'  : font.roboto32,
-		'box'   : ((450, 700), (160, 80))}
-	eraseNon = {'images' : image.sprit_160_80,
-		'imgBox': ((986, 700), (976, 700)),
-		'text'  : 'Non ?!',
-		'color' : color.noir,
-		'font'  : font.roboto32,
-		'box'   : ((990, 700), (160, 80))}
 
-	mode = {'images' : image.sprit_400_80,
-		'imgBox': ((346, 600), (336, 598)),
-		'text'  : 'Choix Mode :',
+	chrono = {'images' : image.sprit_400_80,
+		'imgBox'   : ((346, 600), (336, 598)),
+		'text'  : 'Jouer avec Chrono :',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((350, 600), (400, 80))}
-	setMode = {'images' : image.sprit_480_80,
-		'imgBox': ((766, 600), (756, 598)),
-		'text'  : '0x413$Ae',
-		'color' : color.noir,
-		'font'  : font.roboto32,
-		'box'   : ((770, 600), (480, 80))}
+	cocheChrono = {'images' : (*image.sprit_160_80_Enc0, *image.sprit_160_80_Enc1),
+		'imgBox' : ((766, 600), (756, 598), (766, 600), (756, 598)),
+		'text'   : '',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((770, 600), (160, 80))}
+	setChrono = {'images' : image.sprit_300_80,
+		'imgBox' : ((946, 600), (936, 598)),
+		'text'   : '0x413$Ae',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((950, 600), (300, 80))}
+
 	lezgo = {'images' : (*image.sprit_160_80, *image.sprit_160_80_R),
 		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
 		'text'  : 'Lezgo',
@@ -221,6 +226,26 @@ class import_data():
 	# PRE-MAIN DATA : SET BACKLOG EVENT
 	# ****
 
+	# PRE-MAIN DATA : ERASE BACKLOG EVENT
+	eraseQuestion = {'images' : image.sprit_800_400,
+		'imgBox': ((396, 200), None),
+		'text'  : 'Le Backlog selectioné est déjà entièrement compléter,',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((400, 200), (800, 400))}
+	eraseOui = {'images' : image.sprit_160_80,
+		'imgBox': ((446, 700), (436, 700)),
+		'text'  : 'Oui !',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((450, 700), (160, 80))}
+	eraseNon = {'images' : image.sprit_160_80,
+		'imgBox': ((986, 700), (976, 700)),
+		'text'  : 'Non ?!',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((990, 700), (160, 80))}
+
 	# PRE-MAIN DATA : SET MODE EVENT
 	listMode = {'images' : image.sprit_480_80,
 		'imgBox': [((556, 250+100*i), (546, 248+100*i)) for i in range(5)],
@@ -228,6 +253,10 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : [((560, 250+100*i), (480, 80)) for i in range(5)]}
+
+	# PRE-MAIN DATA : SET CHRONO
+	minTimeChrono = 10  # sec
+	maxTimeChrono = 300 # sec
 
 	#MAIN DATA
 	dimCartes = [200, 300]

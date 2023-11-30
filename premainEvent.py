@@ -15,6 +15,7 @@ class PremainEvent(Event):
 		- Changer le nombre de joueur et leurs pseudos
 		- Choisir le Backlog
 		- Choisir le mode
+		- Choisir si l'on veut un chrono ainsi que la valeur de celui-ci
 	"""
 
 	def __init__(self):
@@ -23,12 +24,14 @@ class PremainEvent(Event):
 		self.setNbPlayerEvent = SetNbPlayerEvent()
 		self.setNameEvent     = SetNameEvent()
 		self.setBacklogEvent  = SetBacklogEvent()
-		self.setModeEvent     = SetModeEvent() 
+		self.setModeEvent     = SetModeEvent()
+		self.setChronoEvent   = SetChronoEvent()
 
 		self.setNbPlayer = False
 		self.setName = False
 		self.setBacklog = False
 		self.setMode = False
+		self.setChrono = False
 
 		self.param = self.extractParam()
 		self.resetSelect()
@@ -53,10 +56,12 @@ class PremainEvent(Event):
 					self.findSelection(event.pos[0], event.pos[1])
 
 				if event.type == MOUSEBUTTONDOWN:
-					if self.select['nbPlayer']   : self.setNbPlayer = True
-					if self.select['setName']    : self.setName = True
-					if self.select['setBacklog'] : self.setBacklog = True
-					if self.select['setMode']    : self.setMode = True
+					if self.select['nbPlayer']    : self.setNbPlayer = True
+					if self.select['setName']     : self.setName = True
+					if self.select['setBacklog']  : self.setBacklog = True
+					if self.select['setMode']     : self.setMode = True
+					if self.select['cocheChrono'] : self.param['cocheChrono'] = abs(1 - self.param['cocheChrono'])
+					if self.select['setChrono']   : self.setChrono = True
 					if self.select['lezgo']:
 						if self.param['backlog'] != -1: # Verifie que l'on selectionne bien un backlog (On pourrait peut-etre ajouter un message sur l'écran)
 							game.premainOn, game.mainOn = False, True 
@@ -76,6 +81,7 @@ class PremainEvent(Event):
 			if self.setName     : self.setNameEvent.event(game, self)
 			if self.setBacklog  : self.setBacklogEvent.event(game, self)
 			if self.setMode     : self.setModeEvent.event(game, self)
+			if self.setChrono   : self.setChronoEvent.event(game, self)
 
 	def findSelection(self, x, y):
 		"""
@@ -86,6 +92,8 @@ class PremainEvent(Event):
 		elif self.inBox(x, y, self.imp.data.setBacklog['box']) : self.select['setBacklog'] = 1
 		elif self.inBox(x, y, self.imp.data.setMode['box'])    : self.select['setMode'] = 1
 		elif self.inBox(x, y, self.imp.data.lezgo['box'])      : self.select['lezgo'] = 1
+		elif self.inBox(x, y, self.imp.data.cocheChrono['box'])   : self.select['cocheChrono'] = 1
+		elif self.inBox(x, y, self.imp.data.setChrono['box'])    : self.select['setChrono'] = 1
 		else : self.resetSelect()
 
 	def resetSelect(self):
@@ -93,14 +101,14 @@ class PremainEvent(Event):
 		Methode qui re-initialise le dict select
 		"""
 		self.select = {
-			'player' : 0,
-			'nbPlayer' : 0,
-			'setName' : 0,
-			'backlog' : 0,
-			'setBacklog' : 0,
-			'mode' : 0,
-			'setMode' : 0,
+			'player' : 0, 'nbPlayer' : 0, 'setName' : 0,
+			'backlog' : 0, 'setBacklog' : 0,
+			'mode' : 0, 'setMode' : 0,
+			'chrono' : 0, 'cocheChrono' : 0, 'setChrono' : 0,
 			'lezgo' : 0}
+
+	def strChrono(self):
+		return f"{int(self.param['time']//60):01}'{int(self.param['time']%60):02}\""
 
 	def blitage(self, game):
 		"""
@@ -120,6 +128,10 @@ class PremainEvent(Event):
 
 		self.blitBox(game.ds, self.imp.data.mode,    self.select['mode'])
 		self.blitBox(game.ds, self.imp.data.setMode, self.select['setMode'], text=self.imp.data.listMode['text'][self.param['mode']])
+
+		self.blitBox(game.ds, self.imp.data.chrono,   self.select['chrono'])
+		self.blitBox(game.ds, self.imp.data.cocheChrono, self.select['cocheChrono'] + self.param['cocheChrono']*2)
+		self.blitBox(game.ds, self.imp.data.setChrono,  self.select['setChrono'], text=self.strChrono())
 
 		self.blitBox(game.ds, self.imp.data.lezgo, self.select['lezgo'] + niqLezgo)
 
@@ -205,6 +217,10 @@ class SetNbPlayerEvent(Event):
 
 		self.blitBox(game.ds, self.imp.data.mode,    premainEvent.select['mode'])
 		self.blitBox(game.ds, self.imp.data.setMode, premainEvent.select['setMode'], text=self.imp.data.listMode['text'][premainEvent.param['mode']])
+
+		self.blitBox(game.ds, self.imp.data.chrono,   premainEvent.select['chrono'])
+		self.blitBox(game.ds, self.imp.data.cocheChrono, premainEvent.select['cocheChrono'] + premainEvent.param['cocheChrono']*2)
+		self.blitBox(game.ds, self.imp.data.setChrono,  premainEvent.select['setChrono'], text=premainEvent.strChrono())
 
 		self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
 		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
@@ -537,6 +553,93 @@ class SetModeEvent(Event):
 			self.labelisation(game.ds, 
 				self.imp.data.listMode['font'], self.imp.data.listMode['text'][i], self.imp.data.listMode['color'],
 				self.imp.data.listMode['box'][i][0], self.imp.data.listMode['box'][i][1])
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
+
+
+
+class SetChronoEvent(Event):
+	"""
+	Class utilisé par PremainEvent pour le changement de temps du chrono
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+
+
+	def event(self, game, premainEvent):
+		"""
+		Methode qui lance l'evenement de changement de temps du chrono
+		"""
+		premainEvent.param['time'] = str(premainEvent.param['time'])
+		premainEvent.resetSelect()
+		self.select = 0
+
+		while premainEvent.setChrono:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.select = 0
+					# Observation de la souris lorsqu'elle passe sur Valider
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmNb['box']) : self.select = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					# Met à jour le pseudo si on appuie clique sur Valider
+					if self.select == 1:
+						premainEvent.param['time'] = min(int(premainEvent.param['time']), self.imp.data.maxTimeChrono)
+						premainEvent.param['time'] = max(int(premainEvent.param['time']), self.imp.data.minTimeChrono)
+						premainEvent.setChrono = False
+
+
+				if event.type == KEYDOWN:
+
+					if event.key == K_ESCAPE:
+						premainEvent.param['time'] = int(premainEvent.param['time'])
+						premainEvent.setChrono = False
+
+					elif event.key in self.imp.data.keyValNUM.keys():
+						if premainEvent.param['time'] == '0' : premainEvent.param['time'] = ''
+						premainEvent.param['time'] = str(premainEvent.param['time']) + self.imp.data.keyValNUM[event.key]
+
+					elif event.key == K_BACKSPACE:
+						premainEvent.param['time'] = str(premainEvent.param['time'])[:-1]
+						if len(premainEvent.param['time']) == 0 : premainEvent.param['time'] = '0'
+
+					elif event.key == K_RETURN or event.key == K_KP_ENTER:
+						premainEvent.param['time'] = min(int(premainEvent.param['time']), self.imp.data.maxTimeChrono)
+						premainEvent.param['time'] = max(int(premainEvent.param['time']), self.imp.data.minTimeChrono)
+						premainEvent.setChrono = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, setChrono = False, False, False
+
+			self.blitage(game, premainEvent)
+
+	def blitage(self, game, premainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Paramètre", (222, 222, 222), (0, 0), (1600, 100))
+
+		self.blitBox(game.ds, self.imp.data.player,   premainEvent.select['player'])
+		self.blitBox(game.ds, self.imp.data.nbPlayer, premainEvent.select['nbPlayer'], text=str(premainEvent.param['nb_name']))
+		self.blitBox(game.ds, self.imp.data.setName,  premainEvent.select['setName'])
+
+		self.blitBox(game.ds, self.imp.data.backlog,    premainEvent.select['backlog'])
+		self.blitBox(game.ds, self.imp.data.setBacklog, premainEvent.select['setBacklog'], text=game.listBacklog[premainEvent.param['backlog']])
+
+		self.blitBox(game.ds, self.imp.data.mode,    premainEvent.select['mode'])
+		self.blitBox(game.ds, self.imp.data.setMode, premainEvent.select['setMode'], text=self.imp.data.listMode['text'][premainEvent.param['mode']])
+
+		self.blitBox(game.ds, self.imp.data.chrono,   premainEvent.select['chrono'])
+		self.blitBox(game.ds, self.imp.data.cocheChrono, premainEvent.select['cocheChrono'] + premainEvent.param['cocheChrono']*2)
+		self.blitBox(game.ds, self.imp.data.setChrono,  1, text=f"{premainEvent.param['time']} sec.")
+
+		self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
+		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()
