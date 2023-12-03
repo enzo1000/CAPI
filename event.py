@@ -133,10 +133,3 @@ class Event():
 		f.write(f"Prise en compte du chrono : {self.param['cocheChrono']}\n")
 		f.write(f"Temps chrono : {self.param['time']}\n")
 		f.close()
-
-
-	def strChrono(self, t):
-		"""
-		Methode permettant de retourner une formatage visuel plus correct du temps
-		"""
-		return f"{int(t//60):01}'{int(t%60):02}\""

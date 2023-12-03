@@ -43,6 +43,8 @@ class MainEvent(Event):
 		# Pour le debug
 		print(self.backlogName, ' : ', self.backlog, ' | ', self.listTask)
 
+		self.somebobyWantACoffee = False
+
 		self.totalTask = len(self.listTask)
 		self.playerVote = []
 		self.loop = 0
@@ -126,7 +128,10 @@ class MainEvent(Event):
 		"""
 		select = None
 
+		# On regarde si le joueur a cliquer sur une cartes ou si il a plus de temps pour repondre
 		if sum(self.activCartes) == 1 or (self.param['time'] - time() + self.currentChrono) < 0:
+
+			# On selectionne 'interro' si le joueur n'a pas cliquer a temps
 			if (self.param['time'] - time() + self.currentChrono) < 0 : select = 'intero'
 			else : select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
@@ -135,43 +140,47 @@ class MainEvent(Event):
 				self.playerVote.append(int(select))
 			except ValueError:
 				if select == 'cafe':
-					print('cafe')
+					self.playerVote.append('CAFE')
 				elif select == 'intero':
-					print('intero')
+					self.playerVote.append('INTERRO')
 				
 			self.currentPlayer += 1
 
+
+			# Tout les joueurs ont jouer 
 			if self.currentPlayer == self.param['nb_name']:
-				print(f"\nFin du tour : {self.loop} | vote : {self.playerVote}")
+				print(f"Fin du tour : {self.loop} | vote : {self.playerVote}")
+				# On extrait les valeur contenu dans les votes :
+				values = self.playerVote.copy()
+				while 'INTERRO' in values : values.pop(values.index('INTERRO'))
+				while 'CAFE' in values : values.pop(values.index('CAFE'))
 
 				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
-					if len(set(self.playerVote)) == 1:
-						print(f"Tout le monde est d'accord pour la tache {self.listTask[self.currentTask]}")
-						self.backlog[self.listTask[self.currentTask]] = self.playerVote[0]
-
+					# Tout le monde a directement voter pareil 
+					if len(set(values)) == 1:
+						print(f"Tout le monde est d'accord pour la tache {self.listTask[self.currentTask]} : {values[0]}")
+						self.backlog[self.listTask[self.currentTask]] = values[0]
 						self.nextTask(game)
-
+					# Les joueurs ne sont pas tous d'accord
 					else:
-						print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
-						self.loop += 1
-						self.currentPlayer = 0
-						self.playerVote = []
+						self.explicationPlease(values)
+						print('')
 
-				else:	#TODO Pourquoi pas un elif ?
+				else:	#TODO Pourquoi pas un elif ? -> Pourquoi un elif ? Avec quel condition ?
 					if self.param['mode'] == 1: # MODE Moyenne
-						val = np.mean(self.playerVote)
+						val = round(np.mean(values))
 						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")
 						self.backlog[self.listTask[self.currentTask]] = val
 						self.nextTask(game)
 
 					if self.param['mode'] == 2: # MODE Mediane
-						val = np.median(self.playerVote)
+						val = round(np.median(values))
 						print(f"Methode Med : {val} [{self.listTask[self.currentTask]}]")
 						self.backlog[self.listTask[self.currentTask]] = val
 						self.nextTask(game)
 
 					if self.param['mode'] >= 3: # MODE Majo Abs. & Rela
-						voteDiff  = list(set(self.playerVote))                         # valeur de vote distinctes
+						voteDiff  = list(set(values))                                  # valeur de vote distinctes
 						countVote = [self.playerVote.count(vote) for vote in voteDiff] # countage du nombre de vote par valeur
 
 						maxVote = max(countVote)            # nombre de vote de(s) valeur(s) les plus voter
@@ -193,10 +202,8 @@ class MainEvent(Event):
 							self.nextTask(game)
 
 						else:
-							print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
-							self.loop += 1
-							self.currentPlayer = 0
-							self.playerVote = []
+							self.explicationPlease(values)
+							print('')
 
 			self.currentChrono = time()
 
@@ -216,3 +223,31 @@ class MainEvent(Event):
 			self.currentTask += 1
 			self.currentPlayer = 0
 			self.playerVote = []
+			print('')
+
+
+	def explicationPlease(self, values):
+		print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
+		vmin = min(values)
+		vmax = max(values)
+
+		playerMin = []
+		oldIndex = 0
+		for _ in range(values.count(vmin)):
+			curIndex = self.playerVote[oldIndex:].index(vmin) + oldIndex
+			playerMin.append(self.param['list_name'][curIndex])
+			oldIndex = curIndex + 1
+
+		playerMax = []
+		oldIndex = 0
+		for _ in range(values.count(vmax)):
+			curIndex = self.playerVote[oldIndex:].index(vmax) + oldIndex
+			playerMax.append(self.param['list_name'][curIndex])
+			oldIndex = curIndex + 1
+
+		print(f"Joueur valeur min [{vmin}] : {playerMin}")
+		print(f"Joueur valeur min [{vmax}] : {playerMax}")
+
+		self.loop += 1
+		self.currentPlayer = 0
+		self.playerVote = []
