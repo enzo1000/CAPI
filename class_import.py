@@ -260,7 +260,7 @@ class import_data():
 	minTimeChrono = 10  # sec
 	maxTimeChrono = 300 # sec
 
-	#MAIN DATA
+	# MAIN DATA
 	dimCartes = [200, 300]
 	xCartes = np.linspace(200, 1400, 12).astype(int) - int(dimCartes[0]/2)
 	yCartes = np.linspace(650, 650, 12).astype(int)  - int(dimCartes[1]/2)
@@ -298,6 +298,14 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((216, 296), (600, 80))}
+
+	# MAIN DATA : END TASK EVENT
+	nextBox = {'images' : (*image.sprit_160_80_G, *image.sprit_160_80_R),
+		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((720, 750), (160, 80))}
 
 
 #SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)

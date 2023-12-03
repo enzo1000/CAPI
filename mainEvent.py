@@ -17,6 +17,11 @@ class MainEvent(Event):
 
 	def __init__(self):
 		Event.__init__(self)
+
+		self.endTaskEvent = EndTaskEvent()
+
+		self.endTask = False
+
 		self.lastCarte = -1
 		self.currentChrono = time()
 
@@ -24,7 +29,6 @@ class MainEvent(Event):
 		"""
 		Methode qui lance le planning poker
 		"""
-
 		# On initialise les cartes
 		self.activCartes = np.zeros(12).astype(int)
 		# On extrait les paramètres
@@ -142,7 +146,7 @@ class MainEvent(Event):
 				if select == 'cafe':
 					self.playerVote.append('CAFE')
 				elif select == 'intero':
-					self.playerVote.append('INTERRO')
+					self.playerVote.append('?')
 				
 			self.currentPlayer += 1
 
@@ -152,7 +156,7 @@ class MainEvent(Event):
 				print(f"Fin du tour : {self.loop} | vote : {self.playerVote}")
 				# On extrait les valeur contenu dans les votes :
 				values = self.playerVote.copy()
-				while 'INTERRO' in values : values.pop(values.index('INTERRO'))
+				while '?' in values : values.pop(values.index('?'))
 				while 'CAFE' in values : values.pop(values.index('CAFE'))
 
 				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
@@ -163,7 +167,7 @@ class MainEvent(Event):
 						self.nextTask(game)
 					# Les joueurs ne sont pas tous d'accord
 					else:
-						self.explicationPlease(values)
+						self.explicationPlease(game, values)
 						print('')
 
 				else:	#TODO Pourquoi pas un elif ? -> Pourquoi un elif ? Avec quel condition ?
@@ -202,7 +206,7 @@ class MainEvent(Event):
 							self.nextTask(game)
 
 						else:
-							self.explicationPlease(values)
+							self.explicationPlease(game, values)
 							print('')
 
 			self.currentChrono = time()
@@ -212,6 +216,9 @@ class MainEvent(Event):
 		"""
 		Methode utiliser par selecCartes pour changer de tache quand une est finis
 		"""
+		self.nextBoxText = "Tache Suivante"
+		self.endTask = True
+		self.endTaskEvent.event(game, self)
 
 		if self.currentTask + 1 == self.totalTask:
 			print('C fini !')
@@ -226,7 +233,7 @@ class MainEvent(Event):
 			print('')
 
 
-	def explicationPlease(self, values):
+	def explicationPlease(self, game, values):
 		print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
 		vmin = min(values)
 		vmax = max(values)
@@ -248,6 +255,76 @@ class MainEvent(Event):
 		print(f"Joueur valeur min [{vmin}] : {playerMin}")
 		print(f"Joueur valeur min [{vmax}] : {playerMax}")
 
+		self.nextBoxText = "Explication !"
+		self.endTask = True
+		self.endTaskEvent.event(game, self)
+
 		self.loop += 1
 		self.currentPlayer = 0
 		self.playerVote = []
+
+
+
+
+class EndTaskEvent(Event):
+	"""
+	Class utilisé par MainEvent pour presenter les votes 
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+		self.nextBox = 0
+
+
+	def event(self, game, mainEvent):
+		"""
+		Methode qui affiche les votes de chacun avant de continuer 
+		    -> Soit a la tache suivante
+		    -> Soit aux explications
+		"""
+		self.nextBox = 0 # nextBox est soit la tache suivante "Ok" ou pour passer au explication "Explication"
+		self.niq = [0]*mainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-mainEvent.param['nb_name'])
+
+		while mainEvent.endTask:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.nextBox = 0
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.nextBox['box']) : self.nextBox = 1	# Survol nextBox
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.nextBox == 1: # Si on appuie sur nextBox
+						mainEvent.endTask = False
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE: 
+						mainEvent.endTask = False
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, mainEvent.endTask = False, False, False
+
+			self.blitage(game, mainEvent)
+
+
+	def blitage(self, game, mainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, f"Résumé du la tache {mainEvent.listTask[mainEvent.currentTask]}", (222, 222, 222), (0, 0), (1600, 100))
+
+		for i in range(mainEvent.param['nb_name']):
+			game.ds.blit(self.imp.data.listName['images'][self.niq[i]], self.imp.data.listName['imgBox'][i][self.niq[i]])
+			self.labelisation(game.ds, 
+				self.imp.data.listName['font'],
+				f"{mainEvent.param['list_name'][i]} : {mainEvent.playerVote[i]}", 
+				self.imp.data.listName['color'],
+				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
+
+		self.blitBox(game.ds, self.imp.data.nextBox, self.nextBox, text=mainEvent.nextBoxText)
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()		
+
+
