@@ -19,8 +19,10 @@ class MainEvent(Event):
 		Event.__init__(self)
 
 		self.endTaskEvent = EndTaskEvent()
+		self.explcationEvent = ExplicationEvent()
 
 		self.endTask = False
+		self.explication = False
 
 		self.lastCarte = -1
 		self.currentChrono = time()
@@ -112,6 +114,7 @@ class MainEvent(Event):
 		pygame.display.flip()
 
 
+
 	def motionInCartes(self, mouse):
 		"""
 		Methode qui regarde la cartes qui est sous la souris
@@ -150,7 +153,6 @@ class MainEvent(Event):
 				
 			self.currentPlayer += 1
 
-
 			# Tout les joueurs ont jouer 
 			if self.currentPlayer == self.param['nb_name']:
 				print(f"Fin du tour : {self.loop} | vote : {self.playerVote}")
@@ -164,23 +166,24 @@ class MainEvent(Event):
 					if len(set(values)) == 1:
 						print(f"Tout le monde est d'accord pour la tache {self.listTask[self.currentTask]} : {values[0]}")
 						self.backlog[self.listTask[self.currentTask]] = values[0]
+						self.finalValue = values[0]
 						self.nextTask(game)
 					# Les joueurs ne sont pas tous d'accord
 					else:
 						self.explicationPlease(game, values)
 						print('')
 
-				else:	#TODO Pourquoi pas un elif ? -> Pourquoi un elif ? Avec quel condition ?
+				else:
 					if self.param['mode'] == 1: # MODE Moyenne
-						val = round(np.mean(values))
-						print(f"Methode Moy : {val} [{self.listTask[self.currentTask]}]")
-						self.backlog[self.listTask[self.currentTask]] = val
+						self.finalValue = round(np.mean(values))
+						print(f"Methode Moy : {self.finalValue} [{self.listTask[self.currentTask]}]")
+						self.backlog[self.listTask[self.currentTask]] = self.finalValue
 						self.nextTask(game)
 
 					if self.param['mode'] == 2: # MODE Mediane
-						val = round(np.median(values))
-						print(f"Methode Med : {val} [{self.listTask[self.currentTask]}]")
-						self.backlog[self.listTask[self.currentTask]] = val
+						self.finalValue = round(np.median(values))
+						print(f"Methode Med : {self.finalValue} [{self.listTask[self.currentTask]}]")
+						self.backlog[self.listTask[self.currentTask]] = self.finalValue
 						self.nextTask(game)
 
 					if self.param['mode'] >= 3: # MODE Majo Abs. & Rela
@@ -194,15 +197,15 @@ class MainEvent(Event):
 
 
 						if self.param['mode'] == 3 and maxVote > self.param['nb_name']/2: # MODE Majo Abs.
-							val = voteDiff[countVote.index(maxVote)]
-							print(f"Methode Maj Abs : {val} [{self.listTask[self.currentTask]}]")
-							self.backlog[self.listTask[self.currentTask]] = val
+							self.finalValue = voteDiff[countVote.index(maxVote)]
+							print(f"Methode Maj Abs : {self.finalValue} [{self.listTask[self.currentTask]}]")
+							self.backlog[self.listTask[self.currentTask]] = self.finalValue
 							self.nextTask(game)
 
 						elif self.param['mode'] == 4 and nbmaxVal == 1:                   # MODE Majo Rela
-							val = voteDiff[countVote.index(maxVote)]
-							print(f"Methode Maj rela : {val} [{self.listTask[self.currentTask]}]")
-							self.backlog[self.listTask[self.currentTask]] = val
+							self.finalValue = voteDiff[countVote.index(maxVote)]
+							print(f"Methode Maj rela : {self.finalValue} [{self.listTask[self.currentTask]}]")
+							self.backlog[self.listTask[self.currentTask]] = self.finalValue
 							self.nextTask(game)
 
 						else:
@@ -258,6 +261,9 @@ class MainEvent(Event):
 		self.nextBoxText = "Explication !"
 		self.endTask = True
 		self.endTaskEvent.event(game, self)
+
+		self.explication = True
+		self.explcationEvent.event(game, self, playerMin[0])
 
 		self.loop += 1
 		self.currentPlayer = 0
@@ -328,3 +334,73 @@ class EndTaskEvent(Event):
 		pygame.display.flip()		
 
 
+
+
+class ExplicationEvent(Event):
+	"""
+	Class utilisé par MainEvent pour que les joueurs extremes s'explique (un par un)
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+		self.text = ''
+		self.currentPlayer = '0x413$Ae'
+
+
+	def event(self, game, mainEvent, currentPlayer):
+		"""
+		Methode qui affiche l'interface pour que les joueurs extremes s'explique (un par un)
+		"""
+		self.valider = 0 # bouton valider
+		self.text = ''   # Contenu de l'explication
+		self.currentPlayer = currentPlayer
+		self.lshift = False
+
+		while mainEvent.explication:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.valider = 0
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmName['box']) : self.valider = 1	# Survol nextBox
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.valider == 1: # Si on appuie sur nextBox
+						mainEvent.explication = False
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE: 
+						mainEvent.explcation = False
+
+					# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyVal'
+					elif event.key in self.imp.data.keyValSPACE.keys():
+						if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
+							self.text += self.imp.data.keyValSPACE[event.key].upper()
+						else:           # Sinon, mettre la lettre en minuscule (par default)
+							self.text += self.imp.data.keyValSPACE[event.key]
+
+					# On prend en compte l'appuie sur LSHIFT pour mettre une lettre en majuscule
+					elif event.key == K_LSHIFT:
+						self.lshift = True
+
+					# Efface le dernier caractère si on appuie sur BACKSPACE (c'est la touche effacer)
+					elif event.key == K_BACKSPACE:
+						if len(self.text) != 0: # Mais pas si c'est deja vide !
+							self.text = self.text[:-1]
+
+				if event.type == QUIT:
+					game.gameOn, game.premainOn, mainEvent.explication = False, False, False
+
+			self.blitage(game, mainEvent)
+
+
+	def blitage(self, game, mainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, f"Explication de {self.currentPlayer}", (222, 222, 222), (0, 0), (1600, 100))
+		self.blitBox(game.ds, self.imp.data.eraseQuestion, 0, text=self.text)
+		self.blitBox(game.ds, self.imp.data.confirmName, self.valider, text=mainEvent.nextBoxText)
+		self.blitFPS(game.ds)
+		pygame.display.flip()

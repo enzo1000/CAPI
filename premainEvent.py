@@ -299,12 +299,12 @@ class SetNameEvent(Event):
 							premainEvent.param['list_name'][self.playerOnWrite] = self.playerOnPreName
 							self.playerOnWrite = None
 
-						# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyValALP'
-						elif event.key in self.imp.data.keyValALP.keys():
+						# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyVal'
+						elif event.key in self.imp.data.keyVal.keys():
 							if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
-								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key].upper()
+								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyVal[event.key].upper()
 							else:           # Sinon, mettre la lettre en minuscule (par default)
-								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValALP[event.key]
+								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyVal[event.key]
 
 						# On prend en compte l'appuie sur LSHIFT pour mettre une lettre en majuscule
 						elif event.key == K_LSHIFT:
@@ -349,7 +349,7 @@ class SetNameEvent(Event):
 				self.imp.data.listName['color'],
 				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
 
-		if self.playerOnWrite:
+		if self.playerOnWrite is not None:
 			self.blitBox(game.ds, self.imp.data.confirmName, self.confirm)
 
 		self.blitBox(game.ds, self.imp.data.retour, self.retour + (self.playerOnWrite is not None)*2)
