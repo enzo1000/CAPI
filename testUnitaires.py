@@ -3,6 +3,7 @@ import os
 import json
 from import_json import processDic
 from import_json import findAllJson
+from import_json import writeJson
 
 class TestStringMethods(unittest.TestCase):
     #Test ayant pour but de vérifier le nombre de tache réalisés dans un dictionnaire
@@ -41,6 +42,20 @@ class TestStringMethods(unittest.TestCase):
     
     def test_findAllJson_missingFolder(self):
         self.assertEqual(findAllJson("./FauxDossier/"), "Exception : Wrong json folder path")
+
+    def test_writeJson(self):
+        Folderpath = "testUnitaire"
+        fakeDicoName = "dico1"
+        fakeDico = {"Tache1":-1, "Tache2":6, "Tache3":7, "Tache4":-1}
+        os.mkdir(Folderpath)
+        writeJson(fakeDicoName, fakeDico, f"./{Folderpath}/")
+
+        fakeRet = {}
+        fakeRet[fakeDicoName] = [fakeDico, processDic(fakeDico)]
+        self.assertEqual(findAllJson(f"./{Folderpath}/"), fakeRet)
+
+        os.remove(f"./{Folderpath}/{fakeDicoName}.json")
+        os.rmdir(Folderpath)
 
 if __name__ == '__main__':
     unittest.main()

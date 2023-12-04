@@ -39,8 +39,3 @@ def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
 def writeJson(name, dic, Folderpath="./data_json/"):
     with open(f"{Folderpath}{name}.json", 'w') as f:
         json.dump(dic, f)
-
-# Fct de test de la classe, peut être supprimé
-# a = findAllJson()
-# print(a)
-# writeJson(a)
