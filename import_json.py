@@ -21,7 +21,7 @@ def findAllJson(Folderpath="./data_json/"):  #Default folder to save json files
     try:
         listJson = os.listdir(Folderpath)
     except:
-        print("Exception : Bad json folder path")
+        return "Exception : Wrong json folder path"
     else:
         for i in range(len(listJson)):                          #For each elem in the path
             with open(Folderpath + listJson[i], 'r') as f:      #Open it as a json
