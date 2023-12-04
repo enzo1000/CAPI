@@ -18,7 +18,7 @@ class import_image():
 	# Sprit des bouton
 	# - Prefixe "nonon" -> Bouton éteint
 	# - Prefixe "activ" -> Bouton allumer
-	# - NaN             -> Bouton spécial pour les pseudos des joueur en trop
+	# - NaN             -> Bouton "inactif" spécial pour les pseudos des joueur en trop
 	# - R               -> Bouton en rouge (128) au lieu de gris
 	# - G               -> Bouton en vert (128) au lieu de gris
 	# - Suffixe Enc     -> Encoche (0 non-coché, 1 coché) 
@@ -92,11 +92,10 @@ class import_data():
 
 	keyValALP = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
 				 K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
-				 K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z', 
-				 K_SPACE:'', K_MINUS:'-', K_UNDERSCORE:'_'} # -> Pas de SPACE
+				 K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z'}
 
-	# DISPLAY DATA
-	# displayWindowsSize = (1600, 900)
+	keyVal      = {**keyValNUM, **keyValALP}
+	keyValSPACE = {**keyValNUM, **keyValALP, K_SPACE:' '}
 
 	# MENU DATA
 	menu_begin = {'images' : image.sprit_600_100,
@@ -306,6 +305,14 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
+
+	# MAIN DATA : EXPLICATION EVENT
+	explication = {'images' : image.sprit_800_400,
+		'imgBox': ((396, 200), None),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.arial32,
+		'box'   : ((400, 200), (800, 400))}
 
 
 #SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)
