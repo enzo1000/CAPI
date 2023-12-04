@@ -307,6 +307,7 @@ class import_data():
 		'box'   : ((720, 750), (160, 80))}
 
 	# MAIN DATA : EXPLICATION EVENT
+	limitExplication = 200
 	explication = {'images' : image.sprit_800_400,
 		'imgBox': ((396, 200), None),
 		'text'  : '0x413$Ae',

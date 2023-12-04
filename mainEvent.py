@@ -262,8 +262,9 @@ class MainEvent(Event):
 		self.endTask = True
 		self.endTaskEvent.event(game, self)
 
-		self.explication = True
-		self.explcationEvent.event(game, self, playerMin[0])
+		for player in playerMin + playerMax:
+			self.explication = True
+			self.explcationEvent.event(game, self, player)
 
 		self.loop += 1
 		self.currentPlayer = 0
@@ -362,7 +363,7 @@ class ExplicationEvent(Event):
 
 				if event.type == MOUSEMOTION:
 					self.valider = 0
-					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmName['box']) : self.valider = 1	# Survol nextBox
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.nextBox['box']) : self.valider = 1	# Survol nextBox
 
 				if event.type == MOUSEBUTTONDOWN:
 					if self.valider == 1: # Si on appuie sur nextBox
@@ -373,7 +374,7 @@ class ExplicationEvent(Event):
 						mainEvent.explcation = False
 
 					# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyVal'
-					elif event.key in self.imp.data.keyValSPACE.keys():
+					elif event.key in self.imp.data.keyValSPACE.keys() and len(self.text) < self.imp.data.limitExplication:
 						if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
 							self.text += self.imp.data.keyValSPACE[event.key].upper()
 						else:           # Sinon, mettre la lettre en minuscule (par default)
@@ -388,6 +389,10 @@ class ExplicationEvent(Event):
 						if len(self.text) != 0: # Mais pas si c'est deja vide !
 							self.text = self.text[:-1]
 
+				if event.type == KEYUP:
+					if event.key == K_LSHIFT:
+						self.lshift = False
+
 				if event.type == QUIT:
 					game.gameOn, game.premainOn, mainEvent.explication = False, False, False
 
@@ -400,7 +405,45 @@ class ExplicationEvent(Event):
 		"""
 		game.ds.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(game.ds, self.imp.font.roboto54, f"Explication de {self.currentPlayer}", (222, 222, 222), (0, 0), (1600, 100))
-		self.blitBox(game.ds, self.imp.data.eraseQuestion, 0, text=self.text)
-		self.blitBox(game.ds, self.imp.data.confirmName, self.valider, text=mainEvent.nextBoxText)
+		self.blitBox(game.ds, self.imp.data.explication, 0, text='')
+
+
+		nbRetour = len(self.text) // 50
+
+		for i in range(nbRetour):
+
+			Xi = [0, 0]
+			Xi[0] = self.imp.data.explication['box'][0][0]
+			Xi[1] = self.imp.data.explication['box'][0][1] + i*32 - (nbRetour)*32/2
+
+			self.labelisation(game.ds, 
+				self.imp.data.explication['font'],
+				self.text[i*50:(i+1)*50], 
+				self.imp.data.explication['color'],
+				Xi, self.imp.data.explication['box'][1], position='center')
+
+		if nbRetour > 0:
+			Xi = [0, 0]
+			Xi[0] = self.imp.data.explication['box'][0][0]
+			Xi[1] = self.imp.data.explication['box'][0][1] + nbRetour*32 - (nbRetour)*32/2
+
+			self.labelisation(game.ds, 
+					self.imp.data.explication['font'],
+					self.text[nbRetour*50:], 
+					self.imp.data.explication['color'],
+					Xi, self.imp.data.explication['box'][1], position='center')
+
+		elif nbRetour == 0:
+			Xi = [0, 0]
+			Xi[0] = self.imp.data.explication['box'][0][0]
+			Xi[1] = self.imp.data.explication['box'][0][1]
+
+			self.labelisation(game.ds, 
+					self.imp.data.explication['font'],
+					self.text[nbRetour*50:], 
+					self.imp.data.explication['color'],
+					Xi, self.imp.data.explication['box'][1], position='center')
+
+		self.blitBox(game.ds, self.imp.data.nextBox, self.valider, text='Envoyer !')
 		self.blitFPS(game.ds)
 		pygame.display.flip()
