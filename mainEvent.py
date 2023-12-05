@@ -346,6 +346,7 @@ class ExplicationEvent(Event):
 		Event.__init__(self)
 		self.text = ''
 		self.currentPlayer = '0x413$Ae'
+		self.allSentence = ''
 
 
 	def event(self, game, mainEvent, currentPlayer):
@@ -389,6 +390,8 @@ class ExplicationEvent(Event):
 						if len(self.text) != 0: # Mais pas si c'est deja vide !
 							self.text = self.text[:-1]
 
+					self.formatText()
+
 				if event.type == KEYUP:
 					if event.key == K_LSHIFT:
 						self.lshift = False
@@ -397,6 +400,24 @@ class ExplicationEvent(Event):
 					game.gameOn, game.premainOn, mainEvent.explication = False, False, False
 
 			self.blitage(game, mainEvent)
+
+
+	def formatText(self):
+		tokens = self.text.split(' ')
+		num = -1
+		allSentence = []
+
+		while len(tokens) > 0:
+
+			nowph = tokens.pop(0)
+			num += 1
+
+			while len(tokens) > 0 and len(nowph + tokens[0]) < self.imp.data.explicationRL:
+				nowph += ' ' + tokens.pop(0)
+
+			allSentence.append(nowph)
+
+		self.allSentence = allSentence
 
 
 	def blitage(self, game, mainEvent):
@@ -408,41 +429,17 @@ class ExplicationEvent(Event):
 		self.blitBox(game.ds, self.imp.data.explication, 0, text='')
 
 
-		nbRetour = len(self.text) // 50
+		nbRetour = len(self.allSentence)
+		for i, texte in enumerate(self.allSentence):
 
-		for i in range(nbRetour):
-
-			Xi = [0, 0]
-			Xi[0] = self.imp.data.explication['box'][0][0]
-			Xi[1] = self.imp.data.explication['box'][0][1] + i*32 - (nbRetour)*32/2
+			Xi = list(self.imp.data.explication['box'][0])
+			Xi[1] += i*self.imp.data.explicationFontSize - (nbRetour)*self.imp.data.explicationFontSize/2
 
 			self.labelisation(game.ds, 
 				self.imp.data.explication['font'],
-				self.text[i*50:(i+1)*50], 
+				texte, 
 				self.imp.data.explication['color'],
 				Xi, self.imp.data.explication['box'][1], position='center')
-
-		if nbRetour > 0:
-			Xi = [0, 0]
-			Xi[0] = self.imp.data.explication['box'][0][0]
-			Xi[1] = self.imp.data.explication['box'][0][1] + nbRetour*32 - (nbRetour)*32/2
-
-			self.labelisation(game.ds, 
-					self.imp.data.explication['font'],
-					self.text[nbRetour*50:], 
-					self.imp.data.explication['color'],
-					Xi, self.imp.data.explication['box'][1], position='center')
-
-		elif nbRetour == 0:
-			Xi = [0, 0]
-			Xi[0] = self.imp.data.explication['box'][0][0]
-			Xi[1] = self.imp.data.explication['box'][0][1]
-
-			self.labelisation(game.ds, 
-					self.imp.data.explication['font'],
-					self.text[nbRetour*50:], 
-					self.imp.data.explication['color'],
-					Xi, self.imp.data.explication['box'][1], position='center')
 
 		self.blitBox(game.ds, self.imp.data.nextBox, self.valider, text='Envoyer !')
 		self.blitFPS(game.ds)

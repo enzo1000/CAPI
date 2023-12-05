@@ -308,6 +308,8 @@ class import_data():
 
 	# MAIN DATA : EXPLICATION EVENT
 	limitExplication = 200
+	explicationRL = 38
+	explicationFontSize = 32
 	explication = {'images' : image.sprit_800_400,
 		'imgBox': ((396, 200), None),
 		'text'  : '0x413$Ae',
