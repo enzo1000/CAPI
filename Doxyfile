@@ -9,8 +9,8 @@ PROJECT_NUMBER      = 1.0
 # Output directory for the generated documentation
 OUTPUT_DIRECTORY    = documentation
 
-# Source code directory ???
-INPUT               =
+# Source code directory
+# INPUT             =
 
 # Recurse through all subdirectories
 RECURSIVE           = YES
