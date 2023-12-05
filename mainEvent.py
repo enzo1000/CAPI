@@ -19,7 +19,7 @@ class MainEvent(Event):
 		Event.__init__(self)
 
 		self.endTaskEvent = EndTaskEvent()
-		self.explcationEvent = ExplicationEvent()
+		self.explicationEvent = ExplicationEvent()
 
 		self.endTask = False
 		self.explication = False
@@ -231,6 +231,7 @@ class MainEvent(Event):
 			import_json.writeJson(self.backlogName, self.backlog)
 		else:
 			self.currentTask += 1
+			self.loop = 0
 			self.currentPlayer = 0
 			self.playerVote = []
 			print('')
@@ -241,31 +242,42 @@ class MainEvent(Event):
 		vmin = min(values)
 		vmax = max(values)
 
+		# Recuperation des players ayant voter l'extreme Minimum
 		playerMin = []
 		oldIndex = 0
 		for _ in range(values.count(vmin)):
 			curIndex = self.playerVote[oldIndex:].index(vmin) + oldIndex
 			playerMin.append(self.param['list_name'][curIndex])
 			oldIndex = curIndex + 1
+		print(f"Joueur valeur min [{vmin}] : {playerMin}")
 
+		# Recuperation des players ayant voter l'extreme Maximum
 		playerMax = []
 		oldIndex = 0
 		for _ in range(values.count(vmax)):
 			curIndex = self.playerVote[oldIndex:].index(vmax) + oldIndex
 			playerMax.append(self.param['list_name'][curIndex])
 			oldIndex = curIndex + 1
-
-		print(f"Joueur valeur min [{vmin}] : {playerMin}")
 		print(f"Joueur valeur min [{vmax}] : {playerMax}")
 
+		# On affiche les votes de tout le monde
 		self.nextBoxText = "Explication !"
-		self.endTask = True
 		self.endTaskEvent.event(game, self)
 
-		for player in playerMin + playerMax:
-			self.explication = True
-			self.explcationEvent.event(game, self, player)
 
+		# On demande aux extremes de s'expliquer
+		self.listExplication = dict()
+		for player in playerMin:
+			self.explicationEvent.event(game, self, player, vmin)
+		for player in playerMax:
+			self.explicationEvent.event(game, self, player, vmax)
+
+		# Presentation de toutes les explications :
+		print(f"LISTES EXPLICATIONS :")
+		for key, val in self.listExplication.items():
+			print(f"Joueur {key:16} [{val[0]}] : {val[1]}")
+
+		# On passe au prochain tour
 		self.loop += 1
 		self.currentPlayer = 0
 		self.playerVote = []
@@ -291,6 +303,7 @@ class EndTaskEvent(Event):
 		"""
 		self.nextBox = 0 # nextBox est soit la tache suivante "Ok" ou pour passer au explication "Explication"
 		self.niq = [0]*mainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-mainEvent.param['nb_name'])
+		mainEvent.endTask = True
 
 		while mainEvent.endTask:
 
@@ -344,19 +357,19 @@ class ExplicationEvent(Event):
 
 	def __init__(self):
 		Event.__init__(self)
-		self.text = ''
 		self.currentPlayer = '0x413$Ae'
-		self.allSentence = ''
 
 
-	def event(self, game, mainEvent, currentPlayer):
+	def event(self, game, mainEvent, currentPlayer, value):
 		"""
 		Methode qui affiche l'interface pour que les joueurs extremes s'explique (un par un)
 		"""
 		self.valider = 0 # bouton valider
 		self.text = ''   # Contenu de l'explication
+		self.allSentence = []
 		self.currentPlayer = currentPlayer
 		self.lshift = False
+		mainEvent.explication = True
 
 		while mainEvent.explication:
 
@@ -372,12 +385,12 @@ class ExplicationEvent(Event):
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE: 
-						mainEvent.explcation = False
+						mainEvent.explication = False
 
 					# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyVal'
 					elif event.key in self.imp.data.keyValSPACE.keys() and len(self.text) < self.imp.data.limitExplication:
 						if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
-							self.text += self.imp.data.keyValSPACE[event.key].upper()
+							self.text += self.imp.data.keyValCAP_SPACE[event.key]
 						else:           # Sinon, mettre la lettre en minuscule (par default)
 							self.text += self.imp.data.keyValSPACE[event.key]
 
@@ -390,6 +403,9 @@ class ExplicationEvent(Event):
 						if len(self.text) != 0: # Mais pas si c'est deja vide !
 							self.text = self.text[:-1]
 
+					elif event.key == K_RETURN or event.key == K_KP_ENTER:
+						mainEvent.explication = False
+
 					self.formatText()
 
 				if event.type == KEYUP:
@@ -400,6 +416,8 @@ class ExplicationEvent(Event):
 					game.gameOn, game.premainOn, mainEvent.explication = False, False, False
 
 			self.blitage(game, mainEvent)
+
+		mainEvent.listExplication[currentPlayer] = [value, self.text]
 
 
 	def formatText(self):

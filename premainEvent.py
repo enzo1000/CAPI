@@ -302,7 +302,7 @@ class SetNameEvent(Event):
 						# Ajout de la lettre si une touche du clavier est dans la liste des touche importer dans 'self.imp.data.keyVal'
 						elif event.key in self.imp.data.keyVal.keys():
 							if self.lshift: # Mettre la lettre en majuscule si LSHIFT en maintenue
-								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyVal[event.key].upper()
+								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyValCAP[event.key]
 							else:           # Sinon, mettre la lettre en minuscule (par default)
 								premainEvent.param['list_name'][self.playerOnWrite] += self.imp.data.keyVal[event.key]
 

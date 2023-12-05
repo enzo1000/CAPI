@@ -90,12 +90,25 @@ class import_data():
 	keyValNUM = {K_0:'0',   K_1:'1',   K_2:'2',   K_3:'3',   K_4:'4',   K_5:'5',   K_6:'6',   K_7:'7',   K_8:'8',   K_9:'9', 
 			   K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9'}
 
-	keyValALP = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
-				 K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
-				 K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z'}
+	keyVal = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
+			  K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
+			  K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z',
+			  K_0:'à', K_1:'&', K_2:'é', K_3:'#', K_4:'\'', K_5:'(', K_6:'-', K_7:'è', K_8:'_', K_9:'',
+			  K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9',
+			  K_COMMA:',', K_SEMICOLON:'', K_EXCLAIM:'!', K_RIGHTPAREN:')', K_EQUALS:'=',
+			  K_KP_PERIOD:'.', K_KP_MINUS:'-'}
 
-	keyVal      = {**keyValNUM, **keyValALP}
-	keyValSPACE = {**keyValNUM, **keyValALP, K_SPACE:' '}
+	keyValCAP = {K_a:'A', K_b:'B', K_c:'C', K_d:'D', K_e:'E', K_f:'F', K_g:'G', K_h:'H', K_i:'I', K_j:'J', 
+			  K_k:'K', K_l:'L', K_m:'M', K_n:'N', K_o:'O', K_p:'P', K_q:'Q', K_r:'R', K_s:'S', K_t:'T', 
+			  K_u:'U', K_v:'V', K_w:'W', K_x:'X', K_y:'Y', K_z:'Z',
+			  K_0:'0', K_1:'1', K_2:'2', K_3:'3', K_4:'4', K_5:'5', K_6:'6', K_7:'7', K_8:'8', K_9:'9',
+			  K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9',
+			  K_COMMA:'?', K_SEMICOLON:'.', K_EXCLAIM:'§', K_RIGHTPAREN:'°', K_EQUALS:'+',
+			  K_KP_PERIOD:'.', K_KP_MINUS:'-'}
+
+	# keyVal      = {**keyValNUM, **keyValALP}
+	keyValSPACE     = {**keyVal, K_SPACE:' '}
+	keyValCAP_SPACE = {**keyValCAP, K_SPACE:' '}
 
 	# MENU DATA
 	menu_begin = {'images' : image.sprit_600_100,
