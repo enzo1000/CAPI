@@ -19,7 +19,8 @@ class import_image():
 
 	#MAIN IMPORT
 	back_main = pygame.image.load("picture/main/back.png")
-	
+
+#Test false modification for Doxyfile
 class import_mixer():
 	chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
 
