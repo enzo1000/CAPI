@@ -35,6 +35,9 @@ class import_image():
 	sprit_160_80_Brown = (pygame.image.load(f"picture/bouton/nonon-160-80-Brown.png"), None)
 	sprit_160_80_Enc0 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C0.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C0.png"))
 	sprit_160_80_Enc1 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C1.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C1.png"))
+	sprit_80_80   = (pygame.image.load(f"picture/bouton/nonon-80-80.png"), None)
+	sprit_80_80_R = (pygame.image.load(f"picture/bouton/nonon-80-80-R.png"), None)
+	sprit_80_80_G = (pygame.image.load(f"picture/bouton/nonon-80-80-G.png"), None)
 
 	# Sprit du fond (en commum partout pour l'instant)
 	back_main = pygame.image.load("picture/main/back_lum.png")
@@ -312,12 +315,25 @@ class import_data():
 		'box'   : ((216, 296), (600, 80))}
 
 	# MAIN DATA : END TASK EVENT
-	nextBox = {'images' : (*image.sprit_160_80_G, *image.sprit_160_80_R),
-		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
+	listVotes = {'images' : image.sprit_300_80,
+		'imgBox': [((346+500*(i%2), 250+100*(i//2)), None) for i in range(10)],
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((720, 750), (160, 80))}
+		'box'   : [((354+500*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
+	caseVotes = {'images' : image.sprit_80_80,
+		'imgBox': [((656+500*(i%2), 250+100*(i//2)), None) for i in range(10)],
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : [((664+500*(i%2), 250+100*(i//2)), (80, 80)) for i in range(10)]}
+
+	nextBox = {'images' : image.sprit_300_80,
+		'imgBox': ((646, 750), (636, 748)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((650, 750), (300, 80))}
 
 	# MAIN DATA : EXPLICATION EVENT
 	limitExplication = 200

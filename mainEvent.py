@@ -335,12 +335,19 @@ class EndTaskEvent(Event):
 		self.labelisation(game.ds, self.imp.font.roboto54, f"Résumé du la tache {mainEvent.listTask[mainEvent.currentTask]}", (222, 222, 222), (0, 0), (1600, 100))
 
 		for i in range(mainEvent.param['nb_name']):
-			game.ds.blit(self.imp.data.listName['images'][self.niq[i]], self.imp.data.listName['imgBox'][i][self.niq[i]])
+			game.ds.blit(self.imp.data.listVotes['images'][0], self.imp.data.listVotes['imgBox'][i][0])
 			self.labelisation(game.ds, 
-				self.imp.data.listName['font'],
-				f"{mainEvent.param['list_name'][i]} : {mainEvent.playerVote[i]}", 
-				self.imp.data.listName['color'],
-				self.imp.data.listName['box'][i][0], self.imp.data.listName['box'][i][1], position='center')
+				self.imp.data.listVotes['font'],
+				f"  {mainEvent.param['list_name'][i]}",
+				self.imp.data.listVotes['color'],
+				self.imp.data.listVotes['box'][i][0], self.imp.data.listVotes['box'][i][1], position='left')
+
+			game.ds.blit(self.imp.data.caseVotes['images'][0], self.imp.data.caseVotes['imgBox'][i][0])
+			self.labelisation(game.ds, 
+				self.imp.data.caseVotes['font'],
+				f"{mainEvent.playerVote[i]}",
+				self.imp.data.caseVotes['color'],
+				self.imp.data.caseVotes['box'][i][0], self.imp.data.caseVotes['box'][i][1], position='center')
 
 		self.blitBox(game.ds, self.imp.data.nextBox, self.nextBox, text=mainEvent.nextBoxText)
 
