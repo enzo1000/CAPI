@@ -20,6 +20,9 @@ class Event():
 		self.spf         = np.ones(20)   # Liste contenant les 20 dernier SPF (Second Per Frame : 1/FPS)
 		self.fps         = '---'         # Attribut qui contiendra les FPS ('---' avant le premier calcul)
 		self.imp         = importation() # Attribut qui contient la class importation, qui contient tout le contient audio-visuel
+		self.clock       = pygame.time.Clock() # Attribut qui permettra de capper les FPS
+		self.param       = self.extractParam()
+
 
 		self.imp.sound.wrong.set_volume(0.1)
 		self.imp.sound.carte.set_volume(0.5)
@@ -37,7 +40,9 @@ class Event():
 			self.timeRefresh = time.time()
 			self.fps = str(int(20 / np.sum(self.spf)))
 
-		self.labelisation(ds, self.imp.font.roboto16, f"{self.fps:3} FPS", (222, 222, 222), (1600-64, 900-24), (64, 24))
+		if self.param['showFPS'] == 1 : self.labelisation(ds, self.imp.font.roboto16, f"{self.fps:3} FPS", (222, 222, 222), (1600-64, 900-24), (64, 24))
+
+		if self.param['cochecapFPS'] == 1 : self.clock.tick(self.imp.data.capFPS)
 
 	
 	def labelisation(self, display, font, text, color, X, dX, position='center'):
@@ -108,12 +113,15 @@ class Event():
 				for i in range(10):
 					param['list_name'].append(f[3+i].split(':')[1])
 				param['cocheChrono'] = int(f[13].split(':')[1])
-				param['time'] = int(f[14].split(':')[1])
+				param['time']        = int(f[14].split(':')[1])
+				param['cochecapFPS'] = int(f[15].split(':')[1])
+				param['capFPS']      = int(f[16].split(':')[1])
+				param['showFPS']     = int(f[17].split(':')[1])
 			except:
-				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60}
+				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1}
 				print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 		else:
-			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60}
+			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1}
 			print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 
 		return param
@@ -132,4 +140,7 @@ class Event():
 		[f.write(f"- Player {i+1} : {name}\n") for i, name in enumerate(self.param['list_name'])]
 		f.write(f"Prise en compte du chrono : {self.param['cocheChrono']}\n")
 		f.write(f"Temps chrono : {self.param['time']}\n")
+		f.write(f"Cap FPS : {self.param['cochecapFPS']}\n")
+		f.write(f"Valeur du cap : {self.param['capFPS']}\n")
+		f.write(f"Afficher FPS : {self.param['showFPS']}\n")
 		f.close()

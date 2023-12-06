@@ -89,6 +89,8 @@ class import_data():
 	font = import_font
 	color = import_color
 
+	capFPS = 60
+
 	keyValNUM = {K_0:'0',   K_1:'1',   K_2:'2',   K_3:'3',   K_4:'4',   K_5:'5',   K_6:'6',   K_7:'7',   K_8:'8',   K_9:'9', 
 			   K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9'}
 
