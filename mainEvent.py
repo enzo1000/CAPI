@@ -239,26 +239,26 @@ class MainEvent(Event):
 
 	def explicationPlease(self, game, values):
 		print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
-		vmin = min(values)
-		vmax = max(values)
+		self.vmin = min(values)
+		self.vmax = max(values)
 
 		# Recuperation des players ayant voter l'extreme Minimum
 		playerMin = []
 		oldIndex = 0
-		for _ in range(values.count(vmin)):
-			curIndex = self.playerVote[oldIndex:].index(vmin) + oldIndex
+		for _ in range(values.count(self.vmin)):
+			curIndex = self.playerVote[oldIndex:].index(self.vmin) + oldIndex
 			playerMin.append(self.param['list_name'][curIndex])
 			oldIndex = curIndex + 1
-		print(f"Joueur valeur min [{vmin}] : {playerMin}")
+		print(f"Joueur valeur min [{self.vmin}] : {playerMin}")
 
 		# Recuperation des players ayant voter l'extreme Maximum
 		playerMax = []
 		oldIndex = 0
-		for _ in range(values.count(vmax)):
-			curIndex = self.playerVote[oldIndex:].index(vmax) + oldIndex
+		for _ in range(values.count(self.vmax)):
+			curIndex = self.playerVote[oldIndex:].index(self.vmax) + oldIndex
 			playerMax.append(self.param['list_name'][curIndex])
 			oldIndex = curIndex + 1
-		print(f"Joueur valeur min [{vmax}] : {playerMax}")
+		print(f"Joueur valeur min [{self.vmax}] : {playerMax}")
 
 		# On affiche les votes de tout le monde
 		self.nextBoxText = "Explication !"
@@ -268,9 +268,9 @@ class MainEvent(Event):
 		# On demande aux extremes de s'expliquer
 		self.listExplication = dict()
 		for player in playerMin:
-			self.explicationEvent.event(game, self, player, vmin)
+			self.explicationEvent.event(game, self, player, self.vmin)
 		for player in playerMax:
-			self.explicationEvent.event(game, self, player, vmax)
+			self.explicationEvent.event(game, self, player, self.vmax)
 
 		# Presentation de toutes les explications :
 		print(f"LISTES EXPLICATIONS :")
@@ -332,9 +332,10 @@ class EndTaskEvent(Event):
 		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
 		"""
 		game.ds.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(game.ds, self.imp.font.roboto54, f"Résumé du la tache {mainEvent.listTask[mainEvent.currentTask]}", (222, 222, 222), (0, 0), (1600, 100))
+		self.labelisation(game.ds, self.imp.font.roboto54, f"Résumé : {mainEvent.listTask[mainEvent.currentTask]}", (222, 222, 222), (0, 0), (1600, 100))
 
 		for i in range(mainEvent.param['nb_name']):
+			# Affiche les ,oms des players
 			game.ds.blit(self.imp.data.listVotes['images'][0], self.imp.data.listVotes['imgBox'][i][0])
 			self.labelisation(game.ds, 
 				self.imp.data.listVotes['font'],
@@ -342,7 +343,13 @@ class EndTaskEvent(Event):
 				self.imp.data.listVotes['color'],
 				self.imp.data.listVotes['box'][i][0], self.imp.data.listVotes['box'][i][1], position='left')
 
-			game.ds.blit(self.imp.data.caseVotes['images'][0], self.imp.data.caseVotes['imgBox'][i][0])
+			# Permet de savoir si le player i a voter une valeur extreme
+			if   mainEvent.nextBoxText == "Explication !" and mainEvent.playerVote[i] == mainEvent.vmin : colorCase = 1
+			elif mainEvent.nextBoxText == "Explication !" and mainEvent.playerVote[i] == mainEvent.vmax : colorCase = 2
+			else : colorCase = 0
+
+			# Affiche le votes des players
+			game.ds.blit(self.imp.data.caseVotes['images'][colorCase], self.imp.data.caseVotes['imgBox'][i][colorCase])
 			self.labelisation(game.ds, 
 				self.imp.data.caseVotes['font'],
 				f"{mainEvent.playerVote[i]}",

@@ -321,13 +321,12 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : [((354+500*(i%2), 250+100*(i//2)), (300, 80)) for i in range(10)]}
-	caseVotes = {'images' : image.sprit_80_80,
-		'imgBox': [((656+500*(i%2), 250+100*(i//2)), None) for i in range(10)],
+	caseVotes = {'images' : (image.sprit_80_80[0], image.sprit_80_80_G[0], image.sprit_80_80_R[0]),
+		'imgBox': [((656+500*(i%2), 250+100*(i//2)),   (656+500*(i%2), 250+100*(i//2)),  (656+500*(i%2), 250+100*(i//2))) for i in range(10)],
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : [((664+500*(i%2), 250+100*(i//2)), (80, 80)) for i in range(10)]}
-
 	nextBox = {'images' : image.sprit_300_80,
 		'imgBox': ((646, 750), (636, 748)),
 		'text'  : '0x413$Ae',
