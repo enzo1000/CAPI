@@ -452,7 +452,7 @@ class EraseBacklogEvent(Event):
 			for event in pygame.event.get():
 
 				if event.type == MOUSEMOTION:
-					selectErase = {'Non':0, 'Oui':0}
+					self.selectErase = {'Non':0, 'Oui':0}
 					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseOui['box']) : self.selectErase['Oui'] = 1
 					if self.inBox(event.pos[0], event.pos[1], self.imp.data.eraseNon['box']) : self.selectErase['Non'] = 1
 

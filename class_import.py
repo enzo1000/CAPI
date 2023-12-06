@@ -355,6 +355,14 @@ class import_data():
 		'font'  : font.arial32,
 		'box'   : ((400, 200), (800, 400))}
 
+	# MAIN DATA : CAFE EVENT
+	fin = {'images' : image.sprit_300_80,
+		'imgBox': ((646, 750), (636, 748)),
+		'text'  : 'Sauvegarde Backlog',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((650, 750), (300, 80))}
+
 
 #SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)
 # def singleton(class_):

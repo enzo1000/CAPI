@@ -20,12 +20,15 @@ class MainEvent(Event):
 
 		self.endTaskEvent = EndTaskEvent()
 		self.explicationEvent = ExplicationEvent()
+		self.cafeEvent = CafeEvent()
 
 		self.endTask = False
 		self.explication = False
+		self.cafe = False
 
 		self.lastCarte = -1
 		self.currentChrono = time()
+		self.thereIsExplication = False 
 
 	def event(self, game):
 		"""
@@ -74,8 +77,6 @@ class MainEvent(Event):
 
 				if event.type == QUIT:
 					game.gameOn, game.mainOn = False, False
-
-
 
 			if (self.param['time'] - time() + self.currentChrono) < 0:
 				self.selectCartes(game)
@@ -173,12 +174,35 @@ class MainEvent(Event):
 			# Tout les joueurs ont jouer 
 			if self.currentPlayer == self.param['nb_name']:
 				print(f"Fin du tour : {self.loop} | vote : {self.playerVote}")
+
+
 				# On extrait les valeur contenu dans les votes :
 				values = self.playerVote.copy()
 				while '?' in values : values.pop(values.index('?'))
 				while 'CAFE' in values : values.pop(values.index('CAFE'))
 
-				if self.loop == 0 or self.param['mode'] == 0: # Premier tour ou MODE Unanimité
+
+				# Un ou plusieurs joueurs on voté pour la pause !
+				if 'CAFE' in self.playerVote: 
+					print('On fait la pause salut...')
+
+					self.playerCafe = []
+					oldIndex = 0
+					for _ in range(self.playerVote.count('CAFE')):
+						curIndex = self.playerVote[oldIndex:].index('CAFE') + oldIndex
+						self.playerCafe.append(self.param['list_name'][curIndex])
+						oldIndex = curIndex + 1
+					print(f"Joueur valeur Cafe : {self.playerCafe}")
+					self.cafe = True
+					self.cafeEvent.event(game, self)
+
+					self.currentPlayer = 0
+					game.mainOn, game.menuOn = False, True
+					import_json.writeJson(self.backlogName, self.backlog)
+
+
+				# Premier tour ou MODE Unanimité
+				elif self.loop == 0 or self.param['mode'] == 0:
 					# Tout le monde a directement voter pareil 
 					if len(set(values)) == 1:
 						print(f"Tout le monde est d'accord pour la tache {self.listTask[self.currentTask]} : {values[0]}")
@@ -190,6 +214,8 @@ class MainEvent(Event):
 						self.explicationPlease(game, values)
 						print('')
 
+
+				# Deuxième tour et MODE différents de Unanimité
 				else:
 					if self.param['mode'] == 1: # MODE Moyenne
 						self.finalValue = round(np.mean(values))
@@ -211,7 +237,6 @@ class MainEvent(Event):
 						nbmaxVal = countVote.count(maxVote) # nombre de valeur de vote demander maxVote fois
 
 						print('majo : ', voteDiff, countVote, maxVote, nbmaxVal)
-
 
 						if self.param['mode'] == 3 and maxVote > self.param['nb_name']/2: # MODE Majo Abs.
 							self.finalValue = voteDiff[countVote.index(maxVote)]
@@ -404,6 +429,7 @@ class EndTaskEvent(Event):
 
 
 
+
 class ExplicationEvent(Event):
 	"""
 	Class utilisé par MainEvent pour que les joueurs extremes s'explique (un par un)
@@ -515,5 +541,82 @@ class ExplicationEvent(Event):
 		# 		Xi, self.imp.data.explication['box'][1], position='center')
 
 		self.blitBox(game.ds, self.imp.data.nextBox, self.valider, text='Envoyer !')
+		self.blitFPS(game.ds)
+		pygame.display.flip()
+
+
+
+
+
+class CafeEvent(Event):
+	"""
+	Class utiliser par la MainEvent pour enregistrer le backlog quand un joueur demande une pause
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+
+
+	def event(self, game, mainEvent):
+		"""
+		Methode qui lance l'interface pour enregistrer le backlog quand un joueur demande une pause
+		"""
+		self.fin = 0
+		self.formatText(mainEvent)
+
+		while mainEvent.cafe:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.fin = 0
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.fin['box']) : self.fin = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.fin == 1: 
+						game.menuOn, game.mainOn, mainEvent.cafe = True, False, False
+						return None
+
+				if event.type == KEYDOWN:
+					pass #PAS DESCAPE ICI :(((
+
+				if event.type == QUIT:
+					game.gameOn, game.mainOn, mainEvent.cafe = False, False, False
+
+			self.blitage(game, mainEvent)
+
+
+	def formatText(self, mainEvent):
+		if len(mainEvent.playerVote) == 1 : self.text = f"Le joueur {mainEvent.playerCafe[0]} demande une pause !"
+		else : self.text = f"Les joueurs {', '.join(mainEvent.playerCafe[:-1])} et {mainEvent.playerCafe[-1]} demandent une pause !" 
+
+		tokens = self.text.split(' ')
+		num = -1
+		allSentence = []
+
+		while len(tokens) > 0:
+
+			nowph = tokens.pop(0)
+			num += 1
+
+			while len(tokens) > 0 and len(nowph + tokens[0]) < self.imp.data.explicationRL:
+				nowph += ' ' + tokens.pop(0)
+
+			allSentence.append(nowph)
+
+		self.allSentence = allSentence
+
+
+	def blitage(self, game, mainEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "C'est la pause !", (222, 222, 222), (0, 0), (1600, 100))
+
+		mainEvent.blitageExplication(game, self.allSentence)
+
+		self.blitBox(game.ds, self.imp.data.fin, self.fin)
+
 		self.blitFPS(game.ds)
 		pygame.display.flip()
