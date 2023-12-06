@@ -20,11 +20,11 @@ class MainEvent(Event):
 
 		self.endTaskEvent = EndTaskEvent()
 		self.explicationEvent = ExplicationEvent()
-		self.cafeEvent = CafeEvent()
+		self.endMainEvent = EndMainEvent()
 
 		self.endTask = False
 		self.explication = False
-		self.cafe = False
+		self.endMain = False
 
 		self.lastCarte = -1
 		self.currentChrono = time()
@@ -193,8 +193,8 @@ class MainEvent(Event):
 						self.playerCafe.append(self.param['list_name'][curIndex])
 						oldIndex = curIndex + 1
 					print(f"Joueur valeur Cafe : {self.playerCafe}")
-					self.cafe = True
-					self.cafeEvent.event(game, self)
+					self.endMain = True
+					self.endMainEvent.event(game, self, ending='cafe')
 
 					self.currentPlayer = 0
 					game.mainOn, game.menuOn = False, True
@@ -269,6 +269,10 @@ class MainEvent(Event):
 		if self.currentTask + 1 == self.totalTask:
 			print('C fini !')
 			print(self.backlog)
+			
+			self.endMain = True
+			self.endMainEvent.event(game, self, "ending")
+
 			self.currentPlayer = 0
 			game.mainOn, game.menuOn = False, True
 			import_json.writeJson(self.backlogName, self.backlog)
@@ -548,7 +552,7 @@ class ExplicationEvent(Event):
 
 
 
-class CafeEvent(Event):
+class EndMainEvent(Event):
 	"""
 	Class utiliser par la MainEvent pour enregistrer le backlog quand un joueur demande une pause
 	"""
@@ -557,14 +561,14 @@ class CafeEvent(Event):
 		Event.__init__(self)
 
 
-	def event(self, game, mainEvent):
+	def event(self, game, mainEvent, ending):
 		"""
 		Methode qui lance l'interface pour enregistrer le backlog quand un joueur demande une pause
 		"""
 		self.fin = 0
-		self.formatText(mainEvent)
+		self.formatText(mainEvent, ending)
 
-		while mainEvent.cafe:
+		while mainEvent.endMain:
 
 			for event in pygame.event.get():
 
@@ -574,21 +578,25 @@ class CafeEvent(Event):
 
 				if event.type == MOUSEBUTTONDOWN:
 					if self.fin == 1: 
-						game.menuOn, game.mainOn, mainEvent.cafe = True, False, False
+						game.menuOn, game.mainOn, mainEvent.endMain = True, False, False
 						return None
 
 				if event.type == KEYDOWN:
 					pass #PAS DESCAPE ICI :(((
 
 				if event.type == QUIT:
-					game.gameOn, game.mainOn, mainEvent.cafe = False, False, False
+					game.gameOn, game.mainOn, mainEvent.endMain = False, False, False
 
 			self.blitage(game, mainEvent)
 
 
-	def formatText(self, mainEvent):
-		if len(mainEvent.playerVote) == 1 : self.text = f"Le joueur {mainEvent.playerCafe[0]} demande une pause !"
-		else : self.text = f"Les joueurs {', '.join(mainEvent.playerCafe[:-1])} et {mainEvent.playerCafe[-1]} demandent une pause !" 
+	def formatText(self, mainEvent, ending):
+
+		if ending == 'cafe':
+			if len(mainEvent.playerVote) == 1 : self.text = f"Le joueur {mainEvent.playerCafe[0]} demande une pause !"
+			else : self.text = f"Les joueurs {', '.join(mainEvent.playerCafe[:-1])} et {mainEvent.playerCafe[-1]} demandent une pause !"
+		if ending == 'ending':
+			self.text = "Toutes les taches du Backlog sont finis !"
 
 		tokens = self.text.split(' ')
 		num = -1
