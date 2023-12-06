@@ -115,7 +115,7 @@ class MainEvent(Event):
 		display.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(display, self.imp.font.roboto54, "Main", (222, 222, 222), (0, 0), (1600, 100))
 		
-		self.blitBox(display, self.imp.data.currentTime, text=self.strChrono(int(self.param['time'] - time() + self.currentChrono)))
+		if self.param['cocheChrono'] == 1 : self.blitBox(display, self.imp.data.currentTime, text=self.strChrono(int(self.param['time'] - time() + self.currentChrono)))
 
 		self.blitBox(display, self.imp.data.task)
 		self.blitBox(display, self.imp.data.currentTask, text=f"  {self.listTask[self.currentTask]}", position='left')
@@ -153,7 +153,7 @@ class MainEvent(Event):
 		select = None
 
 		# On regarde si le joueur a cliquer sur une cartes ou si il a plus de temps pour repondre
-		if sum(self.activCartes) == 1 or (self.param['time'] - time() + self.currentChrono) < 0:
+		if sum(self.activCartes) == 1 or (self.param['time'] - time() + self.currentChrono) < 0 and self.param['cocheChrono'] == 1:
 
 			# On selectionne 'interro' si le joueur n'a pas cliquer a temps
 			if (self.param['time'] - time() + self.currentChrono) < 0 : select = 'intero'
@@ -236,6 +236,7 @@ class MainEvent(Event):
 		"""
 		Methode utiliser par selecCartes pour changer de tache quand une est finis
 		"""
+		self.thereIsExplication = False
 		self.nextBoxText = "Tache Suivante"
 		self.endTask = True
 		self.endTaskEvent.event(game, self)
@@ -279,7 +280,6 @@ class MainEvent(Event):
 
 		# On affiche les votes de tout le monde
 		self.nextBoxText = "Explication !"
-		self.thereIsExplication = False
 		self.endTaskEvent.event(game, self)
 
 
@@ -296,7 +296,7 @@ class MainEvent(Event):
 			print(f"Joueur {key:16} : {val}")
 
 		self.thereIsExplication = True
-		self.nextBoxText = "Tache Suivante !"
+		self.nextBoxText = "Prochain tour !"
 		self.endTaskEvent.event(game, self)
 
 
@@ -364,6 +364,10 @@ class EndTaskEvent(Event):
 		"""
 		game.ds.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(game.ds, self.imp.font.roboto54, f"Résumé : {mainEvent.listTask[mainEvent.currentTask]}", (222, 222, 222), (0, 0), (1600, 100))
+
+		if mainEvent.nextBoxText == 'Tache Suivante':
+			self.blitBox(game.ds, self.imp.data.finalValue, 0, text=f"{self.imp.data.listMode['text'][mainEvent.param['mode']]} :")
+			self.blitBox(game.ds, self.imp.data.caseValue, 0, text=str(mainEvent.finalValue))
 
 		for i in range(mainEvent.param['nb_name']):
 			# Affiche les ,oms des players

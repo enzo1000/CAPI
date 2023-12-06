@@ -21,7 +21,8 @@ class import_image():
 	# - NaN             -> Bouton "inactif" spécial pour les pseudos des joueur en trop
 	# - R               -> Bouton en rouge (128) au lieu de gris
 	# - G               -> Bouton en vert (128) au lieu de gris
-	# - Suffixe Enc     -> Encoche (0 non-coché, 1 coché) 
+	# - Suffixe Enc     -> Encoche (0 non-coché, 1 coché)
+	sprit_900_80 = (pygame.image.load(f"picture/bouton/nonon-900-80.png"), None)
 	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
 	sprit_600_80_Brown = (pygame.image.load(f"picture/bouton/nonon-600-80-Brown.png"), None)
@@ -29,6 +30,7 @@ class import_image():
 	sprit_400_80 = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
 	sprit_300_80 = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
 	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
+	sprit_240_80_G = (pygame.image.load(f"picture/bouton/nonon-240-80-G.png"), None)
 	sprit_160_80 = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
 	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"),  pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
 	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"),  pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
@@ -70,14 +72,10 @@ class import_mixer():
 
 
 class import_font():
-	Karma48 = pygame.font.Font("font/KarmaFuture.ttf", 48)
+	machine48 = pygame.font.Font("font/machine_.ttf", 48)
 
 	arial32 = pygame.font.Font("font/arial.ttf", 32)
 	arial64 = pygame.font.Font("font/arial.ttf", 64)
-
-	goodc32 = pygame.font.Font("font/Good Choice.ttf", 32)
-	goodc48 = pygame.font.Font("font/Good Choice.ttf", 48)
-	goodc84 = pygame.font.Font("font/Good Choice.ttf", 84)
 
 	roboto16 = pygame.font.Font("font/Roboto-Light.ttf", 16)
 	roboto32 = pygame.font.Font("font/Roboto-Light.ttf", 32)
@@ -282,40 +280,51 @@ class import_data():
 	yCartes = np.linspace(650, 650, 12).astype(int)  - int(dimCartes[1]/2)
 	dxActiv, dyActiv = [0, -200]
 
-	currentTime = {'images' : image.sprit_160_80_Brown,
-		'imgBox': ((36, 50), (None, None)),
+	currentTime = {'images' : image.sprit_160_80,
+		'imgBox': ((36, 41), (None, None)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
-		'font'  : font.Karma48,
-		'box'   : ((48, 45), (160, 80))}
+		'font'  : font.machine48,
+		'box'   : ((44, 45), (160, 80))}
 
-	task = {'images' : image.sprit_160_80_Brown,
+	task = {'images' : image.sprit_160_80,
 		'imgBox': ((36, 200), (None, None)),
 		'text'  : 'Tache :',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((40, 200), (160, 80))}
-	currentTask = {'images' : image.sprit_600_80_Brown,
+	currentTask = {'images' : image.sprit_900_80,
 		'imgBox': ((212, 200), (None, None)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((216, 200), (600, 80))}
-
-	mainPlayer = {'images' : image.sprit_160_80_Brown,
+		'box'   : ((216, 200), (900, 80))}
+	mainPlayer = {'images' : image.sprit_160_80,
 		'imgBox': ((36, 296), (None, None)),
 		'text'  : 'Joueur :',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((40, 296), (160, 80))}
-	currentMainPlayer = {'images' : image.sprit_600_80_Brown,
+	currentMainPlayer = {'images' : image.sprit_300_80,
 		'imgBox': ((212, 296), (None, None)),
 		'text'  : '0x413$Ae',
 		'color' : color.noir,
 		'font'  : font.roboto32,
-		'box'   : ((216, 296), (600, 80))}
+		'box'   : ((216, 296), (300, 80))}
 
 	# MAIN DATA : END TASK EVENT
+	finalValue = {'images' : image.sprit_240_80_G,
+		'imgBox': ((591, 150), (581, 148)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((599, 150), (240, 80))}
+	caseValue  = {'images' : image.sprit_80_80_G,
+		'imgBox': ((841, 150), (831, 148)),
+		'text'  : '0x413$Ae',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((845, 150), (80, 80))}
 	listVotes = {'images' : image.sprit_300_80,
 		'imgBox': [((346+500*(i%2), 250+100*(i//2)), None) for i in range(10)],
 		'text'  : '0x413$Ae',
