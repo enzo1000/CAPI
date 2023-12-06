@@ -91,6 +91,23 @@ class MainEvent(Event):
 		else : return f"-'--\""
 
 
+	def blitageExplication(self, game, sentence):
+
+		self.blitBox(game.ds, self.imp.data.explication, 0, text='')
+
+		nbRetour = len(sentence)
+		for i, texte in enumerate(sentence):
+
+			Xi = list(self.imp.data.explication['box'][0])
+			Xi[1] += i*self.imp.data.explicationFontSize - (nbRetour)*self.imp.data.explicationFontSize/2
+
+			self.labelisation(game.ds, 
+				self.imp.data.explication['font'],
+				texte, 
+				self.imp.data.explication['color'],
+				Xi, self.imp.data.explication['box'][1], position='center')
+
+
 	def blitage(self, display):
 		"""
 		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
@@ -262,6 +279,7 @@ class MainEvent(Event):
 
 		# On affiche les votes de tout le monde
 		self.nextBoxText = "Explication !"
+		self.thereIsExplication = False
 		self.endTaskEvent.event(game, self)
 
 
@@ -275,9 +293,15 @@ class MainEvent(Event):
 		# Presentation de toutes les explications :
 		print(f"LISTES EXPLICATIONS :")
 		for key, val in self.listExplication.items():
-			print(f"Joueur {key:16} [{val[0]}] : {val[1]}")
+			print(f"Joueur {key:16} : {val}")
+
+		self.thereIsExplication = True
+		self.nextBoxText = "Tache Suivante !"
+		self.endTaskEvent.event(game, self)
+
 
 		# On passe au prochain tour
+		self.thereIsExplication = False
 		self.loop += 1
 		self.currentPlayer = 0
 		self.playerVote = []
@@ -294,7 +318,6 @@ class EndTaskEvent(Event):
 		Event.__init__(self)
 		self.nextBox = 0
 
-
 	def event(self, game, mainEvent):
 		"""
 		Methode qui affiche les votes de chacun avant de continuer 
@@ -304,14 +327,22 @@ class EndTaskEvent(Event):
 		self.nextBox = 0 # nextBox est soit la tache suivante "Ok" ou pour passer au explication "Explication"
 		self.niq = [0]*mainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-mainEvent.param['nb_name'])
 		mainEvent.endTask = True
+		self.select = None
 
 		while mainEvent.endTask:
 
 			for event in pygame.event.get():
 
 				if event.type == MOUSEMOTION:
+					# Survol de nextBox
 					self.nextBox = 0
-					if self.inBox(event.pos[0], event.pos[1], self.imp.data.nextBox['box']) : self.nextBox = 1	# Survol nextBox
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.nextBox['box']) : 
+						self.nextBox = 1	
+					# Survol des votes
+					self.select = None
+					for i in range(mainEvent.param['nb_name']):
+						if self.inBox(event.pos[0], event.pos[1], self.imp.data.listVotes['box'][i]) or self.inBox(event.pos[0], event.pos[1], self.imp.data.caseVotes['box'][i]):
+							self.select = i
 
 				if event.type == MOUSEBUTTONDOWN:
 					if self.nextBox == 1: # Si on appuie sur nextBox
@@ -344,12 +375,13 @@ class EndTaskEvent(Event):
 				self.imp.data.listVotes['box'][i][0], self.imp.data.listVotes['box'][i][1], position='left')
 
 			# Permet de savoir si le player i a voter une valeur extreme
-			if   mainEvent.nextBoxText == "Explication !" and mainEvent.playerVote[i] == mainEvent.vmin : colorCase = 1
-			elif mainEvent.nextBoxText == "Explication !" and mainEvent.playerVote[i] == mainEvent.vmax : colorCase = 2
+			if   mainEvent.nextBoxText != "Tache Suivante" and mainEvent.playerVote[i] == mainEvent.vmin : colorCase = 1
+			elif mainEvent.nextBoxText != "Tache Suivante" and mainEvent.playerVote[i] == mainEvent.vmax : colorCase = 2
+			elif mainEvent.playerVote[i] == '?' : colorCase = 3
 			else : colorCase = 0
 
 			# Affiche le votes des players
-			game.ds.blit(self.imp.data.caseVotes['images'][colorCase], self.imp.data.caseVotes['imgBox'][i][colorCase])
+			game.ds.blit(self.imp.data.caseVotes['images'][colorCase], self.imp.data.caseVotes['imgBox'][i][0])
 			self.labelisation(game.ds, 
 				self.imp.data.caseVotes['font'],
 				f"{mainEvent.playerVote[i]}",
@@ -357,6 +389,10 @@ class EndTaskEvent(Event):
 				self.imp.data.caseVotes['box'][i][0], self.imp.data.caseVotes['box'][i][1], position='center')
 
 		self.blitBox(game.ds, self.imp.data.nextBox, self.nextBox, text=mainEvent.nextBoxText)
+
+		if mainEvent.thereIsExplication and self.select is not None and mainEvent.param['list_name'][self.select] in mainEvent.listExplication.keys():
+			# self.blitBox(game.ds, self.imp.data.explication, 0, text=mainEvent.listExplication[mainEvent.param['list_name'][self.select]])
+			mainEvent.blitageExplication(game, mainEvent.listExplication[mainEvent.param['list_name'][self.select]])
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()		
@@ -431,7 +467,7 @@ class ExplicationEvent(Event):
 
 			self.blitage(game, mainEvent)
 
-		mainEvent.listExplication[currentPlayer] = [value, self.text]
+		mainEvent.listExplication[currentPlayer] = self.allSentence
 
 
 	def formatText(self):
@@ -458,20 +494,21 @@ class ExplicationEvent(Event):
 		"""
 		game.ds.blit(self.imp.image.back_main, (0, 0))
 		self.labelisation(game.ds, self.imp.font.roboto54, f"Explication de {self.currentPlayer}", (222, 222, 222), (0, 0), (1600, 100))
-		self.blitBox(game.ds, self.imp.data.explication, 0, text='')
 
 
-		nbRetour = len(self.allSentence)
-		for i, texte in enumerate(self.allSentence):
+		mainEvent.blitageExplication(game, self.allSentence)
 
-			Xi = list(self.imp.data.explication['box'][0])
-			Xi[1] += i*self.imp.data.explicationFontSize - (nbRetour)*self.imp.data.explicationFontSize/2
+		# nbRetour = len(self.allSentence)
+		# for i, texte in enumerate(self.allSentence):
 
-			self.labelisation(game.ds, 
-				self.imp.data.explication['font'],
-				texte, 
-				self.imp.data.explication['color'],
-				Xi, self.imp.data.explication['box'][1], position='center')
+		# 	Xi = list(self.imp.data.explication['box'][0])
+		# 	Xi[1] += i*self.imp.data.explicationFontSize - (nbRetour)*self.imp.data.explicationFontSize/2
+
+		# 	self.labelisation(game.ds, 
+		# 		self.imp.data.explication['font'],
+		# 		texte, 
+		# 		self.imp.data.explication['color'],
+		# 		Xi, self.imp.data.explication['box'][1], position='center')
 
 		self.blitBox(game.ds, self.imp.data.nextBox, self.valider, text='Envoyer !')
 		self.blitFPS(game.ds)
