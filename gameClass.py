@@ -14,6 +14,7 @@ class GameClass():
 		self.ds = pygame.display.set_mode(displayXY)
 		# Nom de la fenètre
 		pygame.display.set_caption(displayCaption)
+		pygame.display.set_icon(pygame.image.load("picture/icon/icon128.png"))
 
 		self.gameOn    = True
 		self.menuOn    = False
