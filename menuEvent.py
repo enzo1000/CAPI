@@ -4,9 +4,6 @@ from pygame.locals import *
 
 from event import Event
 
-from fil_to_delete import dico, revers
-
-
 class MenuEvent(Event):
 	"""
 	Classe MenuEvent hérité de Event
@@ -61,11 +58,6 @@ class MenuEvent(Event):
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : 
 						game.gameOn, game.menuOn = False, False
-					else :
-						if event.key in revers.keys():
-							print(f"Pour l'entree : {event.key} -> {revers[event.key]}")
-						else:
-							print(f"Entree {event.key} inconnu")
 
 				# Detecte le clique sur la croix qui ferme l'appli
 				if event.type == QUIT:
