@@ -366,17 +366,17 @@ class import_data():
 		'box'   : ((650, 750), (300, 80))}
 
 
-#SI ON VEUT UTILISER UN SINGLETON (changement ici et dans main capi)
-# def singleton(class_):
-#     instances = {}
-#     def getinstance(*args, **kwargs):
-#         if class_ not in instances:
-#             instances[class_] = class_(*args, **kwargs)
-#         return instances[class_]
-#     return getinstance
+#Singleton
+def singleton(class_):
+	instances = {}
+	def getinstance(*args, **kwargs):
+		if class_ not in instances:
+			instances[class_] = class_(*args, **kwargs)
+		return instances[class_]
+	return getinstance
 
 
-#@singleton
+@singleton
 class importation():
 	image = import_image
 	color = import_color

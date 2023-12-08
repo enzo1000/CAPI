@@ -5,6 +5,8 @@ from import_json import processDic
 from import_json import findAllJson
 from import_json import writeJson
 
+from factoryEvent import FactoryEvent
+
 class TestStringMethods(unittest.TestCase):
     #Test ayant pour but de vérifier le nombre de tache réalisés dans un dictionnaire
     # Retour attendu :
@@ -56,6 +58,14 @@ class TestStringMethods(unittest.TestCase):
 
         os.remove(f"./{Folderpath}/{fakeDicoName}.json")
         os.rmdir(Folderpath)
+
+    def test_singleton_factory(self):
+        factory = FactoryEvent()
+        menu = factory.eventConstructor('Menu')
+        preMain = factory.eventConstructor('preMain')
+
+        self.assertEqual(menu.imp, preMain.imp)
+        self.assertIs(menu.imp, preMain.imp)
 
 if __name__ == '__main__':
     unittest.main()
