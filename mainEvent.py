@@ -78,7 +78,7 @@ class MainEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.mainOn = False, False
 
-			if (self.param['time'] - time() + self.currentChrono) < 0:
+			if (self.param['time'] - time() + self.currentChrono) < 0 and self.param['cocheChrono'] == 1:
 				self.selectCartes(game)
 
 			self.blitage(game.ds)
@@ -157,7 +157,7 @@ class MainEvent(Event):
 		if sum(self.activCartes) == 1 or (self.param['time'] - time() + self.currentChrono) < 0 and self.param['cocheChrono'] == 1:
 
 			# On selectionne 'interro' si le joueur n'a pas cliquer a temps
-			if (self.param['time'] - time() + self.currentChrono) < 0 : select = 'intero'
+			if (self.param['time'] - time() + self.currentChrono) < 0 and self.param['cocheChrono'] == 1 : select = 'intero'
 			else : select = self.imp.image.labelCartes[np.where(self.activCartes == 1)[0][0]]
 
 			print(f"TOUR {self.loop} : Player {self.param['list_name'][self.currentPlayer]} vote {select} pour la task {self.listTask[self.currentTask]}")
