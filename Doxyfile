@@ -15,11 +15,25 @@ OUTPUT_DIRECTORY    = documentation
 # Recurse through all subdirectories
 RECURSIVE           = YES
 
+#Personal changes
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_JAVA   = YES
+EXTRACT_ALL            = YES
+HIDE_SCOPE_NAMES       = YES
+SORT_BRIEF_DOCS        = YES
+
 # File patterns to include/exclude
 FILE_PATTERNS       = *.py
 
 # Exclude specific directories
 EXCLUDE             = venv
+
+EXCLUDE_PATTERNS  = */.github/*
+EXCLUDE_PATTERNS  += */data/*
+EXCLUDE_PATTERNS  += */diagram/*
+EXCLUDE_PATTERNS  += */font/*
+EXCLUDE_PATTERNS  += */picture/*
+EXCLUDE_PATTERNS  += */sound/*
 
 # Generate a compound index
 GENERATE_HTML       = YES
