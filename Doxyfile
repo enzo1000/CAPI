@@ -26,14 +26,14 @@ SORT_BRIEF_DOCS        = YES
 FILE_PATTERNS       = *.py
 
 # Exclude specific directories
-EXCLUDE             = venv\
-                      .github\
-                      data\ 
-                      diagram\
-                      font\
-                      picture\
-                      sound
+EXCLUDE             = venv
 
+EXCLUDE_PATTERNS  = */.github/*
+EXCLUDE_PATTERNS  += */data/*
+EXCLUDE_PATTERNS  += */diagram/*
+EXCLUDE_PATTERNS  += */font/*
+EXCLUDE_PATTERNS  += */picture/*
+EXCLUDE_PATTERNS  += */sound/*
 
 # Generate a compound index
 GENERATE_HTML       = YES
