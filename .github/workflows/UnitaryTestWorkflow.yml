@@ -29,6 +29,6 @@ jobs:
 
     - name: Run tests and generate HTML report
       run: |
-        python testUnitaires.py
+        pytest testUnitaires.py
       env:
         CI: true
