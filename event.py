@@ -24,8 +24,11 @@ class Event():
 		self.param       = self.extractParam()
 
 
-		self.imp.sound.wrong.set_volume(0.1)
-		self.imp.sound.carte.set_volume(0.5)
+		try:
+			self.imp.sound.wrong.set_volume(0.1)
+			self.imp.sound.carte.set_volume(0.5)
+		except:
+			print("Audio non initialisé")
 
 
 	def blitFPS(self, ds):
