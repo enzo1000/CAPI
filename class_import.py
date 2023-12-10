@@ -61,6 +61,9 @@ class import_mixer():
 	"""
 	# Miaulement de chouqette (inutilisé pour l'instant)
 	# chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
+
+	#Debug purpose
+	pygame.init()
 	wrong = pygame.mixer.Sound("./sound/wrong.mp3")
 	carte = pygame.mixer.Sound("./sound/bruitCarte.mp3")
 
