@@ -29,7 +29,7 @@ class TestStringMethods(unittest.TestCase):
     #Test ayant pour but de vérifier la présence de json dans l'arborescence de notre ordinateur
     # Retour attendu :
     # (Dico1) {NomFichierOuvert : (Liste)[(Dico2){Tache1 : valeur, ... , Tachex : valeur}, [processDic()]]}
-    @pytest.mark.skipif(testVar == False, reason="Utilisation de processDic")
+    #@pytest.mark.skipif(testVar == False, reason="Utilisation de processDic")
     def test_findAllJson(self):
         #Créer un faux dico dans un faux dossier
         Folderpath = "testUnitaire"
@@ -62,7 +62,7 @@ class TestStringMethods(unittest.TestCase):
     #Test de l'écriture d'un fichier json à partir d'un dictionnaire
     # Retour attendu :
     # Validation
-    @pytest.mark.skipif(testVar2 == False, reason="Utilisation de findAllJson")
+    #@pytest.mark.skipif(testVar2 == False, reason="Utilisation de findAllJson")
     def test_writeJson(self):
         Folderpath = "testUnitaire"
         fakeDicoName = "dico1"

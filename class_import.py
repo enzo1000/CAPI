@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from pygame.locals import *
+from pygame import *
 
 pygame.init()
 
@@ -40,7 +41,7 @@ class import_image():
 	# Sprit du fond (en commum partout pour l'instant)
 	back_main = pygame.image.load("picture/main/back_lum.png")
 
-	# Sprit d'encoche non utiliser pour l'instant
+	# Sprit d'encoche non utilisé pour l'instant
 	# coche = [pygame.image.load("picture/pre_main/cocheOff.png"), pygame.image.load("picture/pre_main/cocheOn.png")]
 
 
@@ -59,7 +60,7 @@ class import_mixer():
 	"""
 	Importation de son
 	"""
-	# Miaulement de chouqette (inutiliser pour l'instant)
+	# Miaulement de chouqette (inutilisé pour l'instant)
 	# chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
 
 	wrong = pygame.mixer.Sound("sound/wrong.mp3")
