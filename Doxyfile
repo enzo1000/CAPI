@@ -7,7 +7,7 @@ PROJECT_NAME        = "CAPI"
 PROJECT_NUMBER      = 1.0
 
 # Output directory for the generated documentation
-OUTPUT_DIRECTORY    =
+OUTPUT_DIRECTORY    = documentation
 
 # Source code directory
 # INPUT             =
@@ -15,11 +15,25 @@ OUTPUT_DIRECTORY    =
 # Recurse through all subdirectories
 RECURSIVE           = YES
 
+#Personal changes
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_JAVA   = YES
+EXTRACT_ALL            = YES
+HIDE_SCOPE_NAMES       = YES
+SORT_BRIEF_DOCS        = YES
+
 # File patterns to include/exclude
 FILE_PATTERNS       = *.py
 
 # Exclude specific directories
-EXCLUDE             = venv
+EXCLUDE             = venv\
+                      .github\
+                      data\ 
+                      diagram\
+                      font\
+                      picture\
+                      sound
+
 
 # Generate a compound index
 GENERATE_HTML       = YES
