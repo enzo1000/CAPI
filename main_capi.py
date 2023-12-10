@@ -1,71 +1,32 @@
 #Plan Poker - Planning Poker
 #Created by Aexeos & Zozo, 15/11/2023
 
-import pygame
-import numpy as np
-from pygame.locals import *
-from func_capi import *
-from time import time
-from random import random as rdm
-import pickle
+from gameClass import GameClass
+import factoryEvent as FE
 
 #INIT DISPLAY
-dx, dy = 1600, 900
-pygame.init()
-ds = pygame.display.set_mode((dx, dy))
-pygame.display.set_caption('Plan Poker')
-
-#GAME VARIABLES
-
-#LOOP VARIABLES
-game_on = True
-mouse = {'x' : 0, 'y' : 0}
-
-#Init Cards default value
-activCards = np.zeros(12).astype(int)
-
-open_event = {'menu' : True, 'main' : False}
-
-#GAME EVENT
-while game_on:
-
-	#MENU EVENT
-	while open_event['menu']:
-		for event in pygame.event.get():
-
-			if event.type == MOUSEMOTION:
-				mouse['x'] = event.pos[0]
-				mouse['y'] = event.pos[1]
-
-			if event.type == KEYDOWN:
-				if event.key == K_p:
-					open_event['menu'], open_event['main'] = False, True
-
-			if event.type == QUIT:
-				game_on, open_event['menu'] = False, False
-
-		blitage_menu(ds)
+#imp = importation()	# SI ON VEUT UTILISER UN SINGLETON ICI
 
 
-	#MAIN EVENT
-	while open_event['main']:
-		for event in pygame.event.get():
-			if event.type == KEYDOWN:
-				if event.key == K_ESCAPE:
-					open_event['main'], open_event['menu'] = False, True
+# On créer l'instance GameClass qui va gérer plusieurs paramètre de notre appli (notament la gestion de la fenètre)
+game = GameClass((1600, 900), 'Plan Poker', beginBy='menu')
 
-			if event.type == MOUSEMOTION:
-				mouse['x'] = event.pos[0]
-				mouse['y'] = event.pos[1]
-				activCards = motionInCartes(mouse, activCards)
+# On créer une instance de chaque Event de notre appli
+factory = FE.FactoryEvent()
+menu    = factory.eventConstructor('Menu')
+premain = factory.eventConstructor('preMain')
+main    = factory.eventConstructor('Main')
 
-			if event.type == MOUSEBUTTONDOWN:
-				select = selectCartes(activCards)
 
-			if event.type == QUIT:
-				game_on, open_event['main'] = False, False
+# Lancement de l'appli !
+while game.gameOn:
 
-		blitage_main(ds, activCards)
+	# Menu event
+	if game.menuOn    : menu.event(game)
 
-#EXPORT DATA
-#Json placeholder
+	# Pre-main event
+	if game.premainOn : premain.event(game)
+
+	# Main event
+	if game.mainOn    : main.event(game)
+
