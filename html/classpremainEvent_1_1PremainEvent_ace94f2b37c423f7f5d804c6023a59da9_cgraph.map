@@ -1,0 +1,26 @@
+<map id="event" name="event">
+<area shape="rect" id="node1" title=" " alt="" coords="5,570,64,597"/>
+<area shape="rect" id="node2" href="$classmainEvent_1_1MainEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="143,110,357,137"/>
+<area shape="rect" id="node8" href="$classmenuEvent_1_1MenuEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="139,234,361,261"/>
+<area shape="rect" id="node9" href="$classpremainEvent_1_1PremainEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="217,169,283,196"/>
+<area shape="rect" id="node10" href="$classpremainEvent_1_1SetBacklogEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="112,672,388,698"/>
+<area shape="rect" id="node11" href="$classpremainEvent_1_1EraseBacklogEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="147,286,353,327"/>
+<area shape="rect" id="node12" href="$classpremainEvent_1_1SetModeEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="120,722,380,749"/>
+<area shape="rect" id="node13" href="$classmainEvent_1_1EndTaskEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="133,352,367,378"/>
+<area shape="rect" id="node14" href="$classmainEvent_1_1ExplicationEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="123,402,377,429"/>
+<area shape="rect" id="node15" href="$classmainEvent_1_1EndMainEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="131,453,369,480"/>
+<area shape="rect" id="node16" href="$classpremainEvent_1_1SetNbPlayerEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="151,504,349,546"/>
+<area shape="rect" id="node17" href="$classpremainEvent_1_1SetNameEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="119,570,381,597"/>
+<area shape="rect" id="node18" href="$classpremainEvent_1_1SetChronoEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="115,621,385,648"/>
+<area shape="rect" id="node19" href="$classmenuEvent_1_1MenuEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="149,824,351,866"/>
+<area shape="rect" id="node21" href="$classmenuEvent_1_1MenuEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="447,816,657,858"/>
+<area shape="rect" id="node22" href="$classpremainEvent_1_1PremainEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="505,933,599,960"/>
+<area shape="rect" id="node23" href="$classpremainEvent_1_1PremainEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="197,890,303,917"/>
+<area shape="rect" id="node24" href="$classevent_1_1Event.html#a83c4fb77eda71cdd6f7d5c4e7bb7cc93" title=" " alt="" coords="162,992,338,1018"/>
+<area shape="rect" id="node3" href="$classevent_1_1Event.html#ad0e96a3b44dc98f6a014767d4c7f0302" title=" " alt="" coords="477,356,627,382"/>
+<area shape="rect" id="node4" href="$classevent_1_1Event.html#a89317052c89756040bfe6985d5317136" title=" " alt="" coords="716,432,896,458"/>
+<area shape="rect" id="node5" href="$classevent_1_1Event.html#ad3950b0f977a17647b3ac47bc3fa7e78" title=" " alt="" coords="477,457,627,484"/>
+<area shape="rect" id="node6" href="$classpremainEvent_1_1PremainEvent.html#abb6331ad7267199f40500b193b9509ff" title=" " alt="" coords="509,52,595,78"/>
+<area shape="rect" id="node7" href="$classmainEvent_1_1MainEvent.html#ab00ed983abcc23cdc1e21f84e4d7e148" title=" " alt="" coords="436,102,668,129"/>
+<area shape="rect" id="node20" href="$classevent_1_1Event.html#a3cce9f98254d40148d334ba9706c3045" title=" " alt="" coords="481,882,623,909"/>
+</map>

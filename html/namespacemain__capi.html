@@ -71,130 +71,82 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a42ffc99dc173f0b30eea49a044dc2373"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a42ffc99dc173f0b30eea49a044dc2373">activCards</a> = np.zeros(12).astype(int)</td></tr>
-<tr class="separator:a42ffc99dc173f0b30eea49a044dc2373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ab47e54c2f73ad4c0eb3974709721cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a4ab47e54c2f73ad4c0eb3974709721cd">ds</a> = pygame.display.set_mode((<a class="el" href="namespacemain__capi.html#aacddc911cdfe5cd5ec97b084754542d4">dx</a>, <a class="el" href="namespacemain__capi.html#a22b1a06ae09d552a5ca668a07885ebf1">dy</a>))</td></tr>
-<tr class="separator:a4ab47e54c2f73ad4c0eb3974709721cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacddc911cdfe5cd5ec97b084754542d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#aacddc911cdfe5cd5ec97b084754542d4">dx</a></td></tr>
-<tr class="separator:aacddc911cdfe5cd5ec97b084754542d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22b1a06ae09d552a5ca668a07885ebf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a22b1a06ae09d552a5ca668a07885ebf1">dy</a></td></tr>
-<tr class="separator:a22b1a06ae09d552a5ca668a07885ebf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86afd6df204aa142b426dac4ab34c205"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a86afd6df204aa142b426dac4ab34c205">game_on</a> = True</td></tr>
-<tr class="separator:a86afd6df204aa142b426dac4ab34c205"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaabe7747b841ea908fca8021c63e3d20"><td class="memItemLeft" align="right" valign="top">dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#aaabe7747b841ea908fca8021c63e3d20">mouse</a> = {'x' : 0, 'y' : 0}</td></tr>
-<tr class="separator:aaabe7747b841ea908fca8021c63e3d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a708d58bebeb179c9ff2e1af76cb78c9b"><td class="memItemLeft" align="right" valign="top">dictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a708d58bebeb179c9ff2e1af76cb78c9b">open_event</a> = {'menu' : True, 'main' : False}</td></tr>
-<tr class="separator:a708d58bebeb179c9ff2e1af76cb78c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae180890d7caabe9962d544350eca4638"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#ae180890d7caabe9962d544350eca4638">select</a> = selectCartes(<a class="el" href="namespacemain__capi.html#a42ffc99dc173f0b30eea49a044dc2373">activCards</a>)</td></tr>
-<tr class="separator:ae180890d7caabe9962d544350eca4638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e69d9f53088b7b0931fda54cb5ede70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a8e69d9f53088b7b0931fda54cb5ede70">factory</a> = FE.FactoryEvent()</td></tr>
+<tr class="separator:a8e69d9f53088b7b0931fda54cb5ede70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab587deac2ae34c126e6222afedb790ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#ab587deac2ae34c126e6222afedb790ea">game</a> = <a class="el" href="classgameClass_1_1GameClass.html">GameClass</a>((1600, 900), 'Plan Poker', beginBy='<a class="el" href="namespacemain__capi.html#a905479d79c2aa8410d2fc374bc75cc5b">menu</a>')</td></tr>
+<tr class="separator:ab587deac2ae34c126e6222afedb790ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573d77b6c3d08052695c807a7021c91f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a573d77b6c3d08052695c807a7021c91f">main</a> = factory.eventConstructor('Main')</td></tr>
+<tr class="separator:a573d77b6c3d08052695c807a7021c91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a905479d79c2aa8410d2fc374bc75cc5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#a905479d79c2aa8410d2fc374bc75cc5b">menu</a> = factory.eventConstructor('Menu')</td></tr>
+<tr class="separator:a905479d79c2aa8410d2fc374bc75cc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd662f8156e677c9e15b1f4d328e9a7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemain__capi.html#abd662f8156e677c9e15b1f4d328e9a7e">premain</a> = factory.eventConstructor('preMain')</td></tr>
+<tr class="separator:abd662f8156e677c9e15b1f4d328e9a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a42ffc99dc173f0b30eea49a044dc2373"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42ffc99dc173f0b30eea49a044dc2373">&#9670;&nbsp;</a></span>activCards</h2>
+<a id="a8e69d9f53088b7b0931fda54cb5ede70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e69d9f53088b7b0931fda54cb5ede70">&#9670;&nbsp;</a></span>factory</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">activCards = np.zeros(12).astype(int)</td>
+          <td class="memname">factory = FE.FactoryEvent()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4ab47e54c2f73ad4c0eb3974709721cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ab47e54c2f73ad4c0eb3974709721cd">&#9670;&nbsp;</a></span>ds</h2>
+<a id="ab587deac2ae34c126e6222afedb790ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab587deac2ae34c126e6222afedb790ea">&#9670;&nbsp;</a></span>game</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ds = pygame.display.set_mode((<a class="el" href="namespacemain__capi.html#aacddc911cdfe5cd5ec97b084754542d4">dx</a>, <a class="el" href="namespacemain__capi.html#a22b1a06ae09d552a5ca668a07885ebf1">dy</a>))</td>
+          <td class="memname">game = <a class="el" href="classgameClass_1_1GameClass.html">GameClass</a>((1600, 900), 'Plan Poker', beginBy='<a class="el" href="namespacemain__capi.html#a905479d79c2aa8410d2fc374bc75cc5b">menu</a>')</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aacddc911cdfe5cd5ec97b084754542d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacddc911cdfe5cd5ec97b084754542d4">&#9670;&nbsp;</a></span>dx</h2>
+<a id="a573d77b6c3d08052695c807a7021c91f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a573d77b6c3d08052695c807a7021c91f">&#9670;&nbsp;</a></span>main</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">dx</td>
+          <td class="memname">main = factory.eventConstructor('Main')</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a22b1a06ae09d552a5ca668a07885ebf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22b1a06ae09d552a5ca668a07885ebf1">&#9670;&nbsp;</a></span>dy</h2>
+<a id="a905479d79c2aa8410d2fc374bc75cc5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a905479d79c2aa8410d2fc374bc75cc5b">&#9670;&nbsp;</a></span>menu</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">dy</td>
+          <td class="memname">menu = factory.eventConstructor('Menu')</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a86afd6df204aa142b426dac4ab34c205"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86afd6df204aa142b426dac4ab34c205">&#9670;&nbsp;</a></span>game_on</h2>
+<a id="abd662f8156e677c9e15b1f4d328e9a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd662f8156e677c9e15b1f4d328e9a7e">&#9670;&nbsp;</a></span>premain</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool game_on = True</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aaabe7747b841ea908fca8021c63e3d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaabe7747b841ea908fca8021c63e3d20">&#9670;&nbsp;</a></span>mouse</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">dictionary mouse = {'x' : 0, 'y' : 0}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a708d58bebeb179c9ff2e1af76cb78c9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a708d58bebeb179c9ff2e1af76cb78c9b">&#9670;&nbsp;</a></span>open_event</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">dictionary open_event = {'menu' : True, 'main' : False}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae180890d7caabe9962d544350eca4638"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae180890d7caabe9962d544350eca4638">&#9670;&nbsp;</a></span>select</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">select = selectCartes(<a class="el" href="namespacemain__capi.html#a42ffc99dc173f0b30eea49a044dc2373">activCards</a>)</td>
+          <td class="memname">premain = factory.eventConstructor('preMain')</td>
         </tr>
       </table>
 </div><div class="memdoc">
