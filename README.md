@@ -1,5 +1,5 @@
 # CAPI
-Bienvenue sur la GitHub de notre projet de "Planning Poker".
+Bienvenue sur la GitHub de notre projet de "Planning Poker". Ce page a pour but d'expliquer comment lancer le projet sans erreur.
 
 # Librairie à installer
 Dans notre projet, nous utilisons plusieurs librairies python externe à installer (via commande pip install par exemple). Nous utilisons les librairies pygame et numpy.
