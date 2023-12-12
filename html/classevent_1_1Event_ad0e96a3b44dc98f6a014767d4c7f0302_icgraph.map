@@ -1,18 +1,17 @@
 <map id="blitBox" name="blitBox">
 <area shape="rect" id="node1" title=" " alt="" coords="624,304,692,331"/>
 <area shape="rect" id="node2" href="$classmainEvent_1_1MainEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="333,493,548,520"/>
-<area shape="rect" id="node6" href="$classmenuEvent_1_1MenuEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="329,544,552,571"/>
-<area shape="rect" id="node7" href="$classmenuEvent_1_1SetOptionEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="315,5,566,32"/>
-<area shape="rect" id="node8" href="$classpremainEvent_1_1PremainEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="312,56,569,83"/>
-<area shape="rect" id="node9" href="$classpremainEvent_1_1EraseBacklogEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="338,107,543,149"/>
-<area shape="rect" id="node10" href="$classmainEvent_1_1EndTaskEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="323,173,558,200"/>
-<area shape="rect" id="node11" href="$classmainEvent_1_1ExplicationEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="313,224,568,251"/>
-<area shape="rect" id="node12" href="$classmainEvent_1_1EndMainEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="321,275,560,301"/>
-<area shape="rect" id="node13" href="$classpremainEvent_1_1SetNbPlayerEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="342,326,539,367"/>
-<area shape="rect" id="node14" href="$classpremainEvent_1_1SetNameEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="309,392,572,419"/>
-<area shape="rect" id="node15" href="$classpremainEvent_1_1SetChronoEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="305,443,576,469"/>
-<area shape="rect" id="node16" href="$classmainEvent_1_1MainEvent.html#af9c916eb9b5e16297fde967bdbe102c1" title=" " alt="" coords="333,595,548,637"/>
-<area shape="rect" id="node3" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="7,224,256,251"/>
-<area shape="rect" id="node4" href="$classmenuEvent_1_1SetOptionEvent.html#a63274842de28b70638d714ed3650f11e" title=" " alt="" coords="10,275,253,301"/>
-<area shape="rect" id="node5" href="$classpremainEvent_1_1SetModeEvent.html#aecfff5809d8cd9da64dc7f5f4b86ffa6" title=" " alt="" coords="5,325,257,352"/>
+<area shape="rect" id="node5" href="$classmenuEvent_1_1MenuEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="329,544,552,571"/>
+<area shape="rect" id="node6" href="$classpremainEvent_1_1PremainEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="312,5,569,32"/>
+<area shape="rect" id="node7" href="$classpremainEvent_1_1EraseBacklogEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="338,57,543,98"/>
+<area shape="rect" id="node8" href="$classmainEvent_1_1EndTaskEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="323,123,558,149"/>
+<area shape="rect" id="node9" href="$classmainEvent_1_1ExplicationEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="313,173,568,200"/>
+<area shape="rect" id="node10" href="$classmainEvent_1_1EndMainEvent.html#a35aea2f6bb81fea2003edb43b5e171ae" title=" " alt="" coords="321,224,560,251"/>
+<area shape="rect" id="node11" href="$classmenuEvent_1_1SetOptionEvent.html#a48070a5f1a7b618d165424a212606aa7" title=" " alt="" coords="315,275,566,301"/>
+<area shape="rect" id="node12" href="$classpremainEvent_1_1SetNbPlayerEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="342,326,539,367"/>
+<area shape="rect" id="node13" href="$classpremainEvent_1_1SetNameEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="309,392,572,419"/>
+<area shape="rect" id="node14" href="$classpremainEvent_1_1SetChronoEvent.html#af65dc39edff59fb0adbceada637c41a7" title=" " alt="" coords="305,443,576,469"/>
+<area shape="rect" id="node15" href="$classmainEvent_1_1MainEvent.html#af9c916eb9b5e16297fde967bdbe102c1" title=" " alt="" coords="333,595,548,637"/>
+<area shape="rect" id="node3" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="7,249,256,276"/>
+<area shape="rect" id="node4" href="$classpremainEvent_1_1SetModeEvent.html#aecfff5809d8cd9da64dc7f5f4b86ffa6" title=" " alt="" coords="5,300,257,327"/>
 </map>
