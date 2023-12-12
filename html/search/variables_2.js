@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['capfps_281',['capFPS',['../classclass__import_1_1import__data.html#a567da3318a72aa2fe3a8b83a823a343e',1,'class_import::import_data']]],
-  ['carte_282',['carte',['../classclass__import_1_1import__mixer.html#a873e88fc8926ef913448118cdd294c7c',1,'class_import::import_mixer']]],
-  ['cartes_283',['cartes',['../classclass__import_1_1import__image.html#a3a6f6e60d13a8826ae62d33e6e5a5642',1,'class_import::import_image']]],
-  ['clock_284',['clock',['../classevent_1_1Event.html#af761a67e9d7ce9e23381088b6f2ae893',1,'event::Event']]],
-  ['color_285',['color',['../classclass__import_1_1import__data.html#a37dbdc30935031c05304482e1be89d8f',1,'class_import.import_data.color()'],['../classclass__import_1_1importation.html#a37dbdc30935031c05304482e1be89d8f',1,'class_import.importation.color()']]],
-  ['confirm_286',['confirm',['../classpremainEvent_1_1SetNameEvent.html#a80eab7ef497bc82f028bda0b735f7727',1,'premainEvent::SetNameEvent']]],
-  ['crash64_287',['crash64',['../classclass__import_1_1import__font.html#a08899abbfa414939a02c2ec8a55c5b3a',1,'class_import::import_font']]],
-  ['currentchrono_288',['currentChrono',['../classmainEvent_1_1MainEvent.html#a2d71893993e0b1be2aefc673164308f4',1,'mainEvent::MainEvent']]],
-  ['currentplayer_289',['currentPlayer',['../classmainEvent_1_1MainEvent.html#ad5eb56675aa493203087549d54e3ab1e',1,'mainEvent.MainEvent.currentPlayer()'],['../classmainEvent_1_1ExplicationEvent.html#ad5eb56675aa493203087549d54e3ab1e',1,'mainEvent.ExplicationEvent.currentPlayer()']]],
-  ['currenttask_290',['currentTask',['../classmainEvent_1_1MainEvent.html#a5cdcb160f9e8d2eef802c74867c5f18e',1,'mainEvent::MainEvent']]]
+  ['capfps_308',['capFPS',['../classclass__import_1_1import__data.html#a567da3318a72aa2fe3a8b83a823a343e',1,'class_import::import_data']]],
+  ['carte_309',['carte',['../classclass__import_1_1import__mixer.html#a873e88fc8926ef913448118cdd294c7c',1,'class_import::import_mixer']]],
+  ['cartes_310',['cartes',['../classclass__import_1_1import__image.html#a3a6f6e60d13a8826ae62d33e6e5a5642',1,'class_import::import_image']]],
+  ['casevalue_311',['caseValue',['../classclass__import_1_1import__data.html#a1f56dc815e0101b23932bf6ad537f757',1,'class_import::import_data']]],
+  ['casevotes_312',['caseVotes',['../classclass__import_1_1import__data.html#a76776d4ad60fa71672940643ab521d60',1,'class_import::import_data']]],
+  ['clock_313',['clock',['../classevent_1_1Event.html#af761a67e9d7ce9e23381088b6f2ae893',1,'event::Event']]],
+  ['color_314',['color',['../classclass__import_1_1import__data.html#a37dbdc30935031c05304482e1be89d8f',1,'class_import.import_data.color()'],['../classclass__import_1_1importation.html#a37dbdc30935031c05304482e1be89d8f',1,'class_import.importation.color()']]],
+  ['confirm_315',['confirm',['../classpremainEvent_1_1SetNameEvent.html#a80eab7ef497bc82f028bda0b735f7727',1,'premainEvent::SetNameEvent']]],
+  ['confirmname_316',['confirmName',['../classclass__import_1_1import__data.html#a796afffb3d2fee5bed9936779114552b',1,'class_import::import_data']]],
+  ['confirmnb_317',['confirmNb',['../classclass__import_1_1import__data.html#ad158b6da019b15f256e272e47014cbfc',1,'class_import::import_data']]],
+  ['crash64_318',['crash64',['../classclass__import_1_1import__font.html#a08899abbfa414939a02c2ec8a55c5b3a',1,'class_import::import_font']]],
+  ['currentchrono_319',['currentChrono',['../classmainEvent_1_1MainEvent.html#a2d71893993e0b1be2aefc673164308f4',1,'mainEvent::MainEvent']]],
+  ['currentmainplayer_320',['currentMainPlayer',['../classclass__import_1_1import__data.html#a381c461df44688400599c56fae7e2f9f',1,'class_import::import_data']]],
+  ['currentplayer_321',['currentPlayer',['../classmainEvent_1_1MainEvent.html#ad5eb56675aa493203087549d54e3ab1e',1,'mainEvent.MainEvent.currentPlayer()'],['../classmainEvent_1_1ExplicationEvent.html#ad5eb56675aa493203087549d54e3ab1e',1,'mainEvent.ExplicationEvent.currentPlayer()']]],
+  ['currenttask_322',['currentTask',['../classclass__import_1_1import__data.html#ae54fc5db6af910663c4325b9be55e48d',1,'class_import.import_data.currentTask()'],['../classmainEvent_1_1MainEvent.html#a5cdcb160f9e8d2eef802c74867c5f18e',1,'mainEvent.MainEvent.currentTask()']]],
+  ['currenttime_323',['currentTime',['../classclass__import_1_1import__data.html#a0244aa60a34917672341decca42fe1fa',1,'class_import::import_data']]]
 ];
