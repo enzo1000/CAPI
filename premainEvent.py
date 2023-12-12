@@ -559,6 +559,8 @@ class SetModeEvent(Event):
 
 
 
+
+
 class SetChronoEvent(Event):
 	"""
 	Class utilisé par PremainEvent pour le changement de temps du chrono

@@ -137,6 +137,57 @@ class import_data():
 	defaultColors = [(64, 64, 64), (0, 0, 0)]
 	activColor = (128, 128, 128)
 
+	# MENU DATA : OPTION EVENT
+	volume = {'images' : image.sprit_400_80,
+		'imgBox'   : ((346, 200), (336, 198)),
+		'text'  : 'Effet Sonore :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((350, 200), (400, 80))}
+	cocheVolume = {'images' : (*image.sprit_160_80_Enc0, *image.sprit_160_80_Enc1),
+		'imgBox' : ((766, 200), (756, 198), (766, 200), (756, 198)),
+		'text'   : '',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((770, 200), (160, 80))}
+	setVolume = {'images' : image.sprit_300_80,
+		'imgBox' : ((946, 200), (936, 198)),
+		'text'   : '0x413$Ae',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((950, 200), (300, 80))}
+
+	showFPS = {'images' : image.sprit_400_80,
+		'imgBox'   : ((346, 350), (336, 348)),
+		'text'  : 'Afficher FPS :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((350, 350), (400, 80))}
+	cocheShowFPS = {'images' : (*image.sprit_160_80_Enc0, *image.sprit_160_80_Enc1),
+		'imgBox' : ((766, 350), (756, 348), (766, 350), (756, 348)),
+		'text'   : '',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((770, 350), (160, 80))}
+
+	capFPSbox = {'images' : image.sprit_400_80,
+		'imgBox'   : ((346, 500), (336, 498)),
+		'text'  : 'Blocker FPS :',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((350, 500), (400, 80))}
+	cocheCapFPS = {'images' : (*image.sprit_160_80_Enc0, *image.sprit_160_80_Enc1),
+		'imgBox' : ((766, 500), (756, 498), (766, 500), (756, 498)),
+		'text'   : '',
+		'color'  : color.noir,
+		'font'   : font.roboto32,
+		'box'    : ((770, 500), (160, 80))}
+
+
+
+
+
+
 	# PRE-MAIN DATA
 	player = {'images' : image.sprit_400_80,
 		'imgBox'   : ((346, 150), (336, 148)),

@@ -31,6 +31,8 @@ class MenuEvent(Event):
 	def __init__(self):
 		Event.__init__(self)
 		self.resetSelect()
+		self.setOptionEvent = SetOptionEvent()
+		self.setOption = False
 
 	def event(self, game):
 		"""
@@ -51,7 +53,7 @@ class MenuEvent(Event):
 				# Detecte le clique de la souris
 				if event.type == MOUSEBUTTONDOWN:
 					if self.select['begin']  : game.menuOn, game.premainOn = False, True
-					if self.select['langue'] : print('Langue Event Not Make')
+					if self.select['option'] : self.setOption = True
 					if self.select['quit']   : game.gameOn, game.menuOn = False, False
 
 				# Detecte l'appuie sur une touche du clavier
@@ -63,6 +65,9 @@ class MenuEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.menuOn = False, False
 
+
+			if self.setOption : self.setOptionEvent.event(game, self)
+
 			self.blitage(game.ds)
 
 
@@ -71,7 +76,7 @@ class MenuEvent(Event):
 		Methode qui permet d'observer si la souris sélectionne un choix
 		"""
 		if   self.inBox(x, y, self.imp.data.menu_begin['box']) : self.select['begin']  = 1
-		elif self.inBox(x, y, self.imp.data.menu_langue['box']) : self.select['langue'] = 1
+		elif self.inBox(x, y, self.imp.data.menu_langue['box']) : self.select['option'] = 1
 		elif self.inBox(x, y, self.imp.data.menu_quit['box']) : self.select['quit']   = 1 
 		else : self.resetSelect()
 
@@ -81,7 +86,7 @@ class MenuEvent(Event):
 		"""
 		self.select = {
 			'begin'  : 0,
-			'langue' : 0,
+			'option' : 0,
 			'quit'   : 0}
 
 
@@ -100,7 +105,7 @@ class MenuEvent(Event):
 		self.blitBox(display, self.imp.data.menu_begin, self.select['begin'])
 
 		# Blit la zone 'Langue'
-		self.blitBox(display, self.imp.data.menu_langue, self.select['langue'])
+		self.blitBox(display, self.imp.data.menu_langue, self.select['option'])
 
 		#Blit la zone 'Quitter'
 		self.blitBox(display, self.imp.data.menu_quit, self.select['quit'])
@@ -109,3 +114,94 @@ class MenuEvent(Event):
 		self.blitFPS(display)
 		pygame.display.flip()
 
+
+
+
+
+class SetOptionEvent(Event):
+	"""
+	Class utilisé par MenuEvent pour le changement des options du jeu : FPS et paramètres sonore
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+		# self.setVolumeEvent = SetVolumeEvent()
+		self.setVolume = False
+		self.param = self.extractParam()
+		self.resetSelect()
+
+	def event(self, game, menuEvent):
+		"""
+		Methode qui lance le menu d'option
+		"""
+
+		while menuEvent.setOption:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.findSelection(event.pos[0], event.pos[1])
+
+				if event.type == MOUSEBUTTONDOWN:
+					if self.select['cochevolume']    : print('cocheVolume')
+					if self.select['setvolume']      : print('setvolume')
+					if self.select['cocheshowFPS']   : print('cocheshowFPS')
+					if self.select['cochecapFPS']    : print('cochecapFPS') # self.setMode = True
+
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE : menuEvent.setOption = False
+
+				if event.type == QUIT:
+					game.gameOn, game.menuOn, menuEvent.setOption = False, False, False
+
+			self.blitage(game)
+
+			# if self.setNbPlayer : self.setNbPlayerEvent.event(game, self)
+			# if self.setName     : self.setNameEvent.event(game, self)
+			# if self.setBacklog  : self.setBacklogEvent.event(game, self)
+			# if self.setMode     : self.setModeEvent.event(game, self)
+			# if self.setChrono   : self.setChronoEvent.event(game, self)
+
+	def findSelection(self, x, y):
+		"""
+		Methode qui permet d'observer si la souris sélectionne un choix
+		"""
+		if   self.inBox(x, y, self.imp.data.cocheVolume['box'])   : self.select['cochevolume'] = 1
+		elif self.inBox(x, y, self.imp.data.setVolume['box'])    : self.select['setvolume'] = 1
+		elif self.inBox(x, y, self.imp.data.cocheShowFPS['box']) : self.select['cocheshowFPS'] = 1
+		elif self.inBox(x, y, self.imp.data.cocheCapFPS['box'])    : self.select['cochecapFPS'] = 1
+		else : self.resetSelect()
+
+	def resetSelect(self):
+		"""
+		Methode qui re-initialise le dict select
+		"""
+		self.select = {
+			'cochecapFPS' : 0, 'cocheshowFPS' : 0, 
+			'cochevolume' : 0, 'setvolume' : 0
+			}
+
+
+	def blitage(self, game):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
+
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Option", (222, 222, 222), (0, 0), (1600, 100))
+
+		self.blitBox(game.ds, self.imp.data.volume, 0)
+		self.blitBox(game.ds, self.imp.data.cocheVolume, self.select['cochevolume']) # + self.param['cocheChrono']*2)
+		self.blitBox(game.ds, self.imp.data.setVolume,  self.select['setvolume'], text='SETVOL. %')
+
+		self.blitBox(game.ds, self.imp.data.showFPS, 0)
+		self.blitBox(game.ds, self.imp.data.cocheShowFPS, self.select['cocheshowFPS'] + self.param['showFPS']*2)
+		
+		self.blitBox(game.ds, self.imp.data.capFPSbox, 0)
+		self.blitBox(game.ds, self.imp.data.cocheCapFPS, self.select['cochecapFPS'] + self.param['cochecapFPS']*2)
+		
+
+		# self.blitBox(game.ds, self.imp.data.validerOption, self.select['valider'])
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
