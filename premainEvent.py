@@ -180,7 +180,8 @@ class SetNbPlayerEvent(Event):
 				if event.type == KEYDOWN:
 
 					if event.key == K_ESCAPE:
-						premainEvent.param['nb_name'] = int(premainEvent.param['nb_name'])
+						premainEvent.param['nb_name'] = min(int(premainEvent.param['nb_name']), self.imp.data.maxPlayer)
+						premainEvent.param['nb_name'] = max(int(premainEvent.param['nb_name']), self.imp.data.minPlayer)
 						premainEvent.setNbPlayer = False
 
 					elif event.key in self.imp.data.keyValNUM.keys():
@@ -603,7 +604,8 @@ class SetChronoEvent(Event):
 				if event.type == KEYDOWN:
 
 					if event.key == K_ESCAPE:
-						premainEvent.param['time'] = int(premainEvent.param['time'])
+						premainEvent.param['time'] = min(int(premainEvent.param['time']), self.imp.data.maxTimeChrono)
+						premainEvent.param['time'] = max(int(premainEvent.param['time']), self.imp.data.minTimeChrono)
 						premainEvent.setChrono = False
 
 					elif event.key in self.imp.data.keyValNUM.keys():

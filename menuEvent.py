@@ -255,7 +255,8 @@ class SetVolumeEvent(Event):
 				if event.type == KEYDOWN:
 
 					if event.key == K_ESCAPE:
-						setOptionEvent.param['setvolume'] = int(setOptionEvent.param['setvolume'])
+						setOptionEvent.param['setvolume'] = min(int(setOptionEvent.param['setvolume']), 100)
+						setOptionEvent.param['setvolume'] = max(int(setOptionEvent.param['setvolume']), 0)
 						setOptionEvent.setVolume = False
 
 					elif event.key in self.imp.data.keyValNUM.keys():
