@@ -42,6 +42,7 @@ class PremainEvent(Event):
 		"""
 
 		self.resetSelect()
+		self.param = self.extractParam()
 		game.loadBacklog(self)
 		# Si le Backlog sauvegarder dans param est complet, on le dé-selectionne pour eviter l'écrasement non-volontaire
 		if self.param['backlog'] != -1:

@@ -33,6 +33,7 @@ class MenuEvent(Event):
 		self.resetSelect()
 		self.setOptionEvent = SetOptionEvent()
 		self.setOption = False
+		self.param = self.extractParam()
 
 	def event(self, game):
 		"""
@@ -41,6 +42,8 @@ class MenuEvent(Event):
 
 		self.resetSelect()
 		self.debug = ''
+		game.loadBacklog(self)
+		self.param = self.extractParam()
 
 		while game.menuOn:
 
@@ -127,13 +130,14 @@ class SetOptionEvent(Event):
 		Event.__init__(self)
 		# self.setVolumeEvent = SetVolumeEvent()
 		self.setVolume = False
-		self.param = self.extractParam()
 		self.resetSelect()
 
 	def event(self, game, menuEvent):
 		"""
 		Methode qui lance le menu d'option
 		"""
+
+		self.param = menuEvent.param
 
 		while menuEvent.setOption:
 
@@ -143,18 +147,20 @@ class SetOptionEvent(Event):
 					self.findSelection(event.pos[0], event.pos[1])
 
 				if event.type == MOUSEBUTTONDOWN:
-					if self.select['cochevolume']    : print('cocheVolume')
+					if self.select['cochevolume']    : menuEvent.param['cochevolume'] = abs(1 - menuEvent.param['cochevolume'])
 					if self.select['setvolume']      : print('setvolume')
-					if self.select['cocheshowFPS']   : print('cocheshowFPS')
-					if self.select['cochecapFPS']    : print('cochecapFPS') # self.setMode = True
+					if self.select['cocheshowFPS']   : menuEvent.param['showFPS'] = abs(1 - menuEvent.param['showFPS'])
+					if self.select['cochecapFPS']    : menuEvent.param['cochecapFPS'] = abs(1 - menuEvent.param['cochecapFPS']) # self.setMode = True
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : menuEvent.setOption = False
+					menuEvent.saveParam(game)
 
 				if event.type == QUIT:
 					game.gameOn, game.menuOn, menuEvent.setOption = False, False, False
+					menuEvent.saveParam(game)
 
-			self.blitage(game)
+			self.blitage(game, menuEvent)
 
 			# if self.setNbPlayer : self.setNbPlayerEvent.event(game, self)
 			# if self.setName     : self.setNameEvent.event(game, self)
@@ -182,7 +188,7 @@ class SetOptionEvent(Event):
 			}
 
 
-	def blitage(self, game):
+	def blitage(self, game, menuEvent):
 		"""
 		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
 		"""
@@ -191,14 +197,14 @@ class SetOptionEvent(Event):
 		self.labelisation(game.ds, self.imp.font.roboto54, "Option", (222, 222, 222), (0, 0), (1600, 100))
 
 		self.blitBox(game.ds, self.imp.data.volume, 0)
-		self.blitBox(game.ds, self.imp.data.cocheVolume, self.select['cochevolume']) # + self.param['cocheChrono']*2)
-		self.blitBox(game.ds, self.imp.data.setVolume,  self.select['setvolume'], text='SETVOL. %')
+		self.blitBox(game.ds, self.imp.data.cocheVolume, self.select['cochevolume'] + self.param['cochevolume']*2)
+		self.blitBox(game.ds, self.imp.data.setVolume,  self.select['setvolume'], text=f"{self.param['setvolume']}%")
 
 		self.blitBox(game.ds, self.imp.data.showFPS, 0)
-		self.blitBox(game.ds, self.imp.data.cocheShowFPS, self.select['cocheshowFPS'] + self.param['showFPS']*2)
+		self.blitBox(game.ds, self.imp.data.cocheShowFPS, self.select['cocheshowFPS'] + menuEvent.param['showFPS']*2)
 		
 		self.blitBox(game.ds, self.imp.data.capFPSbox, 0)
-		self.blitBox(game.ds, self.imp.data.cocheCapFPS, self.select['cochecapFPS'] + self.param['cochecapFPS']*2)
+		self.blitBox(game.ds, self.imp.data.cocheCapFPS, self.select['cochecapFPS'] + menuEvent.param['cochecapFPS']*2)
 		
 
 		# self.blitBox(game.ds, self.imp.data.validerOption, self.select['valider'])

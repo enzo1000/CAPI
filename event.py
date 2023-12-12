@@ -120,11 +120,13 @@ class Event():
 				param['cochecapFPS'] = int(f[15].split(':')[1])
 				param['capFPS']      = int(f[16].split(':')[1])
 				param['showFPS']     = int(f[17].split(':')[1])
+				param['cochevolume'] = int(f[18].split(':')[1])
+				param['setvolume']   = int(f[19].split(':')[1])
 			except:
-				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1}
+				param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1, 'cochevolume':1, 'setvolume':50}
 				print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 		else:
-			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1}
+			param = {'mode' : 0, 'nb_name' : 2, 'backlog' : 0, 'list_name' : [f"Player{i+1}" for i in range(10)], 'cocheChrono' : 0, 'time' : 60, 'cochecapFPS':1, 'capFPS':60, 'showFPS':1, 'cochevolume':1, 'setvolume':50}
 			print("WARNING : Probleme dans 'param.ini' -> création d'un nouveau fichier de paramètre")
 
 		return param
@@ -146,4 +148,6 @@ class Event():
 		f.write(f"Cap FPS : {self.param['cochecapFPS']}\n")
 		f.write(f"Valeur du cap : {self.param['capFPS']}\n")
 		f.write(f"Afficher FPS : {self.param['showFPS']}\n")
+		f.write(f"Effet Sonore : {self.param['cochevolume']}\n")
+		f.write(f"Volume Sonore (%) : {self.param['setvolume']}\n")
 		f.close()
