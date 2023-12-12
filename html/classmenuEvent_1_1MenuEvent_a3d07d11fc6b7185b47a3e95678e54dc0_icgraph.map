@@ -1,8 +1,10 @@
 <map id="resetSelect" name="resetSelect">
-<area shape="rect" id="node1" title=" " alt="" coords="587,107,681,133"/>
+<area shape="rect" id="node1" title=" " alt="" coords="587,132,681,159"/>
 <area shape="rect" id="node2" href="$classmenuEvent_1_1MenuEvent.html#ae64f0875afe3067b97ba370b354b9213" title=" " alt="" coords="385,5,456,32"/>
 <area shape="rect" id="node3" href="$classmenuEvent_1_1MenuEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="391,56,450,83"/>
-<area shape="rect" id="node4" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="5,157,255,184"/>
+<area shape="rect" id="node4" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="5,161,255,188"/>
 <area shape="rect" id="node5" href="$classmenuEvent_1_1MenuEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="367,157,474,184"/>
-<area shape="rect" id="node6" href="$classpremainEvent_1_1PremainEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="303,209,539,250"/>
+<area shape="rect" id="node7" href="$classmenuEvent_1_1SetOptionEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="306,209,535,250"/>
+<area shape="rect" id="node8" href="$classpremainEvent_1_1PremainEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="303,274,539,315"/>
+<area shape="rect" id="node6" href="$classmenuEvent_1_1SetOptionEvent.html#a63274842de28b70638d714ed3650f11e" title=" " alt="" coords="9,216,251,243"/>
 </map>

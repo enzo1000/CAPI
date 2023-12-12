@@ -1,7 +1,9 @@
 <map id="inBox" name="inBox">
-<area shape="rect" id="node1" title=" " alt="" coords="603,64,661,91"/>
+<area shape="rect" id="node1" title=" " alt="" coords="603,97,661,124"/>
 <area shape="rect" id="node2" href="$classpremainEvent_1_1SetModeEvent.html#aecfff5809d8cd9da64dc7f5f4b86ffa6" title=" " alt="" coords="303,5,555,32"/>
 <area shape="rect" id="node3" href="$classmenuEvent_1_1MenuEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="328,57,529,98"/>
-<area shape="rect" id="node5" href="$classpremainEvent_1_1PremainEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="311,122,547,163"/>
-<area shape="rect" id="node4" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="5,97,255,124"/>
+<area shape="rect" id="node6" href="$classmenuEvent_1_1SetOptionEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="314,122,543,163"/>
+<area shape="rect" id="node7" href="$classpremainEvent_1_1PremainEvent.html#a9b926fc9e5e35b644e5f291ecc0c985d" title=" " alt="" coords="311,187,547,229"/>
+<area shape="rect" id="node4" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="5,104,255,131"/>
+<area shape="rect" id="node5" href="$classmenuEvent_1_1SetOptionEvent.html#a63274842de28b70638d714ed3650f11e" title=" " alt="" coords="9,155,251,181"/>
 </map>

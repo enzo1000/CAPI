@@ -1,7 +1,8 @@
 <map id="strChrono" name="strChrono">
-<area shape="rect" id="node1" title=" " alt="" coords="568,31,653,57"/>
-<area shape="rect" id="node2" href="$classmainEvent_1_1MainEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="305,5,520,32"/>
-<area shape="rect" id="node5" href="$classpremainEvent_1_1PremainEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="379,56,446,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="568,56,653,83"/>
+<area shape="rect" id="node2" href="$classmainEvent_1_1MainEvent.html#ad7c196747696d16b462bac94fcad9578" title=" " alt="" coords="305,31,520,57"/>
+<area shape="rect" id="node6" href="$classpremainEvent_1_1PremainEvent.html#a6e696147fef06fae065678cd02a54142" title=" " alt="" coords="379,81,446,108"/>
 <area shape="rect" id="node3" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="102,5,161,32"/>
-<area shape="rect" id="node4" href="$classpremainEvent_1_1SetModeEvent.html#aecfff5809d8cd9da64dc7f5f4b86ffa6" title=" " alt="" coords="5,56,257,83"/>
+<area shape="rect" id="node4" href="$classmenuEvent_1_1SetOptionEvent.html#a63274842de28b70638d714ed3650f11e" title=" " alt="" coords="10,56,253,83"/>
+<area shape="rect" id="node5" href="$classpremainEvent_1_1SetModeEvent.html#aecfff5809d8cd9da64dc7f5f4b86ffa6" title=" " alt="" coords="5,107,257,133"/>
 </map>

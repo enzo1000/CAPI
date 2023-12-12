@@ -1,4 +1,5 @@
 <map id="findSelection" name="findSelection">
-<area shape="rect" id="node1" title=" " alt="" coords="112,5,219,32"/>
-<area shape="rect" id="node2" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="5,5,64,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="296,31,403,57"/>
+<area shape="rect" id="node2" href="$classpremainEvent_1_1PremainEvent.html#ace94f2b37c423f7f5d804c6023a59da9" title=" " alt="" coords="97,5,156,32"/>
+<area shape="rect" id="node3" href="$classmenuEvent_1_1SetOptionEvent.html#a63274842de28b70638d714ed3650f11e" title=" " alt="" coords="5,56,248,83"/>
 </map>

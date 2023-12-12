@@ -1,6 +1,7 @@
 <map id="findSelection" name="findSelection">
-<area shape="rect" id="node1" title=" " alt="" coords="5,64,112,91"/>
-<area shape="rect" id="node2" href="$classevent_1_1Event.html#a3cce9f98254d40148d334ba9706c3045" title=" " alt="" coords="195,5,336,32"/>
-<area shape="rect" id="node3" href="$classmenuEvent_1_1MenuEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="160,57,371,98"/>
-<area shape="rect" id="node4" href="$classpremainEvent_1_1PremainEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="218,123,313,149"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,97,112,124"/>
+<area shape="rect" id="node2" href="$classevent_1_1Event.html#a3cce9f98254d40148d334ba9706c3045" title=" " alt="" coords="209,5,350,32"/>
+<area shape="rect" id="node3" href="$classmenuEvent_1_1MenuEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="174,57,385,98"/>
+<area shape="rect" id="node4" href="$classmenuEvent_1_1SetOptionEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="160,122,399,163"/>
+<area shape="rect" id="node5" href="$classpremainEvent_1_1PremainEvent.html#a3d07d11fc6b7185b47a3e95678e54dc0" title=" " alt="" coords="232,188,327,215"/>
 </map>
