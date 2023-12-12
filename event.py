@@ -23,11 +23,24 @@ class Event():
 		self.clock       = pygame.time.Clock() # Attribut qui permettra de capper les FPS
 		self.param       = self.extractParam()
 
+		self.updateVolume(self.param['setvolume'])
+
+		# try:
+		# 	self.imp.sound.wrong.set_volume(0.1)
+		# 	self.imp.sound.carte.set_volume(0.5)
+		# except:
+		# 	print("Audio non initialisé")
+
+
+
+	def updateVolume(self, volume):
+
 		try:
-			self.imp.sound.wrong.set_volume(0.1)
-			self.imp.sound.carte.set_volume(0.5)
+			self.imp.sound.wrong.set_volume(0.2 * volume / 100)
+			self.imp.sound.carte.set_volume(0.5 * volume / 100)
 		except:
-			print("Audio non initialisé")
+			print("Audio non update")
+
 
 
 	def blitFPS(self, ds):

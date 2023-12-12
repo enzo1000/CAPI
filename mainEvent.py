@@ -141,7 +141,7 @@ class MainEvent(Event):
 			if x < mouse[0] < x + int(self.imp.data.dimCartes[0]/2) and y < mouse[1] < y + self.imp.data.dimCartes[1]:
 				self.activCartes[i] = 1
 				if self.lastCarte != i:
-					self.imp.sound.carte.play()
+					if self.param['cochevolume'] == 1 : self.imp.sound.carte.play()
 				self.lastCarte = i
 			else:
 				self.activCartes[i] = 0

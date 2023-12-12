@@ -127,7 +127,7 @@ class SetOptionEvent(Event):
 
 	def __init__(self):
 		Event.__init__(self)
-		# self.setVolumeEvent = SetVolumeEvent()
+		self.setVolumeEvent = SetVolumeEvent()
 		self.setVolume = False
 		self.resetSelect()
 
@@ -147,7 +147,7 @@ class SetOptionEvent(Event):
 
 				if event.type == MOUSEBUTTONDOWN:
 					if self.select['cochevolume']    : menuEvent.param['cochevolume'] = abs(1 - menuEvent.param['cochevolume'])
-					if self.select['setvolume']      : print('setvolume')
+					if self.select['setvolume']      : self.setVolume = True
 					if self.select['cocheshowFPS']   : menuEvent.param['showFPS'] = abs(1 - menuEvent.param['showFPS'])
 					if self.select['cochecapFPS']    : menuEvent.param['cochecapFPS'] = abs(1 - menuEvent.param['cochecapFPS']) # self.setMode = True
 
@@ -161,11 +161,7 @@ class SetOptionEvent(Event):
 
 			self.blitage(game, menuEvent)
 
-			# if self.setNbPlayer : self.setNbPlayerEvent.event(game, self)
-			# if self.setName     : self.setNameEvent.event(game, self)
-			# if self.setBacklog  : self.setBacklogEvent.event(game, self)
-			# if self.setMode     : self.setModeEvent.event(game, self)
-			# if self.setChrono   : self.setChronoEvent.event(game, self)
+			if self.setVolume : self.setVolumeEvent.event(game, self)
 
 	def findSelection(self, x, y):
 		"""
@@ -207,6 +203,96 @@ class SetOptionEvent(Event):
 		
 
 		# self.blitBox(game.ds, self.imp.data.validerOption, self.select['valider'])
+
+		self.blitFPS(game.ds)
+		pygame.display.flip()
+
+
+
+
+
+
+class SetVolumeEvent(Event):
+	"""
+	Class utilisé par SetOptionEvent pour modifier le volume sonore
+	"""
+
+	def __init__(self):
+		Event.__init__(self)
+
+
+	def event(self, game, setOptionEvent):
+		"""
+		Methode qui lance l'evenement pour modifier le volume sonore
+		"""
+		setOptionEvent.param['setvolume'] = str(setOptionEvent.param['setvolume'])
+		# premainEvent.resetSelect()
+		self.param = setOptionEvent.param
+		self.select = 0
+
+		while setOptionEvent.setVolume:
+
+			for event in pygame.event.get():
+
+				if event.type == MOUSEMOTION:
+					self.select = 0
+					# Observation de la souris lorsqu'elle passe sur Valider
+					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmNb['box']) : self.select = 1
+
+				if event.type == MOUSEBUTTONDOWN:
+					# Met à jour le pseudo si on appuie clique sur Valider
+					if self.select == 1:
+						setOptionEvent.param['setvolume'] = min(int(setOptionEvent.param['setvolume']), 100)
+						setOptionEvent.param['setvolume'] = max(int(setOptionEvent.param['setvolume']), 0)
+						setOptionEvent.setVolume = False
+
+
+				if event.type == KEYDOWN:
+
+					if event.key == K_ESCAPE:
+						setOptionEvent.param['setvolume'] = int(setOptionEvent.param['setvolume'])
+						setOptionEvent.setVolume = False
+
+					elif event.key in self.imp.data.keyValNUM.keys():
+						if setOptionEvent.param['setvolume'] == '0' : setOptionEvent.param['setvolume'] = ''
+						setOptionEvent.param['setvolume'] = str(setOptionEvent.param['setvolume']) + self.imp.data.keyValNUM[event.key]
+
+					elif event.key == K_BACKSPACE:
+						setOptionEvent.param['setvolume'] = str(setOptionEvent.param['setvolume'])[:-1]
+						if len(setOptionEvent.param['setvolume']) == 0 : setOptionEvent.param['setvolume'] = '0'
+
+					elif event.key == K_RETURN or event.key == K_KP_ENTER:
+						setOptionEvent.param['setvolume'] = min(int(setOptionEvent.param['setvolume']), 100)
+						setOptionEvent.param['setvolume'] = max(int(setOptionEvent.param['setvolume']), 0)
+						setOptionEvent.setVolume = False
+
+				if event.type == QUIT:
+					game.gameOn, game.menuOn, setOptionEvent.setVolume = False, False, False
+
+			self.blitage(game, setOptionEvent)
+
+		# Update le volume en quittant l'event SetVolumeEvent
+		self.updateVolume(setOptionEvent.param['setvolume'])
+
+	def blitage(self, game, setOptionEvent):
+		"""
+		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
+		"""
+		game.ds.blit(self.imp.image.back_main, (0, 0))
+		self.labelisation(game.ds, self.imp.font.roboto54, "Option", (222, 222, 222), (0, 0), (1600, 100))
+
+		self.blitBox(game.ds, self.imp.data.volume, 0)
+		self.blitBox(game.ds, self.imp.data.cocheVolume, 0 + self.param['cochevolume']*2)
+		self.blitBox(game.ds, self.imp.data.setVolume,  1, text=f"{setOptionEvent.param['setvolume']}%")
+
+		self.blitBox(game.ds, self.imp.data.showFPS, 0)
+		self.blitBox(game.ds, self.imp.data.cocheShowFPS, 0 + setOptionEvent.param['showFPS']*2)
+		
+		self.blitBox(game.ds, self.imp.data.capFPSbox, 0)
+		self.blitBox(game.ds, self.imp.data.cocheCapFPS, 0 + setOptionEvent.param['cochecapFPS']*2)
+
+		# self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
+		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()

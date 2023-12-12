@@ -66,7 +66,7 @@ class PremainEvent(Event):
 							game.premainOn, game.mainOn = False, True 
 							self.saveParam(game)
 						else:
-							self.imp.sound.wrong.play()
+							if self.param['cochevolume'] == 1 : self.imp.sound.wrong.play()
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : game.premainOn, game.menuOn = False, True
@@ -283,7 +283,7 @@ class SetNameEvent(Event):
 						self.playerOnWrite = None
 					elif self.retour == 1: # Si on appuie sur Retour
 						if self.playerOnWrite is not None: # Si on appuie alors que l'on est en train de modif un pseudo 
-							self.imp.sound.wrong.play()
+							if self.param['cochevolume'] == 1 : self.imp.sound.wrong.play()
 						else:
 							premainEvent.setName = False
 
@@ -620,7 +620,7 @@ class SetChronoEvent(Event):
 						premainEvent.setChrono = False
 
 				if event.type == QUIT:
-					game.gameOn, game.premainOn, setChrono = False, False, False
+					game.gameOn, game.premainOn, premainEvent.setChrono = False, False, False
 
 			self.blitage(game, premainEvent)
 
