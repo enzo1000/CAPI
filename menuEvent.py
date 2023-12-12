@@ -149,7 +149,8 @@ class SetOptionEvent(Event):
 					if self.select['cochevolume']    : menuEvent.param['cochevolume'] = abs(1 - menuEvent.param['cochevolume'])
 					if self.select['setvolume']      : self.setVolume = True
 					if self.select['cocheshowFPS']   : menuEvent.param['showFPS'] = abs(1 - menuEvent.param['showFPS'])
-					if self.select['cochecapFPS']    : menuEvent.param['cochecapFPS'] = abs(1 - menuEvent.param['cochecapFPS']) # self.setMode = True
+					if self.select['cochecapFPS']    : menuEvent.param['cochecapFPS'] = abs(1 - menuEvent.param['cochecapFPS'])
+					if self.select['valider']        : menuEvent.setOption = False
 
 				if event.type == KEYDOWN:
 					if event.key == K_ESCAPE : menuEvent.setOption = False
@@ -163,6 +164,9 @@ class SetOptionEvent(Event):
 
 			if self.setVolume : self.setVolumeEvent.event(game, self)
 
+		# On save param en quittant SetOptionEvent
+		self.saveParam(game)
+
 	def findSelection(self, x, y):
 		"""
 		Methode qui permet d'observer si la souris sélectionne un choix
@@ -171,6 +175,7 @@ class SetOptionEvent(Event):
 		elif self.inBox(x, y, self.imp.data.setVolume['box'])    : self.select['setvolume'] = 1
 		elif self.inBox(x, y, self.imp.data.cocheShowFPS['box']) : self.select['cocheshowFPS'] = 1
 		elif self.inBox(x, y, self.imp.data.cocheCapFPS['box'])    : self.select['cochecapFPS'] = 1
+		elif self.inBox(x, y, self.imp.data.validerOption['box'])    : self.select['valider'] = 1
 		else : self.resetSelect()
 
 	def resetSelect(self):
@@ -179,7 +184,8 @@ class SetOptionEvent(Event):
 		"""
 		self.select = {
 			'cochecapFPS' : 0, 'cocheshowFPS' : 0, 
-			'cochevolume' : 0, 'setvolume' : 0
+			'cochevolume' : 0, 'setvolume' : 0,
+			'valider' : 0
 			}
 
 
@@ -201,8 +207,7 @@ class SetOptionEvent(Event):
 		self.blitBox(game.ds, self.imp.data.capFPSbox, 0)
 		self.blitBox(game.ds, self.imp.data.cocheCapFPS, self.select['cochecapFPS'] + menuEvent.param['cochecapFPS']*2)
 		
-
-		# self.blitBox(game.ds, self.imp.data.validerOption, self.select['valider'])
+		self.blitBox(game.ds, self.imp.data.validerOption, self.select['valider'])
 
 		self.blitFPS(game.ds)
 		pygame.display.flip()
@@ -273,6 +278,8 @@ class SetVolumeEvent(Event):
 
 		# Update le volume en quittant l'event SetVolumeEvent
 		self.updateVolume(setOptionEvent.param['setvolume'])
+		self.saveParam(game)
+		setOptionEvent.resetSelect()
 
 	def blitage(self, game, setOptionEvent):
 		"""
@@ -291,7 +298,7 @@ class SetVolumeEvent(Event):
 		self.blitBox(game.ds, self.imp.data.capFPSbox, 0)
 		self.blitBox(game.ds, self.imp.data.cocheCapFPS, 0 + setOptionEvent.param['cochecapFPS']*2)
 
-		# self.blitBox(game.ds, self.imp.data.lezgo,     premainEvent.select['lezgo'])
+		self.blitBox(game.ds, self.imp.data.validerOption, 0)
 		self.blitBox(game.ds, self.imp.data.confirmNb, self.select)
 
 		self.blitFPS(game.ds)

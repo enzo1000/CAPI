@@ -65,6 +65,9 @@ class import_mixer():
 	try:
 		wrong = pygame.mixer.Sound("sound/wrong.mp3")
 		carte = pygame.mixer.Sound("sound/bruitCarte.mp3")
+
+		VolumeMaxWrong = 0.2
+		VolumeMaxCarte = 0.5
 	except:
 		print("Audio non initialisé")
 
@@ -183,7 +186,12 @@ class import_data():
 		'font'   : font.roboto32,
 		'box'    : ((770, 500), (160, 80))}
 
-
+	validerOption = {'images' : (*image.sprit_160_80, *image.sprit_160_80_R),
+		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
+		'text'  : 'Menu',
+		'color' : color.noir,
+		'font'  : font.roboto32,
+		'box'   : ((720, 750), (160, 80))}
 
 
 

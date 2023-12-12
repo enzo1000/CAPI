@@ -36,8 +36,8 @@ class Event():
 	def updateVolume(self, volume):
 
 		try:
-			self.imp.sound.wrong.set_volume(0.2 * volume / 100)
-			self.imp.sound.carte.set_volume(0.5 * volume / 100)
+			self.imp.sound.wrong.set_volume(self.imp.sound.VolumeMaxWrong * volume / 100)
+			self.imp.sound.carte.set_volume(self.imp.sound.VolumeMaxCarte * volume / 100)
 		except:
 			print("Audio non update")
 
