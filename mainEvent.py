@@ -357,6 +357,7 @@ class EndTaskEvent(Event):
 		self.niq = [0]*mainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-mainEvent.param['nb_name'])
 		mainEvent.endTask = True
 		self.select = None
+		self.param = mainEvent.param
 
 		while mainEvent.endTask:
 
@@ -453,6 +454,7 @@ class ExplicationEvent(Event):
 		self.allSentence = []
 		self.currentPlayer = currentPlayer
 		self.lshift = False
+		self.param = mainEvent.param
 		mainEvent.explication = True
 
 		while mainEvent.explication:
@@ -567,6 +569,7 @@ class EndMainEvent(Event):
 		"""
 		self.fin = 0
 		self.formatText(mainEvent, ending)
+		self.param = mainEvent.param
 
 		while mainEvent.endMain:
 

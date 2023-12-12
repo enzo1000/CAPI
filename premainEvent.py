@@ -32,8 +32,6 @@ class PremainEvent(Event):
 		self.setBacklog = False
 		self.setMode = False
 		self.setChrono = False
-
-		self.param = self.extractParam()
 		self.resetSelect()
 
 	def event(self, game):
@@ -160,6 +158,7 @@ class SetNbPlayerEvent(Event):
 		premainEvent.param['nb_name'] = str(premainEvent.param['nb_name'])
 		premainEvent.resetSelect()
 		self.select = 0
+		self.param = premainEvent.param
 
 		while premainEvent.setNbPlayer:
 
@@ -252,6 +251,7 @@ class SetNameEvent(Event):
 		self.retour  = 0 # Ecouteur Retour
 		self.playerOnWrite = None
 		self.lshift = False
+		self.param = premainEvent.param
 		self.niq = [0]*premainEvent.param['nb_name'] + [2]*(self.imp.data.maxPlayer-premainEvent.param['nb_name'])
 
 		while premainEvent.setName:
@@ -377,6 +377,7 @@ class SetBacklogEvent(Event):
 		Methode qui lance le menu de selection de changement de Backlog
 		"""
 		self.select = None
+		self.param = premainEvent.param
 		premainEvent.resetSelect()
 
 		while premainEvent.setBacklog:
@@ -446,6 +447,7 @@ class EraseBacklogEvent(Event):
 		Methode qui lance le menu de choix d'effacement de backlog
 		"""
 		self.eraseEvent = True
+		self.param = premainEvent.param
 		self.selectErase = {'Non':0, 'Oui':0}
 
 		while self.eraseEvent:
@@ -515,6 +517,7 @@ class SetModeEvent(Event):
 		Methode qui lance le menu de selection du mode de jeu
 		"""
 		self.select = None
+		self.param = premainEvent.param
 
 		while premainEvent.setMode:
 
@@ -577,6 +580,7 @@ class SetChronoEvent(Event):
 		"""
 		premainEvent.param['time'] = str(premainEvent.param['time'])
 		premainEvent.resetSelect()
+		self.param = premainEvent.param
 		self.select = 0
 
 		while premainEvent.setChrono:

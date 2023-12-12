@@ -14,15 +14,14 @@ class Event():
 	"""
 
 	def __init__(self):
-		self.time0       = time.time()   # Date d'initialisation de l'event
-		self.timeRefresh = time.time()   # Attribut qui permettra le calcul des FPS
-		self.refreshFPS  = 0.5           # Durée de rafraichissement de l'affichage des FPS
-		self.spf         = np.ones(20)   # Liste contenant les 20 dernier SPF (Second Per Frame : 1/FPS)
-		self.fps         = '---'         # Attribut qui contiendra les FPS ('---' avant le premier calcul)
-		self.imp         = importation() # Attribut qui contient la class importation, qui contient tout le contient audio-visuel
+		self.time0       = time.time()         # Date d'initialisation de l'event
+		self.timeRefresh = time.time()         # Attribut qui permettra le calcul des FPS
+		self.refreshFPS  = 0.5                 # Durée de rafraichissement de l'affichage des FPS
+		self.spf         = np.ones(20)         # Liste contenant les 20 dernier SPF (Second Per Frame : 1/FPS)
+		self.fps         = '---'               # Attribut qui contiendra les FPS ('---' avant le premier calcul)
+		self.imp         = importation()       # Attribut qui contient la class importation, qui contient tout le contient audio-visuel
 		self.clock       = pygame.time.Clock() # Attribut qui permettra de capper les FPS
 		self.param       = self.extractParam()
-
 
 		try:
 			self.imp.sound.wrong.set_volume(0.1)
@@ -58,6 +57,7 @@ class Event():
 		if position == 'center' : rect = surface.get_rect(center  = (int(X[0] + dX[0]/2), int(X[1] + dX[1]/2)))
 		if position == 'left'   : rect = surface.get_rect(midleft = (int(X[0])          , int(X[1] + dX[1]/2)))
 		display.blit(surface, rect)
+
 
 	def blitBox(self, display, data, select=0, text=None, position='center'):
 		"""

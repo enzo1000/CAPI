@@ -33,7 +33,6 @@ class MenuEvent(Event):
 		self.resetSelect()
 		self.setOptionEvent = SetOptionEvent()
 		self.setOption = False
-		self.param = self.extractParam()
 
 	def event(self, game):
 		"""
