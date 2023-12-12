@@ -114,7 +114,7 @@ class MainEvent(Event):
 		Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
 		"""
 		display.blit(self.imp.image.back_main, (0, 0))
-		self.labelisation(display, self.imp.font.roboto54, "Main", (222, 222, 222), (0, 0), (1600, 100))
+		self.labelisation(display, self.imp.font.roboto54, "Planning Poker", (222, 222, 222), (0, 0), (1600, 100))
 		
 		if self.param['cocheChrono'] == 1 : self.blitBox(display, self.imp.data.currentTime, text=self.strChrono(int(self.param['time'] - time() + self.currentChrono)))
 

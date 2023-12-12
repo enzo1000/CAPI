@@ -109,7 +109,6 @@ class import_data():
 			  K_COMMA:'?', K_SEMICOLON:'.', K_EXCLAIM:'§', K_RIGHTPAREN:'°', K_EQUALS:'+',
 			  K_KP_PERIOD:'.', K_KP_MINUS:'-'}
 
-	# keyVal      = {**keyValNUM, **keyValALP}
 	keyValSPACE     = {**keyVal, K_SPACE:' '}
 	keyValCAP_SPACE = {**keyValCAP, K_SPACE:' '}
 
@@ -123,14 +122,14 @@ class import_data():
 
 	menu_langue = {'images' : image.sprit_600_100,
 		'imgBox' : ((496, 450), (486, 448)),
-		'text'   : 'Langue !',
+		'text'   : 'Option',
 		'color'  : color.noir,
 		'font'   : font.roboto32,
 		'box'    : ((500, 450), (600, 100))}
 
 	menu_quit = {'images' : image.sprit_600_100,
 		'imgBox' : ((496, 600), (486, 598)),
-		'text'   : 'Quit... !',
+		'text'   : 'Quitter',
 		'color'  : color.noir,
 		'font'   : font.roboto32,
 		'box'    : ((500, 600), (600, 100))}
@@ -205,7 +204,7 @@ class import_data():
 
 	lezgo = {'images' : (*image.sprit_160_80, *image.sprit_160_80_R),
 		'imgBox': ((716, 750), (706, 748), (716, 750), (706, 748)),
-		'text'  : 'Lezgo',
+		'text'  : 'Let\'s go !',
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
