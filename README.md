@@ -7,6 +7,9 @@ Dans notre projet, nous utilisons plusieurs librairies python externe à install
 # Ouverture du projet
 Une fois le projet téléchargé, il vous faudra exécuter via une commande python dans le terminal, le fichier main_capi.py `python ./main_capi.py`
 
+# Architecture JSON
+Vous pouvez déposer vos fichier json dans le dossier data_json tant qu'ils respectent l'architecture des autres json.
+
 # Documentation
 La documentation est généré sur une branche annexe gh-pages, une fois sur cette branche, pour lire la documentation, il faut éxécuter sur un navigateur le fichier index.html
 
