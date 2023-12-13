@@ -201,6 +201,14 @@ class MainEvent(Event):
 					import_json.writeJson(self.backlogName, self.backlog)
 
 
+				# Tous les joueurs ont voté "?":
+				elif len(values) == 0:
+					self.nextBoxText = "Un café ?"
+					self.endTaskEvent.event(game, self)
+					self.currentPlayer = 0
+					self.playerVote = []
+
+
 				# Premier tour ou MODE Unanimité
 				elif self.loop == 0 or self.param['mode'] == 0:
 					# Tout le monde a directement voter pareil 
@@ -409,8 +417,8 @@ class EndTaskEvent(Event):
 				self.imp.data.listVotes['box'][i][0], self.imp.data.listVotes['box'][i][1], position='left')
 
 			# Permet de savoir si le player i a voter une valeur extreme
-			if   mainEvent.nextBoxText != "Tache Suivante" and mainEvent.playerVote[i] == mainEvent.vmin : colorCase = 1
-			elif mainEvent.nextBoxText != "Tache Suivante" and mainEvent.playerVote[i] == mainEvent.vmax : colorCase = 2
+			if   mainEvent.nextBoxText in ["Explication !", "Prochain tour !"] and mainEvent.playerVote[i] == mainEvent.vmin : colorCase = 1
+			elif mainEvent.nextBoxText in ["Explication !", "Prochain tour !"] and mainEvent.playerVote[i] == mainEvent.vmax : colorCase = 2
 			elif mainEvent.playerVote[i] == '?' : colorCase = 3
 			else : colorCase = 0
 
