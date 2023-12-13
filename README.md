@@ -2,7 +2,7 @@
 Bienvenue sur la GitHub de notre projet de "Planning Poker". Ce page a pour but d'expliquer comment lancer le projet sans erreur.
 
 # Librairie à installer
-Dans notre projet, nous utilisons plusieurs librairies python externe à installer (via commande pip install par exemple). Nous utilisons les librairies pygame et numpy.
+Dans notre projet, nous utilisons plusieurs librairies python externe à installer via la commande pip install. Nous utilisons les librairies `pip install pygame` et la librairie `pip install numpy`.
 
 # Ouverture du projet
 Une fois le projet téléchargé, il vous faudra exécuter via une commande python dans le terminal, le fichier main_capi.py `python ./main_capi.py`
