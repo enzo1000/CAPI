@@ -207,6 +207,7 @@ class MainEvent(Event):
 					self.endTaskEvent.event(game, self)
 					self.currentPlayer = 0
 					self.playerVote = []
+					print('')
 
 
 				# Premier tour ou MODE Unanimité
