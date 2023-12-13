@@ -7,7 +7,6 @@ from class_import import importation
 
 
 
-
 class Event():
 	"""
 	Classe Event qui servira de classe mère pour les différents event
@@ -25,15 +24,11 @@ class Event():
 
 		self.updateVolume(self.param['setvolume'])
 
-		# try:
-		# 	self.imp.sound.wrong.set_volume(0.1)
-		# 	self.imp.sound.carte.set_volume(0.5)
-		# except:
-		# 	print("Audio non initialisé")
-
-
 
 	def updateVolume(self, volume):
+		"""
+		Methode qui permet d'update le volume des effets sonores
+		"""
 
 		try:
 			self.imp.sound.wrong.set_volume(self.imp.sound.VolumeMaxWrong * volume / 100)
@@ -47,7 +42,6 @@ class Event():
 		"""
 		Methode qui permet de calculer et d'afficher les FPS
 		"""
-
 		self.spf[:-1], self.spf[-1] = self.spf[1:], time.time() - self.time0
 		self.time0 = time.time()
 		
@@ -77,7 +71,6 @@ class Event():
 		Methode permettant d'afficher un le visuel entier de data qui est donner dans les import
 			-> si le texte est variable, il peut etre donner dans text, sinon, on prend celui indiquer dans l'import
 		"""
-
 		if text is None : text = data['text']
 
 		display.blit(data['images'][select], data['imgBox'][select])
@@ -105,7 +98,6 @@ class Event():
 		Methode permettant de revoyer True si les coordonnéer (x, y) sont dans la box
 			-> Utiliser surtout pour connaitre l'emplacement de la souris 
 		"""
-
 		if 0 < x - Box[0][0] < Box[1][0] and 0 < y - Box[0][1] < Box[1][1]:
 			return True
 		else:
@@ -117,7 +109,6 @@ class Event():
 		Methode permmetant d'extraire les donner paramètre
 			-> Si le file est corrompu ou n'existe pas, il est recréer par défault
 		"""
-
 		if True in ['param.ini' in file for file in os.listdir(f"./{folder}/")]:
 			try:
 				param = {}
@@ -149,7 +140,6 @@ class Event():
 		"""
 		Methode permettant de save les paramètre en cours
 		"""
-
 		f = open(f"./{folder}/param.ini", "w")
 		f.write(f"Paramètre :\n")
 		f.write(f"Mode          : {self.param['mode']} [{self.imp.data.listMode['text'][self.param['mode']]}]\n")

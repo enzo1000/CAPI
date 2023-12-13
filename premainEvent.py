@@ -2,9 +2,9 @@ import pygame
 import os
 import numpy as np
 from pygame.locals import *
-
 from event import Event
 import import_json
+
 
 
 class PremainEvent(Event):
@@ -16,6 +16,14 @@ class PremainEvent(Event):
 		- Choisir le Backlog
 		- Choisir le mode
 		- Choisir si l'on veut un chrono ainsi que la valeur de celui-ci
+
+	Methode : 
+		* Toutes les methodes décrites dans la classe mère Event
+		- event(game)         : Methode qui lance le menu de selection des divers paramètre du jeu avant le lancement de celui-ci
+		- findSelection(x, y) : Methode qui permet d'observer si la souris sélectionne un choix
+		- resetSelect()       : Methode qui re-initialise le dict select
+		- strChrono()         : Methode qui formatage le temps restant dans le chrono pour un affichage plus propre
+		- blitage(display)    : Methode qui permet de rafraichir le display et d'afficher la nouvelle frame 
 	"""
 
 	def __init__(self):
@@ -33,6 +41,7 @@ class PremainEvent(Event):
 		self.setMode = False
 		self.setChrono = False
 		self.resetSelect()
+
 
 	def event(self, game):
 		"""
@@ -82,6 +91,7 @@ class PremainEvent(Event):
 			if self.setMode     : self.setModeEvent.event(game, self)
 			if self.setChrono   : self.setChronoEvent.event(game, self)
 
+
 	def findSelection(self, x, y):
 		"""
 		Methode qui permet d'observer si la souris sélectionne un choix
@@ -95,6 +105,7 @@ class PremainEvent(Event):
 		elif self.inBox(x, y, self.imp.data.setChrono['box'])    : self.select['setChrono'] = 1
 		else : self.resetSelect()
 
+
 	def resetSelect(self):
 		"""
 		Methode qui re-initialise le dict select
@@ -106,8 +117,13 @@ class PremainEvent(Event):
 			'chrono' : 0, 'cocheChrono' : 0, 'setChrono' : 0,
 			'lezgo' : 0}
 
+
 	def strChrono(self):
+		"""
+		Methode qui formatage le temps restant dans le chrono pour un affichage plus propre
+		"""
 		return f"{int(self.param['time']//60):01}'{int(self.param['time']%60):02}\""
+
 
 	def blitage(self, game):
 		"""
@@ -201,6 +217,7 @@ class SetNbPlayerEvent(Event):
 					game.gameOn, game.premainOn, setNbPlayer = False, False, False
 
 			self.blitage(game, premainEvent)
+
 
 	def blitage(self, game, premainEvent):
 		"""
@@ -625,6 +642,7 @@ class SetChronoEvent(Event):
 					game.gameOn, game.premainOn, premainEvent.setChrono = False, False, False
 
 			self.blitage(game, premainEvent)
+
 
 	def blitage(self, game, premainEvent):
 		"""

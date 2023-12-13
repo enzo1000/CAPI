@@ -4,11 +4,16 @@ from pygame.locals import *
 
 pygame.init()
 
+
+
 class import_image():
 	# Sprit des cartes
 	folder = "picture/cartes/PNG/"
 	labelCartes, cartes = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', 'cafe', 'intero'], []
 	for label in labelCartes : cartes.append(pygame.image.load(f"{folder}cartes_{label}.png"))
+
+	# Sprit du fond (en commum partout pour l'instant)
+	back_main = pygame.image.load("picture/main/back_lum.png")
 
 	# Sprit des bouton
 	# - Prefixe "nonon" -> Bouton éteint
@@ -40,11 +45,6 @@ class import_image():
 	sprit_80_80_G = (pygame.image.load(f"picture/bouton/nonon-80-80-G.png"), None)
 	sprit_80_80_K = (pygame.image.load(f"picture/bouton/nonon-80-80-K.png"), None)
 
-	# Sprit du fond (en commum partout pour l'instant)
-	back_main = pygame.image.load("picture/main/back_lum.png")
-
-	# Sprit d'encoche non utilisé pour l'instant
-	# coche = [pygame.image.load("picture/pre_main/cocheOff.png"), pygame.image.load("picture/pre_main/cocheOn.png")]
 
 
 class import_color():
@@ -58,13 +58,11 @@ class import_color():
 	noir  = (0  , 0  , 0  )
 
 
+
 class import_mixer():
 	"""
 	Importation de son
 	"""
-	# Miaulement de chouqette (inutilisé pour l'instant)
-	# chouquette = pygame.mixer.Sound("sound/on_chouquette_new.wav")
-
 	try:
 		wrong = pygame.mixer.Sound("sound/wrong.mp3")
 		carte = pygame.mixer.Sound("sound/bruitCarte.mp3")
@@ -89,6 +87,7 @@ class import_font():
 	crash64 = pygame.font.Font("font/Crashnumberingserif.ttf", 64)
 
 
+
 class import_data():
 	image = import_image
 	font = import_font
@@ -96,9 +95,11 @@ class import_data():
 
 	capFPS = 60
 
+	# Association touche / caractère des valeur numérique
 	keyValNUM = {K_0:'0',   K_1:'1',   K_2:'2',   K_3:'3',   K_4:'4',   K_5:'5',   K_6:'6',   K_7:'7',   K_8:'8',   K_9:'9', 
 			   K_KP0:'0', K_KP1:'1', K_KP2:'2', K_KP3:'3', K_KP4:'4', K_KP5:'5', K_KP6:'6', K_KP7:'7', K_KP8:'8', K_KP9:'9'}
 
+	# Association touche / caractère des valeur alphanum (lower)
 	keyVal = {K_a:'a', K_b:'b', K_c:'c', K_d:'d', K_e:'e', K_f:'f', K_g:'g', K_h:'h', K_i:'i', K_j:'j', 
 			  K_k:'k', K_l:'l', K_m:'m', K_n:'n', K_o:'o', K_p:'p', K_q:'q', K_r:'r', K_s:'s', K_t:'t', 
 			  K_u:'u', K_v:'v', K_w:'w', K_x:'x', K_y:'y', K_z:'z',
@@ -107,6 +108,7 @@ class import_data():
 			  K_COMMA:',', K_SEMICOLON:'', K_EXCLAIM:'!', K_RIGHTPAREN:')', K_EQUALS:'=',
 			  K_KP_PERIOD:'.', K_KP_MINUS:'-'}
 
+	# Association touche / caractère des valeur alphanum (upper)
 	keyValCAP = {K_a:'A', K_b:'B', K_c:'C', K_d:'D', K_e:'E', K_f:'F', K_g:'G', K_h:'H', K_i:'I', K_j:'J', 
 			  K_k:'K', K_l:'L', K_m:'M', K_n:'N', K_o:'O', K_p:'P', K_q:'Q', K_r:'R', K_s:'S', K_t:'T', 
 			  K_u:'U', K_v:'V', K_w:'W', K_x:'X', K_y:'Y', K_z:'Z',
@@ -115,8 +117,10 @@ class import_data():
 			  K_COMMA:'?', K_SEMICOLON:'.', K_EXCLAIM:'§', K_RIGHTPAREN:'°', K_EQUALS:'+',
 			  K_KP_PERIOD:'.', K_KP_MINUS:'-'}
 
+	# Association touche / caractère des valeur alphanum (lower & upper) en ajoutant l'espace
 	keyValSPACE     = {**keyVal, K_SPACE:' '}
 	keyValCAP_SPACE = {**keyValCAP, K_SPACE:' '}
+
 
 	# MENU DATA
 	menu_begin = {'images' : image.sprit_600_100,
@@ -142,6 +146,7 @@ class import_data():
 
 	defaultColors = [(64, 64, 64), (0, 0, 0)]
 	activColor = (128, 128, 128)
+
 
 	# MENU DATA : OPTION EVENT
 	volume = {'images' : image.sprit_400_80,
@@ -195,8 +200,6 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
-
-
 
 
 	# PRE-MAIN DATA
@@ -271,6 +274,7 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
 
+
 	# PRE-MAIN DATA : SET NB PLAYER
 	minPlayer = 2
 	maxPlayer = 10
@@ -280,6 +284,7 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((900, 750), (160, 80))}
+
 
 	# PRE_MAIN DATA : SET PLAYER NAME
 	listName = {'images' : (*image.sprit_300_80, *image.sprit_300_80_NaN),
@@ -301,8 +306,10 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : ((720, 750), (160, 80))}
 
+
 	# PRE-MAIN DATA : SET BACKLOG EVENT
 	# ****
+
 
 	# PRE-MAIN DATA : ERASE BACKLOG EVENT
 	eraseQuestion = {'images' : image.sprit_800_400,
@@ -324,6 +331,7 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : ((990, 700), (160, 80))}
 
+
 	# PRE-MAIN DATA : SET MODE EVENT
 	listMode = {'images' : image.sprit_480_80,
 		'imgBox': [((556, 250+100*i), (546, 248+100*i)) for i in range(5)],
@@ -332,9 +340,11 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : [((560, 250+100*i), (480, 80)) for i in range(5)]}
 
+
 	# PRE-MAIN DATA : SET CHRONO
 	minTimeChrono = 10  # sec
 	maxTimeChrono = 300 # sec
+
 
 	# MAIN DATA
 	dimCartes = [200, 300]
@@ -374,6 +384,7 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : ((216, 296), (300, 80))}
 
+
 	# MAIN DATA : END TASK EVENT
 	finalValue = {'images' : image.sprit_240_80_G,
 		'imgBox': ((591, 150), (581, 148)),
@@ -406,6 +417,7 @@ class import_data():
 		'font'  : font.roboto32,
 		'box'   : ((650, 750), (300, 80))}
 
+
 	# MAIN DATA : EXPLICATION EVENT
 	limitExplication = 200
 	explicationRL = 38
@@ -416,6 +428,7 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.arial32,
 		'box'   : ((400, 200), (800, 400))}
+
 
 	# MAIN DATA : CAFE EVENT
 	fin = {'images' : image.sprit_300_80,

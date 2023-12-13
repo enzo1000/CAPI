@@ -1,8 +1,9 @@
 import pygame
 import numpy as np
 from pygame.locals import *
-
 from event import Event
+
+
 
 class MenuEvent(Event):
 	"""
@@ -10,18 +11,11 @@ class MenuEvent(Event):
 	Cette classe permet de gérer le menu de notre application. 
 	Elle permettra de selectionner ce que l'on veut faire : 
 		- Commencer une partie de planning poker
-		- Changer la langue (Pour l'instant que Fr disponible)
+		- CHanger des options (Volume effets sonores, cappage FPS)
 		- Quitter l'application
-
-	Param Init :
-		- game [GameClass] : Objet de class GameClass, qui contient les caractéristique physique de l'appli (le display ...)
-
-	Attribut :
-		+ *** Tout les attributs décrites dans la class mère Event
-		- select [dict] : dict contenant le choix pointer par la souris
 	
 	Methode : 
-		+ *** Toutes les methodes décrites dans la classe mère Event
+		* Toutes les methodes décrites dans la classe mère Event
 		- event(game)         : Methode qui lance le menu de l'application
 		- findSelection(x, y) : Methode qui permet d'observer si la souris sélectionne un choix
 		- resetSelect()       : Methode qui re-initialise le dict select
@@ -33,6 +27,7 @@ class MenuEvent(Event):
 		self.resetSelect()
 		self.setOptionEvent = SetOptionEvent()
 		self.setOption = False
+
 
 	def event(self, game):
 		"""
@@ -67,7 +62,7 @@ class MenuEvent(Event):
 				if event.type == QUIT:
 					game.gameOn, game.menuOn = False, False
 
-
+			# Demarre l'interface des options
 			if self.setOption : self.setOptionEvent.event(game, self)
 
 			self.blitage(game.ds)
@@ -81,6 +76,7 @@ class MenuEvent(Event):
 		elif self.inBox(x, y, self.imp.data.menu_langue['box']) : self.select['option'] = 1
 		elif self.inBox(x, y, self.imp.data.menu_quit['box']) : self.select['quit']   = 1 
 		else : self.resetSelect()
+
 
 	def resetSelect(self):
 		"""
@@ -135,7 +131,6 @@ class SetOptionEvent(Event):
 		"""
 		Methode qui lance le menu d'option
 		"""
-
 		self.param = menuEvent.param
 
 		while menuEvent.setOption:
@@ -245,7 +240,7 @@ class SetVolumeEvent(Event):
 					if self.inBox(event.pos[0], event.pos[1], self.imp.data.confirmNb['box']) : self.select = 1
 
 				if event.type == MOUSEBUTTONDOWN:
-					# Met à jour le pseudo si on appuie clique sur Valider
+					# Met à jour le volume si on appuie clique sur Valider
 					if self.select == 1:
 						setOptionEvent.param['setvolume'] = min(int(setOptionEvent.param['setvolume']), 100)
 						setOptionEvent.param['setvolume'] = max(int(setOptionEvent.param['setvolume']), 0)
@@ -281,6 +276,7 @@ class SetVolumeEvent(Event):
 		self.updateVolume(setOptionEvent.param['setvolume'])
 		self.saveParam(game)
 		setOptionEvent.resetSelect()
+
 
 	def blitage(self, game, setOptionEvent):
 		"""

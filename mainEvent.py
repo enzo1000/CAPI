@@ -13,6 +13,17 @@ class MainEvent(Event):
 	Cette classe permet de gérer l'evenement principale de cette appli : jouons au planning poker
 		-> Le jeu ce joue tache par tache, avec a chaque fois joueur par joueur
 		-> On enregistrera le backlog a la fin (ou si on fait cafe !)
+
+	Methode : 
+		* Toutes les methodes décrites dans la classe mère Event
+		- event(game)                        : Methode qui lance le planning poker
+		- strChrono(t)                       : Methode permettant de retourner une formatage visuel plus correct du temps
+		- blitageExplication(game, sentence) : Methode aidant à afficher un long texte (en calculant les retours à la ligne)
+		- blitage(display)                   : Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+		- motionInCartes(mouse)              : Methode qui regarde la cartes qui est sous la souris
+		- selectCartes(game)                 : Methode qui selectionne la carte du joueur en cours
+		- nextTask(game)                     : Methode utiliser par selecCartes pour changer de tache quand une est finis
+		- explicationPlease(game, values)    : Methode qui permet demander une explication au joueur extreme et qui les affiches
 	"""
 
 	def __init__(self):
@@ -29,6 +40,7 @@ class MainEvent(Event):
 		self.lastCarte = -1
 		self.currentChrono = time()
 		self.thereIsExplication = False 
+
 
 	def event(self, game):
 		"""
@@ -93,7 +105,9 @@ class MainEvent(Event):
 
 
 	def blitageExplication(self, game, sentence):
-
+		"""
+		Methode aidant à afficher un long texte (en calculant les retours à la ligne)
+		"""
 		self.blitBox(game.ds, self.imp.data.explication, 0, text='')
 
 		nbRetour = len(sentence)
@@ -130,7 +144,6 @@ class MainEvent(Event):
 
 		self.blitFPS(display)
 		pygame.display.flip()
-
 
 
 	def motionInCartes(self, mouse):
@@ -294,6 +307,9 @@ class MainEvent(Event):
 
 
 	def explicationPlease(self, game, values):
+		"""
+		Methode qui permet demander une explication au joueur extreme et qui les affiches
+		"""
 		print(f"Tout le monde n'est pas d'accord pour la tache {self.listTask[self.currentTask]}")
 		self.vmin = min(values)
 		self.vmax = max(values)
@@ -347,6 +363,7 @@ class MainEvent(Event):
 
 
 
+
 class EndTaskEvent(Event):
 	"""
 	Class utilisé par MainEvent pour presenter les votes 
@@ -355,6 +372,7 @@ class EndTaskEvent(Event):
 	def __init__(self):
 		Event.__init__(self)
 		self.nextBox = 0
+
 
 	def event(self, game, mainEvent):
 		"""
