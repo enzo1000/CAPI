@@ -207,7 +207,18 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><pre class="fragment">    Classe MainEvent hérité de Event
     Cette classe permet de gérer l'evenement principale de cette appli : jouons au planning poker
         -&gt; Le jeu ce joue tache par tache, avec a chaque fois joueur par joueur
-        -&gt; On enregistrera le backlog a la fin (ou si on fait cafe !)</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+        -&gt; On enregistrera le backlog a la fin (ou si on fait cafe !)
+
+    Methode : 
+        * Toutes les methodes décrites dans la classe mère Event
+        - event(game)                        : Methode qui lance le planning poker
+        - strChrono(t)                       : Methode permettant de retourner une formatage visuel plus correct du temps
+        - blitageExplication(game, sentence) : Methode aidant à afficher un long texte (en calculant les retours à la ligne)
+        - blitage(display)                   : Methode qui permet de rafraichir le display et d'afficher la nouvelle frame
+        - motionInCartes(mouse)              : Methode qui regarde la cartes qui est sous la souris
+        - selectCartes(game)                 : Methode qui selectionne la carte du joueur en cours
+        - nextTask(game)                     : Methode utiliser par selecCartes pour changer de tache quand une est finis
+        - explicationPlease(game, values)    : Methode qui permet demander une explication au joueur extreme et qui les affiches</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae64f0875afe3067b97ba370b354b9213"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae64f0875afe3067b97ba370b354b9213">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -301,7 +312,7 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="dynheader">
+<pre class="fragment">        Methode aidant à afficher un long texte (en calculant les retours à la ligne)</pre> <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classmainEvent_1_1MainEvent_af9c916eb9b5e16297fde967bdbe102c1_cgraph.png" border="0" usemap="#aclassmainEvent_1_1MainEvent_af9c916eb9b5e16297fde967bdbe102c1_cgraph" alt=""/></div>
@@ -373,7 +384,7 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">        Methode qui permet demander une explication au joueur extreme et qui les affiches</pre> 
 </div>
 </div>
 <a id="a61d6d83215154dfee6b3ff42f4d262f9"></a>

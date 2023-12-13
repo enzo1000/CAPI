@@ -158,18 +158,11 @@ Public Attributes</h2></td></tr>
     Cette classe permet de gérer le menu de notre application. 
     Elle permettra de selectionner ce que l'on veut faire : 
         - Commencer une partie de planning poker
-        - Changer la langue (Pour l'instant que Fr disponible)
+        - CHanger des options (Volume effets sonores, cappage FPS)
         - Quitter l'application
-
-    Param Init :
-        - game [GameClass] : Objet de class GameClass, qui contient les caractéristique physique de l'appli (le display ...)
-
-    Attribut :
-        + *** Tout les attributs décrites dans la class mère Event
-        - select [dict] : dict contenant le choix pointer par la souris
     
     Methode : 
-        + *** Toutes les methodes décrites dans la classe mère Event
+        * Toutes les methodes décrites dans la classe mère Event
         - event(game)         : Methode qui lance le menu de l'application
         - findSelection(x, y) : Methode qui permet d'observer si la souris sélectionne un choix
         - resetSelect()       : Methode qui re-initialise le dict select
