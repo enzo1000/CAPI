@@ -17,21 +17,24 @@ class import_image():
 	# - R               -> Bouton en rouge (128) au lieu de gris
 	# - G               -> Bouton en vert (128) au lieu de gris
 	# - Suffixe Enc     -> Encoche (0 non-coché, 1 coché)
+	# - Suffixe Son     -> Icone de son
 	sprit_900_80 = (pygame.image.load(f"picture/bouton/nonon-900-80.png"), None)
 	sprit_800_400 = (pygame.image.load(f"picture/bouton/nonon-800-400.png"), None)
 	sprit_600_100 = (pygame.image.load(f"picture/bouton/nonon-600-100.png"), pygame.image.load(f"picture/bouton/activ-600-100.png"))
 	sprit_600_80_Brown = (pygame.image.load(f"picture/bouton/nonon-600-80-Brown.png"), None)
-	sprit_480_80 = (pygame.image.load(f"picture/bouton/nonon-480-80.png"),  pygame.image.load(f"picture/bouton/activ-480-80.png"))
-	sprit_400_80 = (pygame.image.load(f"picture/bouton/nonon-400-80.png"),  pygame.image.load(f"picture/bouton/activ-400-80.png"))
-	sprit_300_80 = (pygame.image.load(f"picture/bouton/nonon-300-80.png"),  pygame.image.load(f"picture/bouton/activ-300-80.png"))
-	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"),  pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
+	sprit_480_80 = (pygame.image.load(f"picture/bouton/nonon-480-80.png"), pygame.image.load(f"picture/bouton/activ-480-80.png"))
+	sprit_400_80 = (pygame.image.load(f"picture/bouton/nonon-400-80.png"), pygame.image.load(f"picture/bouton/activ-400-80.png"))
+	sprit_300_80 = (pygame.image.load(f"picture/bouton/nonon-300-80.png"), pygame.image.load(f"picture/bouton/activ-300-80.png"))
+	sprit_300_80_NaN = (pygame.image.load(f"picture/bouton/nonon-300-80-NaN.png"), pygame.image.load(f"picture/bouton/activ-300-80-NaN.png"))
 	sprit_240_80_G = (pygame.image.load(f"picture/bouton/nonon-240-80-G.png"), None)
 	sprit_160_80 = (pygame.image.load(f"picture/bouton/nonon-160-80.png"),  pygame.image.load(f"picture/bouton/activ-160-80.png"))
-	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"),  pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
-	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"),  pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
+	sprit_160_80_R = (pygame.image.load(f"picture/bouton/nonon-160-80-R.png"), pygame.image.load(f"picture/bouton/activ-160-80-R.png"))
+	sprit_160_80_G = (pygame.image.load(f"picture/bouton/nonon-160-80-G.png"), pygame.image.load(f"picture/bouton/activ-160-80-G.png"))
 	sprit_160_80_Brown = (pygame.image.load(f"picture/bouton/nonon-160-80-Brown.png"), None)
-	sprit_160_80_Enc0 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C0.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C0.png"))
-	sprit_160_80_Enc1 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C1.png"),  pygame.image.load(f"picture/bouton/encoche/activ-160-80_C1.png"))
+	sprit_160_80_Enc0 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C0.png"), pygame.image.load(f"picture/bouton/encoche/activ-160-80_C0.png"))
+	sprit_160_80_Enc1 = (pygame.image.load(f"picture/bouton/encoche/nonon-160-80_C1.png"), pygame.image.load(f"picture/bouton/encoche/activ-160-80_C1.png"))
+	sprit_160_80_sonON  = (pygame.image.load(f"picture/bouton/son/nonon-160-80_sonON.png"),  pygame.image.load(f"picture/bouton/son/activ-160-80_sonON.png"))
+	sprit_160_80_sonOFF = (pygame.image.load(f"picture/bouton/son/nonon-160-80_sonOFF.png"), pygame.image.load(f"picture/bouton/son/activ-160-80_sonOFF.png"))
 	sprit_80_80   = (pygame.image.load(f"picture/bouton/nonon-80-80.png"), None)
 	sprit_80_80_R = (pygame.image.load(f"picture/bouton/nonon-80-80-R.png"), None)
 	sprit_80_80_G = (pygame.image.load(f"picture/bouton/nonon-80-80-G.png"), None)
@@ -147,7 +150,7 @@ class import_data():
 		'color' : color.noir,
 		'font'  : font.roboto32,
 		'box'   : ((350, 200), (400, 80))}
-	cocheVolume = {'images' : (*image.sprit_160_80_Enc0, *image.sprit_160_80_Enc1),
+	cocheVolume = {'images' : (*image.sprit_160_80_sonOFF, *image.sprit_160_80_sonON),
 		'imgBox' : ((766, 200), (756, 198), (766, 200), (756, 198)),
 		'text'   : '',
 		'color'  : color.noir,
