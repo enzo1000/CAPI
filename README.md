@@ -9,6 +9,7 @@ Une fois le projet téléchargé, il vous faudra exécuter via une commande pyth
 
 # Architecture JSON
 Vous pouvez déposer vos fichier json dans le dossier data_json tant qu'ils respectent l'architecture des autres json.
+Ces fichiers s'organise de la manière suivante : {"Nom de la tache à effectuer", cout de la tâche}. Le coup de la tâche est initialisé à -1 pour notifier le fait que la tâche n'a pas été traité.
 
 # Documentation
 La documentation est généré sur une branche annexe gh-pages, une fois sur cette branche, pour lire la documentation, il faut éxécuter sur un navigateur le fichier index.html
