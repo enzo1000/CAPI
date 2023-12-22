@@ -560,19 +560,6 @@ class ExplicationEvent(Event):
 
 
 		mainEvent.blitageExplication(game, self.allSentence)
-
-		# nbRetour = len(self.allSentence)
-		# for i, texte in enumerate(self.allSentence):
-
-		# 	Xi = list(self.imp.data.explication['box'][0])
-		# 	Xi[1] += i*self.imp.data.explicationFontSize - (nbRetour)*self.imp.data.explicationFontSize/2
-
-		# 	self.labelisation(game.ds, 
-		# 		self.imp.data.explication['font'],
-		# 		texte, 
-		# 		self.imp.data.explication['color'],
-		# 		Xi, self.imp.data.explication['box'][1], position='center')
-
 		self.blitBox(game.ds, self.imp.data.nextBox, self.valider, text='Envoyer !')
 		self.blitFPS(game.ds)
 		pygame.display.flip()

@@ -287,6 +287,7 @@ class import_data():
 
 
 	# PRE_MAIN DATA : SET PLAYER NAME
+	limitPseudo = 14
 	listName = {'images' : (*image.sprit_300_80, *image.sprit_300_80_NaN),
 		'imgBox': [((442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2)), (442+408*(i%2), 250+100*(i//2)), (432+408*(i%2), 248+100*(i//2))) for i in range(10)],
 		'text'  : '0x413$Ae',
@@ -419,7 +420,7 @@ class import_data():
 
 
 	# MAIN DATA : EXPLICATION EVENT
-	limitExplication = 200
+	limitExplication = 240
 	explicationRL = 38
 	explicationFontSize = 32
 	explication = {'images' : image.sprit_800_400,
